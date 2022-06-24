@@ -3,13 +3,13 @@ class LoginModel {
   String? connection;
   String? message;
   UserData? userData;
-  String? errorMessage;
+  String? error;
+
+  LoginModel.error(String errorMessage) {
+    this.error = errorMessage;
+  }
 
   LoginModel({this.status, this.connection, this.message, this.userData});
-
-  LoginModel.loginError(String error) {
-    this.errorMessage = error;
-  }
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];

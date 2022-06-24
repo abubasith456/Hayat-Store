@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/db/db_services.dart';
 
+import '../../sign_in/sign_in_screen.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var _userService = UserService();
+
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
@@ -35,7 +39,10 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
-            press: () {},
+            press: () {
+              _userService.deleteUser(1);
+              Navigator.pushNamed(context, SignInScreen.routeName);
+            },
           ),
         ],
       ),
