@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
+import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/login_success/login_success_screen.dart';
 
 import '../../../components/default_button.dart';
@@ -20,6 +24,7 @@ class _SignFormState extends State<SignForm> {
   String? password;
   bool? remember = false;
   final List<String?> errors = [];
+  LoginBloc _loginBloc = LoginBloc();
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -37,51 +42,85 @@ class _SignFormState extends State<SignForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(30)),
-          Row(
-            children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
+    return BlocProvider(
+      create: (context) => _loginBloc,
+      child: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state is ErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
               ),
-              Text("Remember me"),
-              Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
-                child: Text(
-                  "Forgot Password",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
-              )
-            ],
-          ),
-          FormError(errors: errors),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          DefaultButton(
-            text: "Continue",
-            press: () {
-              if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                // if all are valid then go to success screen
-                KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
-              }
-            },
-          ),
-        ],
+            );
+          }
+        },
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            return Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  buildEmailFormField(),
+                  SizedBox(height: getProportionateScreenHeight(30)),
+                  buildPasswordFormField(),
+                  SizedBox(height: getProportionateScreenHeight(30)),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: remember,
+                        activeColor: kPrimaryColor,
+                        onChanged: (value) {
+                          setState(() {
+                            remember = value;
+                          });
+                        },
+                      ),
+                      Text("Remember me"),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () => Navigator.pushNamed(
+                            context, ForgotPasswordScreen.routeName),
+                        child: Text(
+                          "Forgot Password",
+                          style:
+                              TextStyle(decoration: TextDecoration.underline),
+                        ),
+                      )
+                    ],
+                  ),
+                  FormError(errors: errors),
+                  SizedBox(height: getProportionateScreenHeight(20)),
+                  DefaultButton(
+                    text: "Continue",
+                    press: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        if (state is LoadingState) {
+                          print('LoadingState called');
+                          context.loaderOverlay.show();
+                        } else if (state is LoadedState) {
+                          print('LoadedState called');
+                          if (state.loginModel.status == 200) {
+                            Navigator.pushNamed(context, HomeScreen.routeName);
+                            // } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(state.loginModel.message!),
+                              ),
+                            );
+                          }
+                        }
+                        KeyboardUtil.hideKeyboard(context);
+                        // Navigator.pushNamed(
+                        //     context, LoginSuccessScreen.routeName);
+                      }
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
