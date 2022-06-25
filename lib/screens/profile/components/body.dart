@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/db/db_services.dart';
+import 'package:shop_app/util/shared_pref.dart';
 
+import '../../../constants.dart';
 import '../../sign_in/sign_in_screen.dart';
 import 'profile_menu.dart';
 import 'profile_pic.dart';
@@ -9,6 +11,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _userService = UserService();
+    var sharedPref = SharedPref();
 
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 20),
@@ -41,6 +44,7 @@ class Body extends StatelessWidget {
             icon: "assets/icons/Log out.svg",
             press: () {
               _userService.deleteUser(1);
+              sharedPref.setBoolValue(loggedKey, false);
               Navigator.pushNamed(context, SignInScreen.routeName);
             },
           ),

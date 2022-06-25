@@ -109,6 +109,7 @@ class _OtpFormState extends State<OtpForm> {
           SizedBox(height: SizeConfig.screenHeight * 0.15),
           DefaultButton(
             text: "Continue",
+            isLoading: false,
             press: () {},
           )
         ],

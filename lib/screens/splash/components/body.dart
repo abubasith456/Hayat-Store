@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/size_config.dart';
+import 'package:shop_app/util/shared_pref.dart';
 
 // This is the best practice
 import '../components/splash_content.dart';
@@ -14,6 +15,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   int currentPage = 0;
+  var shredPref = SharedPref();
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to Hayat store, Let’s shop!",
@@ -70,6 +72,7 @@ class _BodyState extends State<Body> {
                       text: "Continue",
                       isLoading: false,
                       press: () {
+                        shredPref.setBoolValue(isFirstLogin, true);
                         Navigator.pushNamed(context, SignInScreen.routeName);
                       },
                     ),

@@ -30,9 +30,17 @@ const String kInvalidEmailError = "Please Enter Valid Email";
 const String kPassNullError = "Please Enter your password";
 const String kShortPassError = "Password is too short";
 const String kMatchPassError = "Passwords don't match";
+const String mobileNumberError = "Please Enter Your Mobile Number ";
+const String mobileNumberErrorLength = "Please Enter The Valid Number";
+const String dateOfError = "Please Enter Your Date Of Birth ";
+const String usernameError = "Please Enter Your Username";
 const String kNamelNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
+
+//shared pref
+const String loggedKey = 'LoggedIn';
+const String isFirstLogin = 'isFirstLogin';
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

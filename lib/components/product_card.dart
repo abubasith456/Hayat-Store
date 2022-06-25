@@ -9,7 +9,7 @@ import '../size_config.dart';
 class ProductCard extends StatelessWidget {
   const ProductCard({
     Key? key,
-    this.width = 140,
+    this.width = 160,
     this.aspectRetio = 1.02,
     required this.product,
   }) : super(key: key);
@@ -33,7 +33,7 @@ class ProductCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AspectRatio(
-                aspectRatio: 1.02,
+                aspectRatio: 1.00,
                 child: Container(
                   padding: EdgeInsets.all(getProportionateScreenWidth(20)),
                   decoration: BoxDecoration(
@@ -42,7 +42,9 @@ class ProductCard extends StatelessWidget {
                   ),
                   child: Hero(
                     tag: product.id.toString(),
-                    child: Image.asset(product.images[0]),
+                    child: Image.asset(
+                      product.images[0],
+                    ),
                   ),
                 ),
               ),
@@ -56,7 +58,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\$${product.price}",
+                    "\Rs.${product.price}",
                     style: TextStyle(
                       fontSize: getProportionateScreenWidth(18),
                       fontWeight: FontWeight.w600,

@@ -10,6 +10,7 @@ import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
+import 'package:shop_app/util/shared_pref.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../db/db_services.dart';
@@ -31,6 +32,7 @@ class _SignFormState extends State<SignForm> {
   LoginBloc _loginBloc = LoginBloc();
   var _userService = UserService();
   User? user;
+  var sharedPref = SharedPref();
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -63,7 +65,6 @@ class _SignFormState extends State<SignForm> {
                 content: Text(state.error),
               ),
             );
-            context.loaderOverlay.hide();
           } else if (state is LoadingState) {
             print('LoadingState called');
           } else if (state is LoadedState) {
@@ -71,18 +72,14 @@ class _SignFormState extends State<SignForm> {
             print(state.loginModel);
             if (state.loginModel.status == 200) {
               Navigator.pushNamed(context, HomeScreen.routeName);
+              sharedPref.setBoolValue(loggedKey, true);
+              //DB
               var _user = User();
               user!.userId = state.loginModel.userData?.userId;
               user!.email = state.loginModel.userData?.email;
               user!.password = password;
               var result = await _userService.SaveUser(user!);
               Navigator.pop(context, result);
-
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: Text(state.loginModel.message!),
-              //   ),
-              // );
             } else if (state.loginModel.status == 400) {
               showDialog(context, 'Failed', state.loginModel.message!);
               setState(() {
@@ -103,16 +100,16 @@ class _SignFormState extends State<SignForm> {
                 SizedBox(height: getProportionateScreenHeight(30)),
                 Row(
                   children: [
-                    Checkbox(
-                      value: remember,
-                      activeColor: kPrimaryColor,
-                      onChanged: (value) {
-                        setState(() {
-                          remember = value;
-                        });
-                      },
-                    ),
-                    Text("Remember me"),
+                    // Checkbox(
+                    //   value: remember,
+                    //   activeColor: kPrimaryColor,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       remember = value;
+                    //     });
+                    //   },
+                    // ),
+                    // Text("Remember me"),
                     Spacer(),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(

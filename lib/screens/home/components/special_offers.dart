@@ -26,13 +26,13 @@ class SpecialOffers extends StatelessWidget {
           child: Row(
             children: [
               SpecialOfferCard(
-                image: "assets/images/Image Banner 2.png",
+                image: "assets/images/Image_Banner_2.png",
                 category: "Smartphone",
                 numOfBrands: 18,
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/Image Banner 3.png",
+                image: "assets/images/Image_Banner_3.png",
                 category: "Fashion",
                 numOfBrands: 24,
                 press: () {},
@@ -66,15 +66,15 @@ class SpecialOfferCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: SizedBox(
-          width: getProportionateScreenWidth(242),
-          height: getProportionateScreenWidth(100),
+          width: getProportionateScreenWidth(360),
+          height: getProportionateScreenHeight(140),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
                 Image.asset(
                   image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fitHeight,
                 ),
                 Container(
                   decoration: BoxDecoration(

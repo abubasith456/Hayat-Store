@@ -7,12 +7,12 @@ class DefaultButton extends StatelessWidget {
   const DefaultButton({
     Key? key,
     this.text,
-    this.isLoading,
+    required this.isLoading,
     this.press,
   }) : super(key: key);
   final String? text;
   final Function? press;
-  final bool? isLoading;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class DefaultButton extends StatelessWidget {
           backgroundColor: kPrimaryColor,
         ),
         onPressed: press as void Function()?,
-        child: isLoading!
+        child: isLoading
             ? CircularProgressIndicator(
                 color: Colors.white,
               )
