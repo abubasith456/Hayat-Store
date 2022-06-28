@@ -74,6 +74,9 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                           content: Text(state.error),
                         ),
                       );
+                      setState(() {
+                        isLoading = false;
+                      });
                     } else if (state is RegisterLoading) {
                       print('Loading.....');
                     } else if (state is RegisterLoaded) {

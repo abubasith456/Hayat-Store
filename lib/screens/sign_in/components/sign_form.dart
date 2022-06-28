@@ -55,96 +55,97 @@ class _SignFormState extends State<SignForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _loginBloc,
-      child: BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) async {
-          if (state is ErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-              ),
-            );
-          } else if (state is LoadingState) {
-            print('LoadingState called');
-          } else if (state is LoadedState) {
-            print('LoadedState called');
-            print(state.loginModel);
-            if (state.loginModel.status == 200) {
-              Navigator.pushNamed(context, HomeScreen.routeName);
-              sharedPref.setBoolValue(loggedKey, true);
-              //DB
-              var _user = User();
-              user!.userId = state.loginModel.userData?.userId;
-              user!.email = state.loginModel.userData?.email;
-              user!.password = password;
-              var result = await _userService.SaveUser(user!);
-              Navigator.pop(context, result);
-            } else if (state.loginModel.status == 400) {
-              showDialog(context, 'Failed', state.loginModel.message!);
-              setState(() {
-                isLoading = false;
-              });
-            }
-          }
-        },
-        // child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          return Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                buildEmailFormField(),
-                SizedBox(height: getProportionateScreenHeight(30)),
-                buildPasswordFormField(),
-                SizedBox(height: getProportionateScreenHeight(30)),
-                Row(
-                  children: [
-                    // Checkbox(
-                    //   value: remember,
-                    //   activeColor: kPrimaryColor,
-                    //   onChanged: (value) {
-                    //     setState(() {
-                    //       remember = value;
-                    //     });
-                    //   },
-                    // ),
-                    // Text("Remember me"),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, ForgotPasswordScreen.routeName),
-                      child: Text(
-                        "Forgot Password",
-                        style: TextStyle(decoration: TextDecoration.underline),
-                      ),
-                    )
-                  ],
-                ),
-                FormError(errors: errors),
-                SizedBox(height: getProportionateScreenHeight(20)),
-                DefaultButton(
-                  text: "Continue",
-                  isLoading: isLoading,
-                  press: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      setState(() {
-                        isLoading = true;
-                      });
-                      BlocProvider.of<LoginBloc>(context)
-                          .add(LoginUser(email: email!, password: password!));
-
-                      KeyboardUtil.hideKeyboard(context);
-                    }
-                  },
-                ),
-              ],
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (context, state) async {
+        if (state is ErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
             ),
           );
-        },
-        // ),
-      ),
+          setState(() {
+            isLoading = false;
+          });
+        } else if (state is LoadingState) {
+          print('LoadingState called');
+        } else if (state is LoadedState) {
+          print('LoadedState called');
+          print(state.loginModel);
+          if (state.loginModel.status == 200) {
+            Navigator.pushNamed(context, HomeScreen.routeName);
+            sharedPref.setBoolValue(loggedKey, true);
+            //DB
+            var _user = User();
+            user!.userId = state.loginModel.userData?.userId;
+            user!.email = state.loginModel.userData?.email;
+            user!.password = password;
+            var result = await _userService.SaveUser(user!);
+            Navigator.pop(context, result);
+          } else if (state.loginModel.status == 400) {
+            showDialog(context, 'Failed', state.loginModel.message!);
+            setState(() {
+              isLoading = false;
+            });
+          }
+        }
+      },
+      // child: BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              buildEmailFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              buildPasswordFormField(),
+              SizedBox(height: getProportionateScreenHeight(30)),
+              Row(
+                children: [
+                  // Checkbox(
+                  //   value: remember,
+                  //   activeColor: kPrimaryColor,
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       remember = value;
+                  //     });
+                  //   },
+                  // ),
+                  // Text("Remember me"),
+                  Spacer(),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context, ForgotPasswordScreen.routeName),
+                    child: Text(
+                      "Forgot Password",
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
+                  )
+                ],
+              ),
+              FormError(errors: errors),
+              SizedBox(height: getProportionateScreenHeight(20)),
+              DefaultButton(
+                text: "Continue",
+                isLoading: isLoading,
+                press: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    setState(() {
+                      errors.clear();
+                      isLoading = true;
+                    });
+                    BlocProvider.of<LoginBloc>(context)
+                        .add(LoginUser(email: email!, password: password!));
+
+                    KeyboardUtil.hideKeyboard(context);
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+      // ),
     );
   }
 

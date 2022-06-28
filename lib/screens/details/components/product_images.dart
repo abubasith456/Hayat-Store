@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shop_app/models/Product.dart';
 
 import '../../../constants.dart';
+import '../../../models/product_model.dart';
 import '../../../size_config.dart';
 
 class ProductImages extends StatefulWidget {
-  const ProductImages({
+  ProductImages({
     Key? key,
     required this.product,
   }) : super(key: key);
 
-  final Product product;
+  final Products product;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
+}
+
+String baseurl = "https://hidden-waters-80713.herokuapp.com/";
+String formater(String url) {
+  return baseurl + url;
+}
+
+NetworkImage getImage(String imageName) {
+  String url = formater(imageName);
+  return NetworkImage(url);
 }
 
 class _ProductImagesState extends State<ProductImages> {
@@ -27,19 +39,19 @@ class _ProductImagesState extends State<ProductImages> {
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(
-              tag: widget.product.id.toString(),
-              child: Image.asset(widget.product.images[selectedImage]),
+              tag: widget.product.sId.toString(),
+              child: Image(image: getImage(widget.product.productImage!)),
             ),
           ),
         ),
         // SizedBox(height: getProportionateScreenWidth(20)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ...List.generate(widget.product.images.length,
-                (index) => buildSmallProductPreview(index)),
-          ],
-        )
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     ...List.generate(widget.product.productImage!.length,
+        //         (index) => buildSmallProductPreview(index)),
+        //   ],
+        // )
       ],
     );
   }
@@ -63,7 +75,7 @@ class _ProductImagesState extends State<ProductImages> {
           border: Border.all(
               color: kPrimaryColor.withOpacity(selectedImage == index ? 1 : 0)),
         ),
-        child: Image.asset(widget.product.images[index]),
+        child: Image.asset(widget.product.productImage![index]),
       ),
     );
   }

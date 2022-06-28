@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
+import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/routes.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
@@ -54,13 +57,30 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: theme(),
-      // home: SplashScreen(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => LoginBloc(),
+            lazy: true,
+          ),
+          BlocProvider(
+            create: (context) => HomeBloc(),
+            lazy: true,
+          )
+        ],
+        child: existUser
+            ? HomeScreen()
+            : notShowWelcomeScreen
+                ? SignInScreen()
+                : SplashScreen(),
+      ),
+
       // We use routeName so that we dont need to remember the name
-      initialRoute: existUser
-          ? HomeScreen.routeName
-          : notShowWelcomeScreen
-              ? SignInScreen.routeName
-              : SplashScreen.routeName,
+      // initialRoute: existUser
+      //     ? HomeScreen.routeName
+      //     : notShowWelcomeScreen
+      //         ? SignInScreen.routeName
+      //         : SplashScreen.routeName,
       routes: routes,
     );
   }

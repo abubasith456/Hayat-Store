@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/models/product_model.dart';
 
 import '../../models/Product.dart';
 import 'components/body.dart';
@@ -15,7 +16,7 @@ class DetailsScreen extends StatelessWidget {
       backgroundColor: Color(0xFFF5F6F9),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-        child: CustomAppBar(rating: agrs.product.rating),
+        child: CustomAppBar(rating: 1.1),
       ),
       body: Body(product: agrs.product),
     );
@@ -23,7 +24,7 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class ProductDetailsArguments {
-  final Product product;
+  final Products product;
 
   ProductDetailsArguments({required this.product});
 }
