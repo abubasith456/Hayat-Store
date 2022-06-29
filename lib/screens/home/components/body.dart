@@ -17,12 +17,25 @@ class Body extends StatelessWidget {
     return SafeArea(
       child: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
-          if (state is LoadingProductState) {
+          if (state is LoadingHomeState) {
             Center(child: CircularProgressIndicator(color: Colors.black));
-          } else if (state is ProductErrorState) {
+          } else if (state is HomeErrorState) {
+            if (state.ProductError != "") {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.ProductError),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.CategoryError),
+                ),
+              );
+            }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.error),
+                content: Text(state.ProductError),
               ),
             );
           }
@@ -30,23 +43,37 @@ class Body extends StatelessWidget {
         builder: (context, state) {
           if (state is HomeInitial) {
             return shimmerWidget(context);
-          } else if (state is LoadedProductState) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: getProportionateScreenHeight(20)),
-                  HomeHeader(),
-                  SizedBox(height: getProportionateScreenWidth(10)),
-                  DiscountBanner(),
-                  Categories(),
-                  SpecialOffers(),
-                  SizedBox(height: getProportionateScreenWidth(30)),
-                  PopularProducts(
-                    productModel: state.productModel,
+          } else if (state is LoadedHomeState) {
+            return Stack(
+              children: [
+                // Positioned(
+                //   top: 15,
+                //   width: MediaQuery.of(context).size.width,
+                //   child: Center(
+                //     child:
+                //   ),
+                // ),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: getProportionateScreenHeight(10)),
+                      HomeHeader(),
+                      SizedBox(height: getProportionateScreenHeight(20)),
+                      // SizedBox(height: getProportionateScreenWidth(10)),
+                      DiscountBanner(),
+                      Categories(
+                        categoryModel: state.categoryModel,
+                      ),
+                      SpecialOffers(),
+                      SizedBox(height: getProportionateScreenWidth(30)),
+                      PopularProducts(
+                        productModel: state.productModel,
+                      ),
+                      SizedBox(height: getProportionateScreenWidth(30)),
+                    ],
                   ),
-                  SizedBox(height: getProportionateScreenWidth(30)),
-                ],
-              ),
+                )
+              ],
             );
           } else {
             return shimmerWidget(context);

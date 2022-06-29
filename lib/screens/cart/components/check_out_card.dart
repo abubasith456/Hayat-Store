@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/components/default_button.dart';
 
 import '../../../constants.dart';
+import '../../../models/my_db_model.dart';
 import '../../../size_config.dart';
 
 class CheckoutCard extends StatelessWidget {
-  const CheckoutCard({
-    Key? key,
-  }) : super(key: key);
+  List<Cart> cartList;
+  CheckoutCard({Key? key, required this.cartList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

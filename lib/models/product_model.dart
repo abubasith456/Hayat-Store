@@ -32,15 +32,26 @@ class ProductModel {
 class Products {
   String? name;
   int? price;
+  String? description;
+  String? category;
   String? productImage;
   String? sId;
   Request? request;
 
-  Products({this.name, this.price, this.productImage, this.sId, this.request});
+  Products(
+      {this.name,
+      this.price,
+      this.description,
+      this.category,
+      this.productImage,
+      this.sId,
+      this.request});
 
   Products.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     price = json['price'];
+    description = json['description'];
+    category = json['category'];
     productImage = json['productImage'];
     sId = json['_id'];
     request =
@@ -51,6 +62,8 @@ class Products {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['price'] = this.price;
+    data['description'] = this.description;
+    data['category'] = this.category;
     data['productImage'] = this.productImage;
     data['_id'] = this.sId;
     if (this.request != null) {

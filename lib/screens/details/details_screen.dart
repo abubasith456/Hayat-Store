@@ -12,13 +12,16 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProductDetailsArguments agrs =
         ModalRoute.of(context)!.settings.arguments as ProductDetailsArguments;
-    return Scaffold(
-      backgroundColor: Color(0xFFF5F6F9),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(AppBar().preferredSize.height),
-        child: CustomAppBar(rating: 1.1),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Color(0xFFF5F6F9),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(AppBar().preferredSize.height),
+          child: CustomAppBar(rating: 1.1),
+        ),
+        body: Body(product: agrs.product),
       ),
-      body: Body(product: agrs.product),
     );
   }
 }

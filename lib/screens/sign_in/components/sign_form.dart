@@ -30,7 +30,7 @@ class _SignFormState extends State<SignForm> {
   bool isLoading = false;
   final List<String?> errors = [];
   LoginBloc _loginBloc = LoginBloc();
-  var _userService = UserService();
+  // var _userService = UserService();
   User? user;
   var sharedPref = SharedPref();
 
@@ -79,8 +79,8 @@ class _SignFormState extends State<SignForm> {
             user!.userId = state.loginModel.userData?.userId;
             user!.email = state.loginModel.userData?.email;
             user!.password = password;
-            var result = await _userService.SaveUser(user!);
-            Navigator.pop(context, result);
+            // var result = await _userService.SaveUser(user!);
+            // Navigator.pop(context);
           } else if (state.loginModel.status == 400) {
             showDialog(context, 'Failed', state.loginModel.message!);
             setState(() {

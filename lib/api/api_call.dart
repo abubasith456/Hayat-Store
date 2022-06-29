@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/register_model.dart';
 import '../models/login_model.dart';
@@ -52,6 +53,22 @@ class ApiProvider {
     } catch (e) {
       print(e);
       return ProductModel.error(e.toString());
+    }
+  }
+
+  Future getCategory() async {
+    try {
+      var registerUrl = "https://hidden-waters-80713.herokuapp.com/category";
+
+      Response response = await _dio.get(registerUrl);
+      List list = response.data;
+      List<CategoryModel> categoryModelList =
+          list.map((e) => CategoryModel.fromJson(e)).toList();
+
+      return categoryModelList;
+    } catch (e) {
+      print(e);
+      return CategoryModel.error(e.toString());
     }
   }
 }

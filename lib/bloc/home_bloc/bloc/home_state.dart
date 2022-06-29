@@ -9,15 +9,17 @@ abstract class HomeState extends Equatable {
 
 class HomeInitial extends HomeState {}
 
-class LoadingProductState extends HomeState {}
+class LoadingHomeState extends HomeState {}
 
 // ignore: must_be_immutable
-class LoadedProductState extends HomeState {
+class LoadedHomeState extends HomeState {
   ProductModel productModel;
-  LoadedProductState(this.productModel);
+  List<CategoryModel> categoryModel;
+  LoadedHomeState(this.productModel, this.categoryModel);
 }
 
-class ProductErrorState extends HomeState {
-  String error;
-  ProductErrorState(this.error);
+class HomeErrorState extends HomeState {
+  String ProductError;
+  String CategoryError;
+  HomeErrorState(this.ProductError, this.CategoryError);
 }

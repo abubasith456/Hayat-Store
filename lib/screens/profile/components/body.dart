@@ -10,7 +10,7 @@ import 'profile_pic.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var _userService = UserService();
+    // var _userService = UserService();
     var sharedPref = SharedPref();
 
     return SingleChildScrollView(
@@ -43,7 +43,7 @@ class Body extends StatelessWidget {
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
             press: () {
-              _userService.deleteUser(1);
+              // _userService.deleteUser(1);
               sharedPref.setBoolValue(loggedKey, false);
               Navigator.pushNamed(context, SignInScreen.routeName);
             },
