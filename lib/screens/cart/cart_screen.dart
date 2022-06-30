@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/db/database.dart';
 
 import '../../models/my_db_model.dart';
-import '../../size_config.dart';
+import '../../util/size_config.dart';
 import 'components/body.dart';
 import 'components/check_out_card.dart';
 
@@ -11,7 +11,7 @@ class CartScreen extends StatelessWidget {
   late List<Cart>? empty;
   Future<List<Cart>> getAllData() async {
     List<Cart> cartList = await MyDatabase.instance.readAllcart();
-
+    print(cartList.length);
     return cartList;
   }
 
@@ -21,12 +21,15 @@ class CartScreen extends StatelessWidget {
     return FutureBuilder<List<Cart>>(
       future: getAllData(),
       builder: (context, snapshot) {
-        return snapshot.hasData
-            ? Scaffold(
-                appBar: buildAppBar(context, snapshot.data!.length),
-                body: Body(cartList: snapshot.data!),
-                bottomNavigationBar: CheckoutCard(
-                  cartList: snapshot.data!,
+        return snapshot.data != null
+            ? WillPopScope(
+                onWillPop: () async => false,
+                child: Scaffold(
+                  appBar: buildAppBar(context, snapshot.data!.length),
+                  body: Body(cartList: snapshot.data!),
+                  bottomNavigationBar: CheckoutCard(
+                    cartList: snapshot.data!,
+                  ),
                 ),
               )
             : Center(

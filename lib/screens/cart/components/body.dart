@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../db/database.dart';
 import '../../../models/my_db_model.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 import 'cart_card.dart';
 
 class Body extends StatefulWidget {
@@ -29,8 +29,9 @@ class _BodyState extends State<Body> {
             key: Key(widget.cartList[index].id.toString()),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) async {
-              widget.cartList.removeAt(index);
               await MyDatabase.instance.delete(widget.cartList[index].id!);
+              widget.cartList.removeAt(index);
+              print(widget.cartList[index].id!);
             },
             background: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),

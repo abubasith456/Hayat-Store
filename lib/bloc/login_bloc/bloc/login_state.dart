@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 part of 'login_bloc.dart';
 
 abstract class LoginState extends Equatable {
@@ -15,9 +17,16 @@ class LoadedState extends LoginState {
   LoginModel loginModel;
 
   LoadedState(this.loginModel);
+
+  // @override
+  // List<Object> get props => [loginModel];
 }
 
 class ErrorState extends LoginState {
   String error;
+
   ErrorState(this.error);
+
+  // @override
+  // List<Object> get props => [error];
 }

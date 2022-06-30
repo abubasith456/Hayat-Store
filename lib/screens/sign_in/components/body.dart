@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/components/no_account_text.dart';
 import 'package:shop_app/components/socal_card.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 import 'sign_form.dart';
 
 class Body extends StatelessWidget {

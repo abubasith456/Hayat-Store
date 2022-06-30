@@ -12,7 +12,7 @@ import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 
 import '../../../constants.dart';
 import '../../../cubit/cubit/register_cubit.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 
 class SignUpForm extends StatefulWidget {
   @override

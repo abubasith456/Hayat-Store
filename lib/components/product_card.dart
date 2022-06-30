@@ -4,7 +4,7 @@ import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
 
 import '../constants.dart';
-import '../size_config.dart';
+import '../util/size_config.dart';
 
 class ProductCard extends StatelessWidget {
   ProductCard({
@@ -15,7 +15,7 @@ class ProductCard extends StatelessWidget {
   }) : super(key: key);
 
   final double width, aspectRetio;
-  final Products product;
+  final Products? product;
 
   String baseurl = "https://hidden-waters-80713.herokuapp.com/";
   String formater(String url) {
@@ -38,7 +38,7 @@ class ProductCard extends StatelessWidget {
             Navigator.pushNamed(
               context,
               DetailsScreen.routeName,
-              arguments: ProductDetailsArguments(product: product),
+              arguments: ProductDetailsArguments(product: product!),
             ),
           },
           child: Column(
@@ -53,15 +53,16 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Hero(
-                      tag: product.sId!,
+                      tag: product!.sId!,
                       child: Image(
-                        image: getImage(product.productImage!),
+                        image: getImage(product!.productImage!),
+                        fit: BoxFit.cover,
                       )),
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                product.name!,
+                product!.name!,
                 style: TextStyle(color: Colors.black),
                 maxLines: 2,
               ),
@@ -69,7 +70,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\Rs.${product.price}",
+                    "\Rs.${product!.price}",
                     style: TextStyle(
                       fontSize: getProportionateScreenWidth(18),
                       fontWeight: FontWeight.w600,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/size_config.dart';
+import 'package:shop_app/util/size_config.dart';
 
 const kPrimaryColor = Color.fromARGB(255, 67, 177, 255);
 const kPrimaryLightColor = Color(0xFFFFECDF);
@@ -41,6 +41,8 @@ const String kAddressNullError = "Please Enter your address";
 //shared pref
 const String loggedKey = 'LoggedIn';
 const String isFirstLogin = 'isFirstLogin';
+const String emailKey = 'email';
+const String userIdKey = 'userId';
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

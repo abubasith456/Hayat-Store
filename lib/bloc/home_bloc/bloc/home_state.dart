@@ -16,10 +16,17 @@ class LoadedHomeState extends HomeState {
   ProductModel productModel;
   List<CategoryModel> categoryModel;
   LoadedHomeState(this.productModel, this.categoryModel);
+
+  // @override
+  // List<Object> get props => [productModel, categoryModel];
 }
 
+// ignore: must_be_immutable
 class HomeErrorState extends HomeState {
-  String ProductError;
-  String CategoryError;
-  HomeErrorState(this.ProductError, this.CategoryError);
+  String productError;
+  String categoryError;
+  HomeErrorState(this.productError, this.categoryError);
+
+  // @override
+  // List<Object> get props => [productError, categoryError];
 }

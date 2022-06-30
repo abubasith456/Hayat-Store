@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 import 'categories.dart';
 import 'discount_banner.dart';
 import 'home_header.dart';
@@ -20,22 +20,22 @@ class Body extends StatelessWidget {
           if (state is LoadingHomeState) {
             Center(child: CircularProgressIndicator(color: Colors.black));
           } else if (state is HomeErrorState) {
-            if (state.ProductError != "") {
+            if (state.productError != "") {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.ProductError),
+                  content: Text(state.productError),
                 ),
               );
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(state.CategoryError),
+                  content: Text(state.categoryError),
                 ),
               );
             }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.ProductError),
+                content: Text(state.productError),
               ),
             );
           }
@@ -46,33 +46,33 @@ class Body extends StatelessWidget {
           } else if (state is LoadedHomeState) {
             return Stack(
               children: [
-                // Positioned(
-                //   top: 15,
-                //   width: MediaQuery.of(context).size.width,
-                //   child: Center(
-                //     child:
-                //   ),
-                // ),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: getProportionateScreenHeight(10)),
-                      HomeHeader(),
-                      SizedBox(height: getProportionateScreenHeight(20)),
-                      // SizedBox(height: getProportionateScreenWidth(10)),
-                      DiscountBanner(),
-                      Categories(
-                        categoryModel: state.categoryModel,
-                      ),
-                      SpecialOffers(),
-                      SizedBox(height: getProportionateScreenWidth(30)),
-                      PopularProducts(
-                        productModel: state.productModel,
-                      ),
-                      SizedBox(height: getProportionateScreenWidth(30)),
-                    ],
+                Positioned(
+                  top: 5,
+                  child: HomeHeader(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 75),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // HomeHeader(),
+                        SizedBox(height: getProportionateScreenHeight(5)),
+                        // SizedBox(height: getProportionateScreenHeight(20)),
+                        // SizedBox(height: getProportionateScreenWidth(10)),
+                        DiscountBanner(),
+                        Categories(
+                          categoryModel: state.categoryModel,
+                        ),
+                        SpecialOffers(),
+                        SizedBox(height: getProportionateScreenWidth(30)),
+                        PopularProducts(
+                          productModel: state.productModel,
+                        ),
+                        SizedBox(height: getProportionateScreenWidth(30)),
+                      ],
+                    ),
                   ),
-                )
+                ),
               ],
             );
           } else {

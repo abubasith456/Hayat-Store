@@ -4,7 +4,7 @@ import 'package:shop_app/components/default_button.dart';
 
 import '../../../constants.dart';
 import '../../../models/my_db_model.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 
 class CheckoutCard extends StatelessWidget {
   List<Cart> cartList;

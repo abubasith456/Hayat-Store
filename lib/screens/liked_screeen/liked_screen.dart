@@ -9,6 +9,7 @@ class LikedScreeen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(),
         title: Text("Profile"),
       ),
       body: Body(),

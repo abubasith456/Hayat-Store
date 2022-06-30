@@ -7,15 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/form_error.dart';
+import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/helper/keyboard.dart';
+import 'package:shop_app/models/user_db_model.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/util/shared_pref.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../db/db_services.dart';
-import '../../../models/user.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
+import '../../../db/userDB.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -31,7 +33,6 @@ class _SignFormState extends State<SignForm> {
   final List<String?> errors = [];
   LoginBloc _loginBloc = LoginBloc();
   // var _userService = UserService();
-  User? user;
   var sharedPref = SharedPref();
 
   void addError({String? error}) {
@@ -74,13 +75,21 @@ class _SignFormState extends State<SignForm> {
           if (state.loginModel.status == 200) {
             Navigator.pushNamed(context, HomeScreen.routeName);
             sharedPref.setBoolValue(loggedKey, true);
-            //DB
-            var _user = User();
-            user!.userId = state.loginModel.userData?.userId;
-            user!.email = state.loginModel.userData?.email;
-            user!.password = password;
-            // var result = await _userService.SaveUser(user!);
-            // Navigator.pop(context);
+            sharedPref.setStringValue(
+                emailKey, state.loginModel.userData!.email!);
+            sharedPref.setStringValue(
+                userIdKey, state.loginModel.userData!.userId!.toString());
+
+            var user = User(
+                userId: state.loginModel.userData!.userId!.toString(),
+                password: password!,
+                email: state.loginModel.userData!.email!,
+                name: state.loginModel.userData!.username!);
+
+            UserDb.instance.create(user);
+            // BlocProvider.of<LoginBloc>(context)
+            //     .close()
+            //     .then((value) => print('Login page closed'));
           } else if (state.loginModel.status == 400) {
             showDialog(context, 'Failed', state.loginModel.message!);
             setState(() {
@@ -136,7 +145,6 @@ class _SignFormState extends State<SignForm> {
                     });
                     BlocProvider.of<LoginBloc>(context)
                         .add(LoginUser(email: email!, password: password!));
-
                     KeyboardUtil.hideKeyboard(context);
                   }
                 },

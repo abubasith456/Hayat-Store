@@ -9,13 +9,13 @@ import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/db/database.dart';
-import 'package:shop_app/routes.dart';
+import 'package:shop_app/router/routes.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/screens/splash/splash_screen.dart';
-import 'package:shop_app/size_config.dart';
-import 'package:shop_app/theme.dart';
+import 'package:shop_app/util/size_config.dart';
+import 'package:shop_app/util/theme.dart';
 import 'package:shop_app/util/connection_util.dart';
 import 'package:shop_app/util/connectivity_provider.dart';
 
@@ -68,28 +68,28 @@ class _MyAppState extends State<MyApp> {
   late StreamSubscription<ConnectivityResult> _subscription;
   @override
   void initState() {
-    connectivity = new Connectivity();
-    _subscription =
-        connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      _connectionStatus = result.toString();
-      print(_connectionStatus);
-      if (result == ConnectivityResult.none) {
-        setState(() {
-          isConnected = false;
-        });
-      } else {
-        setState(() {
-          isConnected = true;
-        });
-      }
-    });
+    // connectivity = new Connectivity();
+    // _subscription =
+    //     connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+    //   _connectionStatus = result.toString();
+    //   print(_connectionStatus);
+    //   if (result == ConnectivityResult.none) {
+    //     setState(() {
+    //       isConnected = false;
+    //     });
+    //   } else {
+    //     setState(() {
+    //       isConnected = true;
+    //     });
+    //   }
+    // });
     super.initState();
   }
 
   @override
   void dispose() {
     // MyDatabase.instance.close();
-    _subscription.cancel();
+    // _subscription.cancel();
     super.dispose();
   }
 
@@ -100,30 +100,18 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: theme(),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => LoginBloc(),
-            lazy: true,
-          ),
-          BlocProvider(
-            create: (context) => HomeBloc(),
-            lazy: true,
-          )
-        ],
-        child: widget.existUser
-            ? HomeScreen()
-            : widget.notShowWelcomeScreen
-                ? SignInScreen()
-                : SplashScreen(),
-      ),
+      // home: widget.existUser
+      //     ? HomeScreen()
+      //     : widget.notShowWelcomeScreen
+      //         ? SignInScreen()
+      //         : SplashScreen(),
 
       // We use routeName so that we dont need to remember the name
-      // initialRoute: existUser
-      //     ? HomeScreen.routeName
-      //     : notShowWelcomeScreen
-      //         ? SignInScreen.routeName
-      //         : SplashScreen.routeName,
+      initialRoute: widget.existUser
+          ? HomeScreen.routeName
+          : widget.notShowWelcomeScreen
+              ? SignInScreen.routeName
+              : SplashScreen.routeName,
       routes: routes,
     );
   }

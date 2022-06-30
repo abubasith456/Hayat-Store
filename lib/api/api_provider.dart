@@ -6,11 +6,13 @@ import 'package:http/http.dart' as http;
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/register_model.dart';
+import 'package:shop_app/models/user_profile_model.dart';
 import '../models/login_model.dart';
 import 'package:flutter/material.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();
+  final url = "https://hidden-waters-80713.herokuapp.com";
 
   Future<LoginModel> loginUser(String email, String password) async {
     try {
@@ -69,6 +71,23 @@ class ApiProvider {
     } catch (e) {
       print(e);
       return CategoryModel.error(e.toString());
+    }
+  }
+
+  Future<UserProfileModel> getUserProfile(String userId) async {
+    try {
+      var profileDta = "https://hidden-waters-80713.herokuapp.com/profile";
+
+      Map<String, String> mapValue = {
+        'userId': userId,
+      };
+
+      Response response = await _dio.post(profileDta, data: mapValue);
+
+      return UserProfileModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      return UserProfileModel.error(e.toString());
     }
   }
 }

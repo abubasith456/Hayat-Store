@@ -6,10 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/models/category_model.dart';
 
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 
 class Categories extends StatelessWidget {
-  List<CategoryModel> categoryModel;
+  List<CategoryModel>? categoryModel;
 
   Categories({required this.categoryModel});
   @override
@@ -29,13 +29,13 @@ class Categories extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-              categoryModel.length,
+              categoryModel!.length,
               (index) => Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CategoryCard(
-                  icon: categoryModel[index].icon,
-                  text: categoryModel[index].name,
-                  categoryModel: categoryModel[index],
+                  icon: categoryModel![index].icon,
+                  text: categoryModel![index].name,
+                  categoryModel: categoryModel![index],
                   press: () {},
                 ),
               ),
@@ -56,7 +56,7 @@ class CategoryCard extends StatelessWidget {
 
   final String? icon, text;
   final GestureTapCallback press;
-  final CategoryModel categoryModel;
+  final CategoryModel? categoryModel;
 
   IconData getIcon(String name) {
     if (name == "Mobile") {
@@ -91,7 +91,7 @@ class CategoryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Tab(
-                icon: Icon(getIcon(categoryModel.icon!)),
+                icon: Icon(getIcon(categoryModel!.icon!)),
               ),
             ),
             SizedBox(height: 5),

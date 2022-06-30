@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/db/db_services.dart';
+import 'package:shop_app/screens/user_profile/user_profile_screen.dart';
 import 'package:shop_app/util/shared_pref.dart';
 
 import '../../../constants.dart';
@@ -13,16 +17,23 @@ class Body extends StatelessWidget {
     // var _userService = UserService();
     var sharedPref = SharedPref();
 
+    Future getUser() async {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.get(userIdKey);
+    }
+
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         children: [
-          ProfilePic(),
+          // ProfilePic(),
           SizedBox(height: 20),
           ProfileMenu(
             text: "My Account",
             icon: "assets/icons/User Icon.svg",
-            press: () => {},
+            press: () => {
+              Navigator.pushNamed(context, UserProfileScreen.routeName),
+            },
           ),
           ProfileMenu(
             text: "Notifications",

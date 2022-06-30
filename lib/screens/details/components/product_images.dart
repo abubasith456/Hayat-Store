@@ -4,7 +4,7 @@ import 'package:shop_app/models/Product.dart';
 
 import '../../../constants.dart';
 import '../../../models/product_model.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 
 class ProductImages extends StatefulWidget {
   ProductImages({

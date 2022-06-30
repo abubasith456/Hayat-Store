@@ -10,7 +10,7 @@ import 'package:shop_app/screens/otp/otp_screen.dart';
 
 import '../../../bloc/login_bloc/bloc/login_bloc.dart';
 import '../../../constants.dart';
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 import '../../../util/shared_pref.dart';
 import '../../home/home_screen.dart';
 
@@ -82,6 +82,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                     } else if (state is RegisterLoaded) {
                       if (state.registerModel.status == 200) {
                         sharedPref.setBoolValue(loggedKey, true);
+                        // sharedPref.setStringValue(
+                        //     emailKey, state.registerModel.!.email!);
+                        // sharedPref.setStringValue(emailKey,
+                        //     state.loginModel.userData!.userId!.toString());
                         Navigator.pushNamed(context, HomeScreen.routeName);
                       } else if (state.registerModel.status == 400) {
                         setState(() {

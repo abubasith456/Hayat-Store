@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop_app/api/api_call.dart';
+import 'package:shop_app/api/api_provider.dart';
 import 'package:shop_app/cubit/cubit/register_cubit.dart';
 import 'package:shop_app/models/register_model.dart';
 import 'package:shop_app/models/temp_model.dart';

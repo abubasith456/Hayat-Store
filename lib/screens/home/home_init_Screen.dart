@@ -7,6 +7,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 
+import '../../bloc/login_bloc/bloc/login_bloc.dart';
 import 'components/body.dart';
 
 class HomeScreenInit extends StatefulWidget {
@@ -21,14 +22,29 @@ HomeBloc _homeBloc = HomeBloc();
 class _HomeScreenInitState extends State<HomeScreenInit> {
   @override
   void initState() {
-    context.read<HomeBloc>().add(GetProductListEvent());
+    _homeBloc.add(GetProductListEvent());
     super.initState();
   }
 
   @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
+    _homeBloc.close().then((value) => print('Home state closed'));
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Body(),
-    );
+    return BlocProvider(
+        create: (context) => _homeBloc,
+        lazy: false,
+        child: Scaffold(
+          body: Body(),
+        ));
   }
 }

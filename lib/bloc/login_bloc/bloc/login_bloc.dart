@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/login_model.dart';
 
-import '../../../api/api_call.dart';
+import '../../../api/api_provider.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';

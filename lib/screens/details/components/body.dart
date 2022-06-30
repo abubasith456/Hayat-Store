@@ -4,7 +4,7 @@ import 'package:shop_app/db/database.dart';
 import 'package:shop_app/main.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/models/my_db_model.dart';
-import 'package:shop_app/size_config.dart';
+import 'package:shop_app/util/size_config.dart';
 import '../../../constants.dart';
 import '../../../models/product_model.dart';
 import 'color_dots.dart';

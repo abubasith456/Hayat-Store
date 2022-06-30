@@ -3,11 +3,11 @@ import 'package:shop_app/components/product_card.dart';
 import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/models/product_model.dart';
 
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 import 'section_title.dart';
 
 class PopularProducts extends StatelessWidget {
-  ProductModel productModel;
+  ProductModel? productModel;
 
   PopularProducts({required this.productModel});
 
@@ -26,10 +26,10 @@ class PopularProducts extends StatelessWidget {
           child: Row(
             children: [
               ...List.generate(
-                productModel.count!,
+                productModel!.count!,
                 (index) {
                   if (true)
-                    return ProductCard(product: productModel.products![index]);
+                    return ProductCard(product: productModel!.products![index]);
 
                   return SizedBox
                       .shrink(); // here by default width and height is 0

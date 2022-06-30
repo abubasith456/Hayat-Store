@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../size_config.dart';
+import '../../../util/size_config.dart';
 import 'section_title.dart';
 
 class SpecialOffers extends StatelessWidget {
@@ -74,13 +74,12 @@ class SpecialOfferCard extends StatelessWidget {
               children: [
                 Image.asset(
                   image,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                 ),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                      // begin: Align/
                       colors: [
                         Color(0xFF343434).withOpacity(0.4),
                         Color(0xFF343434).withOpacity(0.15),

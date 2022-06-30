@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
-import 'package:shop_app/enums.dart';
+import 'package:shop_app/util/enums.dart';
 import 'package:shop_app/screens/liked_screeen/liked_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 
 import '../../constants.dart';
-import '../../size_config.dart';
+import '../../util/size_config.dart';
 import 'components/body.dart';
 import 'home_init_Screen.dart';
 
@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: pages[currentIndex],
+        body: IndexedStack(children: pages, index: currentIndex),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: currentIndex,
           unselectedItemColor: inActiveIconColor,
