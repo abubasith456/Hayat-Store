@@ -13,6 +13,7 @@ class CartFields {
   static final String categoryId = 'categoryId';
   static final String productImage = 'productImage';
   static final String productId = 'productId';
+  static final String quantity = 'quantitiy';
 }
 
 class Cart {
@@ -23,6 +24,7 @@ class Cart {
   final String categoryId;
   final String productImage;
   final String productId;
+  final String quantity;
 
   const Cart({
     this.id,
@@ -32,6 +34,7 @@ class Cart {
     required this.categoryId,
     required this.productImage,
     required this.productId,
+    required this.quantity,
   });
 
   Cart copy({
@@ -42,6 +45,7 @@ class Cart {
     String? categoryId,
     String? productImage,
     String? productId,
+    String? quantity,
   }) =>
       Cart(
           id: id ?? this.id,
@@ -50,7 +54,8 @@ class Cart {
           description: description ?? this.description,
           categoryId: categoryId ?? this.categoryId,
           productImage: productImage ?? this.productImage,
-          productId: productId ?? this.productId);
+          productId: productId ?? this.productId,
+          quantity: quantity ?? this.quantity);
 
   static Cart fromJson(Map<String, Object?> json) => Cart(
       id: json[CartFields.id] as int?,
@@ -59,7 +64,8 @@ class Cart {
       description: json[CartFields.description] as String,
       categoryId: json[CartFields.categoryId] as String,
       productImage: json[CartFields.productImage] as String,
-      productId: json[CartFields.productId] as String);
+      productId: json[CartFields.productId] as String,
+      quantity: json[CartFields.quantity] as String);
 
   Map<String, Object?> toJson() => {
         CartFields.id: id,
@@ -69,5 +75,6 @@ class Cart {
         CartFields.categoryId: categoryId,
         CartFields.productImage: productImage,
         CartFields.productId: productId,
+        CartFields.quantity: quantity,
       };
 }

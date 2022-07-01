@@ -34,8 +34,9 @@ class _ProductImagesState extends State<ProductImages> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: getProportionateScreenWidth(238),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 300,
           child: AspectRatio(
             aspectRatio: 1,
             child: Hero(

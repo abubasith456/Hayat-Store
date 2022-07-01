@@ -9,6 +9,7 @@ import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/db/database.dart';
+import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/router/routes.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
@@ -27,6 +28,13 @@ void main() async {
   bool isLogged;
   bool isNotShowWelcome;
   final prefs = await SharedPreferences.getInstance();
+  await UserDb.instance.readAllcart().then((value) {
+    if (value.isEmpty) {
+      print("Database value Logged user is null");
+    } else {
+      print("Database value Logged user is " + value[0].id.toString());
+    }
+  });
   bool? tempLogging = prefs.get(loggedKey) as bool?;
   bool? tempFirstLog = prefs.get(isFirstLogin) as bool?;
   if (tempLogging == null) {

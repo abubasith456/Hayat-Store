@@ -17,8 +17,8 @@ class LoadedHomeState extends HomeState {
   List<CategoryModel> categoryModel;
   LoadedHomeState(this.productModel, this.categoryModel);
 
-  // @override
-  // List<Object> get props => [productModel, categoryModel];
+  @override
+  List<Object> get props => [productModel, categoryModel];
 }
 
 // ignore: must_be_immutable

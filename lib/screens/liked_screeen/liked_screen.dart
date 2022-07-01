@@ -12,7 +12,7 @@ class LikedScreeen extends StatelessWidget {
         leading: Container(),
         title: Text("Profile"),
       ),
-      body: Body(),
+      body: Container(),
       // bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
     );
   }

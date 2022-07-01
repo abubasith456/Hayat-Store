@@ -16,7 +16,7 @@ class MyDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('MyDb.db');
+    _database = await _initDB('CartDb.db');
     return _database!;
   }
 
@@ -24,7 +24,7 @@ class MyDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 2, onCreate: _createDB);
+    return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
   Future _createDB(Database db, int version) async {
@@ -44,7 +44,8 @@ CREATE TABLE $CartData (
   ${CartFields.description} $textType,
   ${CartFields.categoryId} $textType,
   ${CartFields.productImage} $textType,
-   ${CartFields.productId} $textType
+   ${CartFields.productId} $textType,
+    ${CartFields.quantity} $textType
   )
 ''');
   }

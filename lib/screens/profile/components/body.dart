@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/db/db_services.dart';
+import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/screens/user_profile/user_profile_screen.dart';
 import 'package:shop_app/util/shared_pref.dart';
 
@@ -53,10 +54,11 @@ class Body extends StatelessWidget {
           ProfileMenu(
             text: "Log Out",
             icon: "assets/icons/Log out.svg",
-            press: () {
+            press: () async {
               // _userService.deleteUser(1);
               sharedPref.setBoolValue(loggedKey, false);
               Navigator.pushNamed(context, SignInScreen.routeName);
+              await UserDb.instance.delete(1);
             },
           ),
         ],

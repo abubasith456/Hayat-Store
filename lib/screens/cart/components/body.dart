@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import '../../../db/database.dart';
 import '../../../models/my_db_model.dart';
 import '../../../util/size_config.dart';
@@ -17,6 +19,21 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   @override
+  void initState() {
+    super.initState();
+    double totalPrice = 0;
+    context.read<YourCartScreenCubit>().getCartData();
+    // context
+    //     .read<YourCartScreenCubit>()
+    //     .currentItemCount(widget.cartList.length);
+    // widget.cartList.forEach((element) {
+    //   totalPrice +=
+    //       double.parse(element.price) * double.parse(element.quantity);
+    // });
+    // context.read<YourCartScreenCubit>().totalAmountCount(totalPrice);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding:
@@ -29,9 +46,23 @@ class _BodyState extends State<Body> {
             key: Key(widget.cartList[index].id.toString()),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) async {
-              await MyDatabase.instance.delete(widget.cartList[index].id!);
+              //Remove from DB
+              context
+                  .read<YourCartScreenCubit>()
+                  .deleteCart(widget.cartList[index].id!);
+              // await MyDatabase.instance.delete(widget.cartList[index].id!);
               widget.cartList.removeAt(index);
               print(widget.cartList[index].id!);
+
+              double totalPrice = 0;
+              //Remove from state
+              // context.read<YourCartScreenCubit>().currentItemcountDecrease(
+              //     context.read<YourCartScreenCubit>().state.item);
+              // widget.cartList.forEach((element) {
+              //   totalPrice += double.parse(element.price) *
+              //       double.parse(element.quantity);
+              // });
+              // context.read<YourCartScreenCubit>().totalAmountCount(totalPrice);
             },
             background: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),

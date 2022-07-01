@@ -6,6 +6,7 @@ import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/cubit/cubit/register_cubit.dart';
+import 'package:shop_app/models/user_db_model.dart';
 import 'package:shop_app/screens/otp/otp_screen.dart';
 
 import '../../../bloc/login_bloc/bloc/login_bloc.dart';
@@ -82,10 +83,11 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                     } else if (state is RegisterLoaded) {
                       if (state.registerModel.status == 200) {
                         sharedPref.setBoolValue(loggedKey, true);
-                        // sharedPref.setStringValue(
-                        //     emailKey, state.registerModel.!.email!);
-                        // sharedPref.setStringValue(emailKey,
-                        //     state.loginModel.userData!.userId!.toString());
+//  var user = User(
+//                 userId: state.registerModel.userData!.userId!.toString(),
+//                 password: password!,
+//                 email: state.loginModel.userData!.email!,
+//                 name: state.loginModel.userData!.username!);
                         Navigator.pushNamed(context, HomeScreen.routeName);
                       } else if (state.registerModel.status == 400) {
                         setState(() {
