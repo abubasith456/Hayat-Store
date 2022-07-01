@@ -8,3 +8,5 @@ abstract class HomeEvent extends Equatable {
 }
 
 class GetProductListEvent extends HomeEvent {}
+
+class LoadImageEvent extends HomeEvent {}

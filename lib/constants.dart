@@ -44,6 +44,9 @@ const String isFirstLogin = 'isFirstLogin';
 const String emailKey = 'email';
 const String userIdKey = 'userId';
 
+//Url
+const String imageLoadUrl = 'https://hidden-waters-80713.herokuapp.com/';
+
 final otpInputDecoration = InputDecoration(
   contentPadding:
       EdgeInsets.symmetric(vertical: getProportionateScreenWidth(15)),

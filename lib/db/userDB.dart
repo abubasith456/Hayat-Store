@@ -56,7 +56,7 @@ CREATE TABLE $UserData (
     //     .rawInsert('INSERT INTO table_name ($columns) VALUES ($values)');
 
     final id = await db.insert(UserData, user.toJson());
-    print("Cart added User");
+    print("User added into Db");
     return user.copy(id: id);
   }
 

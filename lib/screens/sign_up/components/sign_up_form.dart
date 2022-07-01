@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,12 +8,16 @@ import 'package:shop_app/bloc/register_bloc/register_bloc.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
+import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/models/temp_model.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 
 import '../../../constants.dart';
 import '../../../cubit/cubit/register_cubit.dart';
+import '../../../models/user_db_model.dart';
+import '../../../util/shared_pref.dart';
 import '../../../util/size_config.dart';
+import '../../home/home_screen.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -26,11 +31,17 @@ class _SignUpFormState extends State<SignUpForm> {
   String? password;
   String? conform_password;
   String? mobileNumber;
+  String? username;
+  // String? lastName;
+  String? phoneNumber;
+  String? address;
   String? dateOfBirth;
   bool remember = false;
   var emailConroller = TextEditingController();
   var passwordController = TextEditingController();
   var cnfrmPassController = TextEditingController();
+  var sharedPref = SharedPref();
+  bool isLoading = false;
 
   final List<String?> errors = [];
 
@@ -82,25 +93,104 @@ class _SignUpFormState extends State<SignUpForm> {
                 buildPasswordFormField(),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 buildConformPassFormField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildUserNameFormField(),
+                SizedBox(height: getProportionateScreenHeight(30)),
+                // buildLastNameFormField(),
+                // SizedBox(height: getProportionateScreenHeight(30)),
+                buildPhoneNumberFormField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildDateOfBirthFormField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildAddressFormField(),
                 FormError(errors: errors),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                DefaultButton(
-                  text: "Continue",
-                  isLoading: false,
-                  press: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      // if all are valid then go to success screen
-                      setValue('email', email!);
-                      setValue('password', password!);
-                      setValue('cnfrmPassword', conform_password!);
-
-                      clearField();
-                      Navigator.pushNamed(
-                          context, CompleteProfileScreen.routeName);
+                BlocConsumer<RegisterBloc, RegisterState>(
+                  listener: (context, state) async {
+                    if (state is RegsiterError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error),
+                        ),
+                      );
+                      setState(() {
+                        isLoading = false;
+                      });
+                    } else if (state is RegisterLoading) {
+                      print('Loading.....');
+                    } else if (state is RegisterLoaded) {
+                      if (state.registerModel.status == 200) {
+                        //For loogged state
+                        sharedPref.setBoolValue(loggedKey, true);
+                        //Store local DB
+                        var user = User(
+                            userId: state.registerModel.userData!.userId!
+                                .toString(),
+                            password: password!,
+                            email: email!,
+                            name: username!);
+                        UserDb.instance.create(user);
+                        //Home naviogator
+                        Navigator.pushNamed(context, HomeScreen.routeName);
+                      } else if (state.registerModel.status == 400) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        showDialog(
+                            context, 'Failed', state.registerModel.message!);
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    } else if (state is RegsiterError) {
+                      setState(() {
+                        isLoading = false;
+                      });
                     }
                   },
+                  builder: (context, state) {
+                    return DefaultButton(
+                      text: "Register",
+                      isLoading: isLoading,
+                      press: () {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            isLoading = true;
+                            errors.clear();
+                          });
+
+                          //Bloc called
+                          String username = this.username!;
+                          BlocProvider.of<RegisterBloc>(context).add(
+                              RegisterButtonPressed(
+                                  email: email!,
+                                  password: passwordController.text,
+                                  cnfrmPassword: cnfrmPassController.text,
+                                  username: username,
+                                  dateOfBirth: dateOfBirth!,
+                                  mobileNumber: phoneNumber!));
+                        }
+                      },
+                    );
+                  },
                 ),
+                // DefaultButton(
+                //   text: "Continue",
+                //   isLoading: false,
+                //   press: () {
+                //     if (_formKey.currentState!.validate()) {
+                //       _formKey.currentState!.save();
+                //       // if all are valid then go to success screen
+                //       setValue('email', email!);
+                //       setValue('password', password!);
+                //       setValue('cnfrmPassword', conform_password!);
+
+                //       clearField();
+                //       Navigator.pushNamed(
+                //           context, CompleteProfileScreen.routeName);
+                //     }
+                //   },
+                // ),
               ],
             ),
           );
@@ -176,8 +266,8 @@ class _SignUpFormState extends State<SignUpForm> {
           return "";
         } else {
           conform_password = value;
+          return null;
         }
-        return null;
       },
       decoration: InputDecoration(
         labelText: "Confirm Password",
@@ -212,8 +302,8 @@ class _SignUpFormState extends State<SignUpForm> {
           return "";
         } else {
           password = value;
+          return null;
         }
-        return null;
       },
       decoration: InputDecoration(
         labelText: "Password",
@@ -259,6 +349,153 @@ class _SignUpFormState extends State<SignUpForm> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
       ),
+    );
+  }
+
+  TextFormField buildAddressFormField() {
+    return TextFormField(
+      onSaved: (newValue) => address = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kAddressNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kAddressNullError);
+          return "";
+        } else {
+          address = value;
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Address",
+        hintText: "Enter your phone address",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon:
+            CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildPhoneNumberFormField() {
+    return TextFormField(
+      keyboardType: TextInputType.phone,
+      onSaved: (newValue) => phoneNumber = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kPhoneNumberNullError);
+        } else if (value.isNotEmpty && phoneNumber?.length.toInt() == 10) {
+          removeError(error: mobileNumberErrorLength);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: kPhoneNumberNullError);
+          return "";
+        } else if (value.isEmpty && phoneNumber?.length.toInt() != 10) {
+          addError(error: mobileNumberErrorLength);
+        } else {
+          phoneNumber = value;
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Phone Number",
+        hintText: "Enter your phone number",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+      ),
+    );
+  }
+
+  TextFormField buildDateOfBirthFormField() {
+    return TextFormField(
+      onSaved: (newValue) => dateOfBirth = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: dateOfError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: dateOfError);
+          return "";
+        } else {
+          dateOfBirth = value;
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Date Of Birth",
+        hintText: "Enter Your Date Of Birth",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/calendar.svg"),
+      ),
+    );
+  }
+
+  // TextFormField buildLastNameFormField() {
+  //   return TextFormField(
+  //     onSaved: (newValue) => lastName = newValue,
+  //     decoration: InputDecoration(
+  //       labelText: "Last Name",
+  //       hintText: "Enter your last name (optional)",
+  //       // If  you are using latest version of flutter then lable text and hint text shown like this
+  //       // if you r using flutter less then 1.20.* then maybe this is not working properly
+  //       floatingLabelBehavior: FloatingLabelBehavior.always,
+  //       suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+  //     ),
+  //   );
+  // }
+
+  TextFormField buildUserNameFormField() {
+    return TextFormField(
+      onSaved: (newValue) => username = newValue,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: usernameError);
+        }
+        username = value;
+        return null;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: usernameError);
+          return "";
+        } else {
+          username = value;
+        }
+
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "User Name",
+        hintText: "Enter your username",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+      ),
+    );
+  }
+
+  Future<OkCancelResult> showDialog(
+      BuildContext context, String title, String message) {
+    return showOkAlertDialog(
+      context: context,
+      title: title,
+      message: message,
     );
   }
 }

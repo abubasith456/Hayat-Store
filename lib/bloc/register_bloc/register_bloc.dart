@@ -25,21 +25,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           // String dateOfBirth = context.read<RegisterCubit>().state.dateOfBirth;
           // String mobileNumber =
           //     context.read<RegisterCubit>().state.mobilenumber;
-          final prefs = await SharedPreferences.getInstance();
-          var email = prefs.get('email');
-          var password = prefs.get('password');
-          var cnfrmPass = prefs.get('cnfrmPassword');
-
           // String password = context.read<RegisterCubit>().state.password;
           // String cnfrmPass = context.read<RegisterCubit>().state.cnfrmPassword;
 
           Map<String, dynamic> mapRegister = {
-            "email": email,
+            "email": event.email,
             "username": event.username,
             "dateOfBirth": event.dateOfBirth,
             "mobileNumber": event.mobileNumber,
-            "password": password,
-            "passwordConf": cnfrmPass,
+            "password": event.password,
+            "passwordConf": event.cnfrmPassword,
           };
 
           print(mapRegister);

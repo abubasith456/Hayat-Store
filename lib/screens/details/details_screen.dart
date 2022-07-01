@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc/details_bloc/bloc/details_screen_bloc.dart';
 
 import 'package:shop_app/models/product_model.dart';
-
+import 'package:shop_app/models/vegetables_model.dart';
 import '../../cubit/cart_counter/cart_counter_cubit.dart';
 import '../../models/Product.dart';
 import 'components/body.dart';
@@ -16,6 +16,7 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProductDetailsArguments agrs =
         ModalRoute.of(context)!.settings.arguments as ProductDetailsArguments;
+
     return BlocProvider(
       create: (context) => CartCounterCubit(),
       child: WillPopScope(

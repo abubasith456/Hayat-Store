@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
+import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
 import 'package:shop_app/util/enums.dart';
 import 'package:shop_app/screens/liked_screeen/liked_screen.dart';
@@ -29,6 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

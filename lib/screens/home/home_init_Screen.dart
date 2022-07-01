@@ -27,12 +27,6 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
   }
 
   @override
-  void deactivate() {
-    // TODO: implement deactivate
-    super.deactivate();
-  }
-
-  @override
   void dispose() {
     _homeBloc.close().then((value) => print('Home state closed'));
     super.dispose();
@@ -41,10 +35,10 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => _homeBloc,
-        lazy: false,
-        child: Scaffold(
-          body: Body(),
-        ));
+      create: (context) => _homeBloc,
+      child: Scaffold(
+        body: Body(),
+      ),
+    );
   }
 }

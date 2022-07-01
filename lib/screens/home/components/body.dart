@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
+import 'package:shop_app/screens/home/components/section_title.dart';
 
+import '../../../components/product_card.dart';
 import '../../../util/size_config.dart';
 import 'categories.dart';
 import 'discount_banner.dart';
@@ -26,6 +28,8 @@ class Body extends StatelessWidget {
                   content: Text(state.productError),
                 ),
               );
+            } else if (state is LoadedHomeState) {
+              BlocProvider.of<HomeBloc>(context).add(LoadImageEvent());
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -60,13 +64,40 @@ class Body extends StatelessWidget {
                         // SizedBox(height: getProportionateScreenHeight(20)),
                         // SizedBox(height: getProportionateScreenWidth(10)),
                         DiscountBanner(),
-                        Categories(
-                          categoryModel: state.categoryModel,
-                        ),
+                        Categories(),
                         SpecialOffers(),
                         SizedBox(height: getProportionateScreenWidth(30)),
-                        PopularProducts(
-                          productModel: state.productModel,
+                        Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: getProportionateScreenWidth(20)),
+                              child: SectionTitle(
+                                  title: "Our Products", press: () {}),
+                            ),
+                            SizedBox(height: getProportionateScreenWidth(20)),
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  ...List.generate(
+                                    state.productModel.count!,
+                                    (index) {
+                                      if (true)
+                                        return ProductCard(
+                                            product: state
+                                                .productModel.products![index]);
+
+                                      return SizedBox
+                                          .shrink(); // here by default width and height is 0
+                                    },
+                                  ),
+                                  SizedBox(
+                                      width: getProportionateScreenWidth(20)),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                         SizedBox(height: getProportionateScreenWidth(30)),
                       ],

@@ -7,18 +7,16 @@ import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/models/category_model.dart';
 
 import '../../../util/size_config.dart';
+import '../../vegetables/vegetable_screen.dart';
 
 class Categories extends StatelessWidget {
-  List<CategoryModel>? categoryModel;
-
-  Categories({required this.categoryModel});
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> categories = [
-      {"icon": "assets/icons/Flash Icon.svg", "text": "Flash Deal"},
-      {"icon": "assets/icons/Bill Icon.svg", "text": "Bill"},
-      {"icon": "assets/icons/Game Icon.svg", "text": "Game"},
-      {"icon": "assets/icons/Gift Icon.svg", "text": "Daily Gift"},
+      {"icon": "assets/icons/vegetablesIcon.svg", "text": "Vegetables"},
+      {"icon": "assets/icons/groceryIcon.svg", "text": "Grocery"},
+      {"icon": "assets/icons/drinksIcon.svg", "text": "Drinks"},
+      {"icon": "assets/icons/fruitsIcon.svg", "text": "Fruits"},
       {"icon": "assets/icons/Discover.svg", "text": "More"},
     ];
     return Container(
@@ -29,14 +27,22 @@ class Categories extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-              categoryModel!.length,
+              categories.length,
               (index) => Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CategoryCard(
-                  icon: categoryModel![index].icon,
-                  text: categoryModel![index].name,
-                  categoryModel: categoryModel![index],
-                  press: () {},
+                  icon: categories[index]['icon'],
+                  text: categories[index]['text'],
+                  // categoryModel: categoryModel![index],
+                  press: () {
+                    if (index == 0) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VegetableScreen(),
+                          ));
+                    }
+                  },
                 ),
               ),
             ),
@@ -46,33 +52,17 @@ class Categories extends StatelessWidget {
 }
 
 class CategoryCard extends StatelessWidget {
-  const CategoryCard(
-      {Key? key,
-      required this.icon,
-      required this.text,
-      required this.press,
-      required this.categoryModel})
-      : super(key: key);
+  const CategoryCard({
+    Key? key,
+    required this.icon,
+    required this.text,
+    required this.press,
+    // required this.categoryModel
+  }) : super(key: key);
 
   final String? icon, text;
-  final GestureTapCallback press;
-  final CategoryModel? categoryModel;
-
-  IconData getIcon(String name) {
-    if (name == "Mobile") {
-      return Icons.send_to_mobile_rounded;
-    } else if (name == "Vegetables") {
-      return Icons.forest_sharp;
-    } else if (name == "Fruites") {
-      return Icons.flatware_outlined;
-    } else if (name == "Juice") {
-      return Icons.coffee;
-    } else if (name == "Grocery") {
-      return Icons.shop;
-    } else {
-      return Icons.shop;
-    }
-  }
+  final VoidCallback press;
+  // final CategoryModel? categoryModel;
 
   @override
   Widget build(BuildContext context) {
@@ -83,17 +73,14 @@ class CategoryCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(getProportionateScreenWidth(15)),
-              height: getProportionateScreenWidth(55),
-              width: getProportionateScreenWidth(55),
-              decoration: BoxDecoration(
-                color: Color(0xFFFFECDF),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Tab(
-                icon: Icon(getIcon(categoryModel!.icon!)),
-              ),
-            ),
+                padding: EdgeInsets.all(getProportionateScreenWidth(15)),
+                height: getProportionateScreenWidth(55),
+                width: getProportionateScreenWidth(55),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFECDF),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: SvgPicture.asset(icon!)),
             SizedBox(height: 5),
             Text(text!, textAlign: TextAlign.center)
           ],

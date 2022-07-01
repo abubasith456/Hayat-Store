@@ -7,6 +7,7 @@ import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/register_model.dart';
 import 'package:shop_app/models/user_profile_model.dart';
+import 'package:shop_app/models/vegetables_model.dart';
 import '../models/login_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class ApiProvider {
   final Dio _dio = Dio();
   final url = "https://hidden-waters-80713.herokuapp.com";
 
+//Login user
   Future<LoginModel> loginUser(String email, String password) async {
     try {
       var loginUrl = "https://hidden-waters-80713.herokuapp.com/login";
@@ -32,11 +34,18 @@ class ApiProvider {
     }
   }
 
+//Regsiter user
   Future<RegisterModel> registerUser(dynamic registerRequest) async {
     try {
       var registerUrl = "https://hidden-waters-80713.herokuapp.com/register";
 
-      Response response = await _dio.post(registerUrl, data: registerRequest);
+      Response response = await _dio.post(registerUrl,
+          data: registerRequest,
+          options: Options(
+            followRedirects: false,
+            // will not throw errors
+            validateStatus: (status) => true,
+          ));
 
       return RegisterModel.fromJson(response.data);
     } catch (e) {
@@ -45,6 +54,7 @@ class ApiProvider {
     }
   }
 
+//product
   Future<ProductModel> getProduct() async {
     try {
       var registerUrl = "https://hidden-waters-80713.herokuapp.com/products";
@@ -58,6 +68,7 @@ class ApiProvider {
     }
   }
 
+//Category
   Future getCategory() async {
     try {
       var registerUrl = "https://hidden-waters-80713.herokuapp.com/category";
@@ -74,6 +85,7 @@ class ApiProvider {
     }
   }
 
+//Profile
   Future<UserProfileModel> getUserProfile(String userId) async {
     try {
       var profileDta = "https://hidden-waters-80713.herokuapp.com/profile";
@@ -88,6 +100,20 @@ class ApiProvider {
     } catch (e) {
       print(e);
       return UserProfileModel.error(e.toString());
+    }
+  }
+
+  Future<VegetablesModel> getVegetables() async {
+    try {
+      var vegetableResponse =
+          "https://hidden-waters-80713.herokuapp.com/vegetables";
+
+      Response response = await _dio.get(vegetableResponse);
+
+      return VegetablesModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      return VegetablesModel.error(e.toString());
     }
   }
 }
