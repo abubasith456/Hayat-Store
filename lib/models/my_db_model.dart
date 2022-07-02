@@ -3,14 +3,13 @@ final String CartData = 'mycart';
 class CartFields {
   static final List<String> values = [
     /// Add all fields
-    id, name, price, description, categoryId, productImage, productId
+    id, name, price, description, productImage, productId
   ];
 
   static final String id = '_id';
   static final String name = 'name';
   static final String price = 'price';
   static final String description = 'description';
-  static final String categoryId = 'categoryId';
   static final String productImage = 'productImage';
   static final String productId = 'productId';
   static final String quantity = 'quantitiy';
@@ -21,7 +20,6 @@ class Cart {
   final String name;
   final String price;
   final String description;
-  final String categoryId;
   final String productImage;
   final String productId;
   final String quantity;
@@ -31,7 +29,6 @@ class Cart {
     required this.name,
     required this.price,
     required this.description,
-    required this.categoryId,
     required this.productImage,
     required this.productId,
     required this.quantity,
@@ -42,7 +39,6 @@ class Cart {
     String? name,
     String? price,
     String? description,
-    String? categoryId,
     String? productImage,
     String? productId,
     String? quantity,
@@ -52,7 +48,6 @@ class Cart {
           name: name ?? this.name,
           price: price ?? this.price,
           description: description ?? this.description,
-          categoryId: categoryId ?? this.categoryId,
           productImage: productImage ?? this.productImage,
           productId: productId ?? this.productId,
           quantity: quantity ?? this.quantity);
@@ -62,7 +57,6 @@ class Cart {
       name: json[CartFields.name] as String,
       price: json[CartFields.price] as String,
       description: json[CartFields.description] as String,
-      categoryId: json[CartFields.categoryId] as String,
       productImage: json[CartFields.productImage] as String,
       productId: json[CartFields.productId] as String,
       quantity: json[CartFields.quantity] as String);
@@ -72,7 +66,6 @@ class Cart {
         CartFields.name: name,
         CartFields.price: price,
         CartFields.description: description,
-        CartFields.categoryId: categoryId,
         CartFields.productImage: productImage,
         CartFields.productId: productId,
         CartFields.quantity: quantity,

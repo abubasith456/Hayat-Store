@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/vegetables_model.dart';
+import 'package:shop_app/screens/details_screen/details_screen.dart';
 
 import '../../../constants.dart';
 import '../../../models/my_db_model.dart';
@@ -28,11 +29,12 @@ class VegetableCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Navigator.pushNamed(
-        //       context,
-        //       DetailsScreen.routeName,
-        //       arguments: ProductDetailsArguments(product: product!),
-        //     ),
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductDetailsView(
+                      vegetable: vegetable,
+                    )));
       },
       child: Card(
           elevation: 5.0,
@@ -47,11 +49,16 @@ class VegetableCard extends StatelessWidget {
                 subtitle: Text("Rs.${vegetable.price}"),
                 trailing: Icon(Icons.favorite_outline),
               ),
-              SizedBox(
-                height: 130,
-                width: 130,
-                child: Image(
-                  image: getImage(vegetable.vegetableImage!),
+              FittedBox(
+                child: SizedBox(
+                  height: MediaQuery.of(context).orientation ==
+                          Orientation.landscape
+                      ? 80
+                      : 100,
+                  width: 100,
+                  child: Image(
+                    image: getImage(vegetable.vegetableImage!),
+                  ),
                 ),
               )
               // Container(

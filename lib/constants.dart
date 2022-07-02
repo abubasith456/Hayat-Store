@@ -10,6 +10,7 @@ const kPrimaryGradientColor = LinearGradient(
 );
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
+const KAshColor = Color.fromARGB(255, 177, 177, 177);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
@@ -46,6 +47,8 @@ const String userIdKey = 'userId';
 
 //Url
 const String imageLoadUrl = 'https://hidden-waters-80713.herokuapp.com/';
+
+enum TopSnackBarType { success, error, info }
 
 final otpInputDecoration = InputDecoration(
   contentPadding:

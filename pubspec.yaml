@@ -43,6 +43,9 @@ dependencies:
   shimmer: ^2.0.0
   logger: ^1.1.0
   connectivity_plus: ^2.3.5
+  fluttertoast: ^8.0.9
+  animations: ^2.0.3
+  top_snackbar_flutter: ^2.0.0
 
 dev_dependencies:
   flutter_test:

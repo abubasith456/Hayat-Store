@@ -91,7 +91,6 @@ class _BodyState extends State<Body> {
                         name: widget.product.name!,
                         price: widget.product.price!.toString(),
                         description: widget.product.description!,
-                        categoryId: widget.product.category!,
                         productImage: widget.product.productImage!,
                         productId: widget.product.sId!,
                         quantity:
