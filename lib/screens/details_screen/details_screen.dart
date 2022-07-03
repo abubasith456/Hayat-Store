@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -330,6 +331,35 @@ class ProductDetailsView extends StatelessWidget {
           },
           child: Icon(Icons.remove, color: Colors.black),
           backgroundColor: Colors.white),
+    );
+  }
+}
+
+class OpenContainerWrapper extends StatelessWidget {
+  const OpenContainerWrapper({
+    required this.closedBuilder,
+    required this.transitionType,
+    required this.onClosed,
+    required this.vegetable,
+  });
+
+  final CloseContainerBuilder closedBuilder;
+  final ContainerTransitionType transitionType;
+  final ClosedCallback<bool?> onClosed;
+  final VegetableProducts vegetable;
+
+  @override
+  Widget build(BuildContext context) {
+    return OpenContainer<bool>(
+      transitionType: transitionType,
+      openBuilder: (BuildContext context, VoidCallback _) {
+        return ProductDetailsView(
+          vegetable: vegetable,
+        );
+      },
+      onClosed: onClosed,
+      tappable: false,
+      closedBuilder: closedBuilder,
     );
   }
 }

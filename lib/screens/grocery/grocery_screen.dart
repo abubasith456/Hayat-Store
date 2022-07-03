@@ -1,61 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shop_app/bloc/grocery_bloc/bloc/grocery_bloc.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
-import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/connection_lost.dart';
-import 'package:shop_app/screens/vegetables/components/body.dart';
+import 'package:shop_app/screens/grocery/components/body.dart';
 
-import '../../constants.dart';
+import '../../util/custom_snackbar.dart';
 
-class VegetableScreen extends StatefulWidget {
+class GroceryScreen extends StatefulWidget {
+  const GroceryScreen({Key? key}) : super(key: key);
   static String routeName = "/vegetables";
 
   @override
-  State<VegetableScreen> createState() => _VegetableScreenState();
+  State<GroceryScreen> createState() => _GroceryScreenState();
 }
 
-class _VegetableScreenState extends State<VegetableScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _GroceryScreenState extends State<GroceryScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NetworkBloc, NetworkState>(
       builder: (context, state) {
         if (state is ConnectionSuccess) {
           return BlocProvider(
-              create: (context) =>
-                  VegetableScreenBloc()..add(GetVegetablesEvent()),
-              child: Scaffold(
-                  appBar: AppBar(
-                    title: Text('Vegetables',
-                        style: TextStyle(color: Colors.black)),
-                  ),
-                  body: BlocConsumer<VegetableScreenBloc, VegetableScreenState>(
-                    listener: (context, state) {
-                      if (state is VegetableScreenErrorState) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.error),
-                          ),
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is VegetableScreenLoadingState) {
-                        return shimmerWidget(context);
-                      } else if (state is VegetableScreenLoadedState) {
-                        return Body(
-                          vegetable: state.vegetablesModel,
-                        );
-                      } else {
-                        return shimmerWidget(context);
-                      }
-                    },
-                  )));
+            create: (context) => GroceryBloc()..add(GetGroceryListEvent()),
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  'Grocery',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              body: BlocConsumer<GroceryBloc, GroceryState>(
+                listener: (context, state) {
+                  if (state is GroceryErrorState) {
+                    showSnackBar(context, "Something went wrong!...",
+                        TopSnackBarType.error);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is GroceryLoadingState) {
+                    return shimmerWidget(context);
+                  } else if (state is GroceryLoadedState) {
+                    return SafeArea(
+                      child: Body(
+                        groceryItems: state.groceryModel,
+                      ),
+                    );
+                  } else {
+                    return shimmerWidget(context);
+                  }
+                },
+              ),
+            ),
+          );
         } else {
           return ConnectionLostScreen();
         }

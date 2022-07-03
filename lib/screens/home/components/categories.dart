@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
+import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
 import 'package:shop_app/models/category_model.dart';
+import 'package:shop_app/screens/drinks/drinks_screen.dart';
+import 'package:shop_app/screens/grocery/grocery_screen.dart';
 
 import '../../../util/size_config.dart';
 import '../../vegetables/vegetable_screen.dart';
@@ -17,7 +20,7 @@ class Categories extends StatelessWidget {
       {"icon": "assets/icons/groceryIcon.svg", "text": "Grocery"},
       {"icon": "assets/icons/drinksIcon.svg", "text": "Drinks"},
       {"icon": "assets/icons/fruitsIcon.svg", "text": "Fruits"},
-      {"icon": "assets/icons/Discover.svg", "text": "More"},
+      {"icon": "assets/icons/dairy.svg", "text": "Dairy"},
     ];
     return Container(
         padding: EdgeInsets.all(getProportionateScreenWidth(10)),
@@ -40,6 +43,18 @@ class Categories extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => VegetableScreen(),
+                          ));
+                    } else if (index == 1) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GroceryScreen(),
+                          ));
+                    } else if (index == 2) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DrinksScreen(),
                           ));
                     }
                   },
@@ -82,7 +97,11 @@ class CategoryCard extends StatelessWidget {
                 ),
                 child: SvgPicture.asset(icon!)),
             SizedBox(height: 5),
-            Text(text!, textAlign: TextAlign.center)
+            Text(
+              text!,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14),
+            )
           ],
         ),
       ),

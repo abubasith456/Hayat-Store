@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/category_model.dart';
+import 'package:shop_app/models/drinks_model.dart';
+import 'package:shop_app/models/grocery_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/register_model.dart';
 import 'package:shop_app/models/user_profile_model.dart';
@@ -105,15 +107,40 @@ class ApiProvider {
 
   Future<VegetablesModel> getVegetables() async {
     try {
-      var vegetableResponse =
-          "https://hidden-waters-80713.herokuapp.com/vegetables";
+      var VegetableUrl = "https://hidden-waters-80713.herokuapp.com/vegetables";
 
-      Response response = await _dio.get(vegetableResponse);
+      Response response = await _dio.get(VegetableUrl);
 
       return VegetablesModel.fromJson(response.data);
     } catch (e) {
       print(e);
       return VegetablesModel.error(e.toString());
+    }
+  }
+
+  Future<GroceryModel> getGroceryItems() async {
+    try {
+      var groceryUrl = "https://hidden-waters-80713.herokuapp.com/grocery";
+
+      Response response = await _dio.get(groceryUrl);
+
+      return GroceryModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      return GroceryModel.error(e.toString());
+    }
+  }
+
+  Future<DrinksModel> getDrinksItems() async {
+    try {
+      var drinksUrl = "https://hidden-waters-80713.herokuapp.com/drinks";
+
+      Response response = await _dio.get(drinksUrl);
+
+      return DrinksModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      return DrinksModel.error(e.toString());
     }
   }
 }

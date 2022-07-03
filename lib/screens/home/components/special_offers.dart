@@ -66,7 +66,7 @@ class SpecialOfferCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: SizedBox(
-          width: getProportionateScreenWidth(360),
+          width: getProportionateScreenWidth(335),
           height: getProportionateScreenHeight(140),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
@@ -74,7 +74,7 @@ class SpecialOfferCard extends StatelessWidget {
               children: [
                 Image.asset(
                   image,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
                 Container(
                   decoration: BoxDecoration(

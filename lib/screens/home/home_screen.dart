@@ -1,13 +1,18 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
+import 'package:shop_app/screens/connection_lost.dart';
 import 'package:shop_app/util/enums.dart';
 import 'package:shop_app/screens/liked_screeen/liked_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 
+import '../../bloc/network_bloc/bloc/network_bloc.dart';
 import '../../constants.dart';
 import '../../util/size_config.dart';
 import 'components/body.dart';
@@ -23,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final Color inActiveIconColor = Color(0xFFB6B6B6);
   int currentIndex = 0;
+
   var pages = [
     HomeScreenInit(),
     LikedScreeen(),
@@ -32,11 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       currentIndex = index;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override

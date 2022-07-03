@@ -51,16 +51,16 @@ class Body extends StatelessWidget {
             return Stack(
               children: [
                 Positioned(
-                  top: 5,
+                  top: 10,
                   child: HomeHeader(),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 75),
+                  padding: const EdgeInsets.only(top: 70),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         // HomeHeader(),
-                        SizedBox(height: getProportionateScreenHeight(5)),
+                        // SizedBox(height: getProportionateScreenHeight(5)),
                         // SizedBox(height: getProportionateScreenHeight(20)),
                         // SizedBox(height: getProportionateScreenWidth(10)),
                         DiscountBanner(),
@@ -83,13 +83,12 @@ class Body extends StatelessWidget {
                                   ...List.generate(
                                     state.productModel.count!,
                                     (index) {
-                                      if (true)
-                                        return ProductCard(
-                                            product: state
-                                                .productModel.products![index]);
+                                      return ProductCard(
+                                          product: state
+                                              .productModel.products![index]);
 
-                                      return SizedBox
-                                          .shrink(); // here by default width and height is 0
+                                      // return SizedBox
+                                      //     .shrink(); // here by default width and height is 0
                                     },
                                   ),
                                   SizedBox(

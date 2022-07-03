@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
 
@@ -17,13 +19,8 @@ class ProductCard extends StatelessWidget {
   final double width, aspectRetio;
   final Products? product;
 
-  String baseurl = "https://hidden-waters-80713.herokuapp.com/";
-  String formater(String url) {
-    return baseurl + url;
-  }
-
-  NetworkImage getImage(String imageName) {
-    String url = formater(imageName);
+  NetworkImage getImage(String imageurl) {
+    String url = imageLoadUrl + imageurl;
     return NetworkImage(url);
   }
 
@@ -53,11 +50,25 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Hero(
-                      tag: product!.sId!,
-                      child: Image(
-                        image: getImage(product!.productImage!),
-                        fit: BoxFit.cover,
-                      )),
+                    tag: product!.sId!,
+                    child: CachedNetworkImage(
+                      imageUrl: imageLoadUrl + product!.productImage!,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        child: Container(
+                            padding:
+                                EdgeInsets.all(getProportionateScreenWidth(20)),
+                            decoration: BoxDecoration(
+                              color: kSecondaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Container()),
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.image_search_outlined),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),

@@ -1,16 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/constants.dart';
-import 'package:shop_app/models/vegetables_model.dart';
-import 'package:shop_app/screens/vegetables/components/vegetable_card.dart';
-
-import '../../details_screen/details_screen.dart';
+import 'package:shop_app/models/grocery_model.dart';
+import 'package:shop_app/screens/grocery/components/grocery_details.dart';
 
 class Body extends StatelessWidget {
-  Body({required this.vegetable, Key? key}) : super(key: key);
-  VegetablesModel vegetable;
+  Body({required this.groceryItems, Key? key}) : super(key: key);
+  GroceryModel groceryItems;
 
   NetworkImage getImage(String imageName) {
     String url = imageLoadUrl + imageName;
@@ -23,66 +20,68 @@ class Body extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: GridView.builder(
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(15),
-        itemCount: vegetable.count,
+        padding: const EdgeInsets.all(10),
+        itemCount: groceryItems.count,
         itemBuilder: (ctx, i) {
           return GestureDetector(
             onTap: (() {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProductDetailsView(
-                          vegetable: vegetable.products![i])));
+                      builder: (context) => GroceryDetailsView(
+                          groceryProduct: groceryItems.groceryProduct![i])));
             }),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(17),
-              ),
-              elevation: 5,
-              child: Container(
-                height: 290,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                margin: EdgeInsets.all(5),
-                padding: EdgeInsets.all(8),
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: CachedNetworkImage(
-                            imageUrl: imageLoadUrl +
-                                vegetable.products![i].vegetableImage!,
-                            placeholder: (context, url) =>
-                                cacheShimmer(context),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.image_search_outlined),
-                          ),
+            child: Container(
+              height: 500,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(17),
+                ),
+                elevation: 5,
+                child: Container(
+                  height: 400,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  margin: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: CachedNetworkImage(
+                          imageUrl: imageLoadUrl +
+                              groceryItems.groceryProduct![i].groceryImage!,
+                          placeholder: (context, url) => cacheShimmer(context),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.image_search_outlined),
                         ),
-                        Text(
-                          vegetable.products![i].name!,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+
+                        //      Image(
+                        //   image:
+                        //       getImage(vegetable.products![i].vegetableImage!),
+                        // )
+                      ),
+                      Text(
+                        groceryItems.groceryProduct![i].name!,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              'Rs.${vegetable.products![i].price!}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Rs.${groceryItems.groceryProduct![i].price!}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
                             ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -92,7 +91,7 @@ class Body extends StatelessWidget {
           crossAxisCount: 2,
           childAspectRatio: 1.0,
           crossAxisSpacing: 0.0,
-          mainAxisSpacing: 5,
+          mainAxisSpacing: 10,
           mainAxisExtent: 250,
         ),
       ),
@@ -139,7 +138,6 @@ class Body extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(17),
         ),
-        elevation: 5,
         child: Container(
           height: 290,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
