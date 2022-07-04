@@ -1,20 +1,18 @@
 class ProductModel {
   int? count;
-  List<Products>? products;
+  List<Product>? product;
   String? error;
 
-  ProductModel.error(String error) {
-    this.error = error;
-  }
+  ProductModel.error(this.error);
 
-  ProductModel({this.count, this.products});
+  ProductModel({this.count, this.product});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     if (json['products'] != null) {
-      products = <Products>[];
+      product = <Product>[];
       json['products'].forEach((v) {
-        products!.add(new Products.fromJson(v));
+        product!.add(new Product.fromJson(v));
       });
     }
   }
@@ -22,37 +20,37 @@ class ProductModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['count'] = this.count;
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
+    if (this.product != null) {
+      data['products'] = this.product!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Products {
-  String? name;
-  int? price;
-  String? description;
-  String? category;
+class Product {
+  String? productName;
+  int? productPrice;
+  String? productDescription;
   String? productImage;
+  bool? productisLiked;
   String? sId;
   Request? request;
 
-  Products(
-      {this.name,
-      this.price,
-      this.description,
-      this.category,
+  Product(
+      {this.productName,
+      this.productPrice,
+      this.productDescription,
       this.productImage,
+      this.productisLiked,
       this.sId,
       this.request});
 
-  Products.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    price = json['price'];
-    description = json['description'];
-    category = json['category'];
+  Product.fromJson(Map<String, dynamic> json) {
+    productName = json['productName'];
+    productPrice = json['productPrice'];
+    productDescription = json['productDescription'];
     productImage = json['productImage'];
+    productisLiked = json['productisLiked'];
     sId = json['_id'];
     request =
         json['request'] != null ? new Request.fromJson(json['request']) : null;
@@ -60,11 +58,11 @@ class Products {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['price'] = this.price;
-    data['description'] = this.description;
-    data['category'] = this.category;
+    data['productName'] = this.productName;
+    data['productPrice'] = this.productPrice;
+    data['productDescription'] = this.productDescription;
     data['productImage'] = this.productImage;
+    data['productisLiked'] = this.productisLiked;
     data['_id'] = this.sId;
     if (this.request != null) {
       data['request'] = this.request!.toJson();

@@ -5,7 +5,6 @@ import 'package:shop_app/components/default_button.dart';
 
 import 'package:shop_app/db/database.dart';
 import 'package:shop_app/main.dart';
-import 'package:shop_app/models/Product.dart';
 import 'package:shop_app/models/my_db_model.dart';
 import 'package:shop_app/util/size_config.dart';
 import '../../../constants.dart';
@@ -17,7 +16,7 @@ import 'top_rounded_container.dart';
 import 'product_images.dart';
 
 class Body extends StatefulWidget {
-  final Products product;
+  final Product product;
 
   const Body({Key? key, required this.product}) : super(key: key);
 
@@ -88,9 +87,9 @@ class _BodyState extends State<Body> {
                   ),
                   onPressed: () async {
                     final cart = Cart(
-                        name: widget.product.name!,
-                        price: widget.product.price!.toString(),
-                        description: widget.product.description!,
+                        name: widget.product.productName!,
+                        price: widget.product.productPrice!.toString(),
+                        description: widget.product.productDescription!,
                         productImage: widget.product.productImage!,
                         productId: widget.product.sId!,
                         quantity:

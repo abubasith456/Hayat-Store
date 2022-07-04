@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/drinks_model.dart';
+import 'package:shop_app/models/fruit_model.dart';
 import 'package:shop_app/models/grocery_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/register_model.dart';
@@ -59,10 +60,10 @@ class ApiProvider {
 //product
   Future<ProductModel> getProduct() async {
     try {
-      var registerUrl = "https://hidden-waters-80713.herokuapp.com/products";
+      var productUrl = "https://hidden-waters-80713.herokuapp.com/products";
 
-      Response response = await _dio.get(registerUrl);
-
+      Response response = await _dio.get(productUrl);
+      print(response.data);
       return ProductModel.fromJson(response.data);
     } catch (e) {
       print(e);
@@ -70,7 +71,7 @@ class ApiProvider {
     }
   }
 
-//Category
+//Category - no use
   Future getCategory() async {
     try {
       var registerUrl = "https://hidden-waters-80713.herokuapp.com/category";
@@ -105,42 +106,73 @@ class ApiProvider {
     }
   }
 
-  Future<VegetablesModel> getVegetables() async {
+//GetVegetables
+  Future<ProductModel> getVegetables() async {
     try {
       var VegetableUrl = "https://hidden-waters-80713.herokuapp.com/vegetables";
 
       Response response = await _dio.get(VegetableUrl);
 
-      return VegetablesModel.fromJson(response.data);
+      return ProductModel.fromJson(response.data);
     } catch (e) {
       print(e);
-      return VegetablesModel.error(e.toString());
+      return ProductModel.error(e.toString());
     }
   }
 
-  Future<GroceryModel> getGroceryItems() async {
+//Get Grocery
+  Future<ProductModel> getGroceryItems() async {
     try {
       var groceryUrl = "https://hidden-waters-80713.herokuapp.com/grocery";
 
       Response response = await _dio.get(groceryUrl);
 
-      return GroceryModel.fromJson(response.data);
+      return ProductModel.fromJson(response.data);
     } catch (e) {
       print(e);
-      return GroceryModel.error(e.toString());
+      return ProductModel.error(e.toString());
     }
   }
 
-  Future<DrinksModel> getDrinksItems() async {
+//Get Drinks
+  Future<ProductModel> getDrinksItems() async {
     try {
       var drinksUrl = "https://hidden-waters-80713.herokuapp.com/drinks";
 
       Response response = await _dio.get(drinksUrl);
 
-      return DrinksModel.fromJson(response.data);
+      return ProductModel.fromJson(response.data);
     } catch (e) {
       print(e);
-      return DrinksModel.error(e.toString());
+      return ProductModel.error(e.toString());
+    }
+  }
+
+//Get Fruits
+  Future<ProductModel> getFruitsItems() async {
+    try {
+      var fruitsUrl = "https://hidden-waters-80713.herokuapp.com/fruits";
+
+      Response response = await _dio.get(fruitsUrl);
+
+      return ProductModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      return ProductModel.error(e.toString());
+    }
+  }
+
+//Get Dairy
+  Future<ProductModel> getDairyItems() async {
+    try {
+      var dairyUrl = "https://hidden-waters-80713.herokuapp.com/dairy";
+
+      Response response = await _dio.get(dairyUrl);
+
+      return ProductModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      return ProductModel.error(e.toString());
     }
   }
 }

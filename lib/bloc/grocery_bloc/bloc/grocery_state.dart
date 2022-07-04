@@ -12,7 +12,7 @@ class GroceryInitial extends GroceryState {}
 class GroceryLoadingState extends GroceryState {}
 
 class GroceryLoadedState extends GroceryState {
-  GroceryModel groceryModel;
+  ProductModel groceryModel;
   GroceryLoadedState(this.groceryModel);
 
   @override

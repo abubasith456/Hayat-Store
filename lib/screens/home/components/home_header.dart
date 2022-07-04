@@ -39,11 +39,16 @@ class _HomeHeaderState extends State<HomeHeader> {
           SizedBox(
             width: 20,
           ),
-          IconBtnWithCounter(
-            svgSrc: "assets/icons/Cart Icon.svg",
-            press: () {
-              Navigator.pushNamed(context, CartScreen.routeName);
-              context.read<HomeBloc>().close();
+          BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
+            builder: (context, state) {
+              return IconBtnWithCounter(
+                svgSrc: "assets/icons/Cart Icon.svg",
+                press: () {
+                  Navigator.pushNamed(context, CartScreen.routeName);
+                  // context.read<HomeBloc>().close();
+                },
+                numOfitem: state.item,
+              );
             },
           ),
           SizedBox(

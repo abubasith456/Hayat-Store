@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:shop_app/models/Product.dart';
 
 import '../../../constants.dart';
 import '../../../models/product_model.dart';
@@ -12,7 +11,7 @@ class ProductImages extends StatefulWidget {
     required this.product,
   }) : super(key: key);
 
-  final Products product;
+  final Product product;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -39,10 +38,7 @@ class _ProductImagesState extends State<ProductImages> {
           height: 300,
           child: AspectRatio(
             aspectRatio: 1,
-            child: Hero(
-              tag: widget.product.sId.toString(),
-              child: Image(image: getImage(widget.product.productImage!)),
-            ),
+            child: Image(image: getImage(widget.product.productImage!)),
           ),
         ),
         // SizedBox(height: getProportionateScreenWidth(20)),

@@ -10,57 +10,34 @@ import 'components/check_out_card.dart';
 
 class CartScreen extends StatelessWidget {
   static String routeName = "/cart";
-  late List<Cart>? empty;
+  late List<Cart>? cartList;
 
-  Future<List<Cart>> getAllData() async {
-    List<Cart> cartList = await MyDatabase.instance.readAllcart();
-    print(cartList.length);
-    return cartList;
-  }
+  // Future<List<Cart>> getAllData() async {
+  //   List<Cart> cartList = await MyDatabase.instance.readAllcart();
+  //   print(cartList.length);
+  //   return cartList;
+  // }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return BlocProvider(
-      create: (context) => YourCartScreenCubit(),
-      child: BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
-        builder: (context, state) {
-          return state.cartList != null
-              ? WillPopScope(
-                  onWillPop: () async => false,
-                  child: Scaffold(
-                    appBar: buildAppBar(context, state.cartList.length),
-                    body: Body(cartList: state.cartList),
-                    bottomNavigationBar: CheckoutCard(
-                      cartList: state.cartList,
-                    ),
+    return BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
+      builder: (context, state) {
+        return state.cartList != null
+            ? WillPopScope(
+                onWillPop: () async => false,
+                child: Scaffold(
+                  appBar: buildAppBar(context, state.cartList.length),
+                  body: Body(cartList: state.cartList),
+                  bottomNavigationBar: CheckoutCard(
+                    cartList: state.cartList,
                   ),
-                )
-              : Center(
-                  child: CircularProgressIndicator(),
-                );
-
-          // return FutureBuilder<List<Cart>>(
-          //   future: getAllData(),
-          //   builder: (context, snapshot) {
-          //     return snapshot.data != null
-          //         ? WillPopScope(
-          //             onWillPop: () async => false,
-          //             child: Scaffold(
-          //               appBar: buildAppBar(context, snapshot.data!.length),
-          //               body: Body(cartList: snapshot.data!),
-          //               bottomNavigationBar: CheckoutCard(
-          //                 cartList: snapshot.data!,
-          //               ),
-          //             ),
-          //           )
-          //         : Center(
-          //             child: CircularProgressIndicator(),
-          //           );
-          //   },
-          // );
-        },
-      ),
+                ),
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              );
+      },
     );
   }
 

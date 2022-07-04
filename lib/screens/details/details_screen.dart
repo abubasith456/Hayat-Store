@@ -1,14 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc/details_bloc/bloc/details_screen_bloc.dart';
-
+import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/vegetables_model.dart';
 import 'package:shop_app/util/custom_snackbar.dart';
 import '../../constants.dart';
 import '../../cubit/cart_counter/cart_counter_cubit.dart';
 import '../../db/database.dart';
-import '../../models/Product.dart';
 import '../../models/my_db_model.dart';
 import 'components/body.dart';
 import 'components/custom_app_bar.dart';
@@ -49,8 +49,16 @@ class DetailsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 30),
               color: kPrimaryColor,
               width: double.infinity,
-              child: Image(
-                image: getImage(agrs.product.productImage!),
+              child: CachedNetworkImage(
+                imageUrl: imageLoadUrl + agrs.product.productImage!,
+                placeholder: (context, url) => Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Icon(Icons.image_search_outlined),
+                  ),
+                ),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.image_search_outlined),
               ),
             ),
             Expanded(
@@ -83,14 +91,14 @@ class DetailsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${agrs.product.name}',
+                                '${agrs.product.productName}',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                '\Rs.${agrs.product.price}',
+                                '\Rs.${agrs.product.productPrice}',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
@@ -100,7 +108,7 @@ class DetailsScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 25),
                           Text(
-                            '${agrs.product.description}',
+                            '${agrs.product.productDescription}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 15,
@@ -154,10 +162,13 @@ class DetailsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.white),
                     ),
-                    child: Icon(
-                      Icons.heart_broken_outlined,
-                      size: 30,
-                      color: Colors.grey,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.favorite_border,
+                        size: 30,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   SizedBox(width: 20),
@@ -165,17 +176,20 @@ class DetailsScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () async {
                         final cart = Cart(
-                            name: agrs.product.name!,
-                            price: agrs.product.price!.toString(),
-                            description: agrs.product.description!,
+                            name: agrs.product.productName!,
+                            price: agrs.product.productPrice!.toString(),
+                            description: agrs.product.productDescription!,
                             productImage: agrs.product.productImage!,
                             productId: agrs.product.sId!,
                             quantity: state.toString());
 
                         await MyDatabase.instance.create(cart);
+                        await context.read<YourCartScreenCubit>().getCartData();
 
                         showSnackBar(
-                            context, "Cart Added", TopSnackBarType.success);
+                            context: context,
+                            text: "Cart Added",
+                            type: TopSnackBarType.success);
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -282,7 +296,7 @@ class DetailsScreen extends StatelessWidget {
 }
 
 class ProductDetailsArguments {
-  final Products product;
+  final Product product;
 
   ProductDetailsArguments({required this.product});
 }

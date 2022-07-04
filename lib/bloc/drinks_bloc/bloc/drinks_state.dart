@@ -12,7 +12,7 @@ class DrinksInitial extends DrinksState {}
 class DrinksLoadingState extends DrinksState {}
 
 class DrinksLoadedState extends DrinksState {
-  DrinksModel drinksModel;
+  ProductModel drinksModel;
   DrinksLoadedState(this.drinksModel);
 
   @override

@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-
 part 'network_event.dart';
 part 'network_state.dart';
 

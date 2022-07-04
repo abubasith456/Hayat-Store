@@ -24,6 +24,11 @@ class HomeScreenInit extends StatefulWidget {
 
 class _HomeScreenInitState extends State<HomeScreenInit> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<NetworkBloc, NetworkState>(
       builder: (context, state) {

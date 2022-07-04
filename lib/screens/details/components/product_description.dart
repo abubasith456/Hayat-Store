@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shop_app/models/Product.dart';
+import 'package:shop_app/models/product_model.dart';
 
 import '../../../constants.dart';
-import '../../../models/product_model.dart';
 import '../../../util/size_config.dart';
 
 class ProductDescription extends StatelessWidget {
@@ -13,7 +12,7 @@ class ProductDescription extends StatelessWidget {
     this.pressOnSeeMore,
   }) : super(key: key);
 
-  final Products product;
+  final Product product;
   final GestureTapCallback? pressOnSeeMore;
 
   @override
@@ -28,7 +27,7 @@ class ProductDescription extends StatelessWidget {
             padding: EdgeInsets.symmetric(
                 horizontal: getProportionateScreenWidth(20)),
             child: Text(
-              product.name!,
+              product.productName!,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
@@ -62,7 +61,7 @@ class ProductDescription extends StatelessWidget {
             right: getProportionateScreenWidth(64),
           ),
           child: Text(
-            "Rs. " + product.price!.toString(),
+            "Rs. " + product.productPrice!.toString(),
             style: Theme.of(context).textTheme.labelLarge,
             maxLines: 3,
           ),

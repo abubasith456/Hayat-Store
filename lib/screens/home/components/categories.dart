@@ -3,25 +3,27 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shop_app/bloc/dairy_bloc/bloc/dairy_bloc.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
+import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/models/category_model.dart';
+import 'package:shop_app/screens/dairy/dairy_screen.dart';
 import 'package:shop_app/screens/drinks/drinks_screen.dart';
+import 'package:shop_app/screens/fruits/fruits_screen.dart';
 import 'package:shop_app/screens/grocery/grocery_screen.dart';
 
+import '../../../constants.dart';
 import '../../../util/size_config.dart';
 import '../../vegetables/vegetable_screen.dart';
 
 class Categories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> categories = [
-      {"icon": "assets/icons/vegetablesIcon.svg", "text": "Vegetables"},
-      {"icon": "assets/icons/groceryIcon.svg", "text": "Grocery"},
-      {"icon": "assets/icons/drinksIcon.svg", "text": "Drinks"},
-      {"icon": "assets/icons/fruitsIcon.svg", "text": "Fruits"},
-      {"icon": "assets/icons/dairy.svg", "text": "Dairy"},
-    ];
+    void refreshCartCount() {
+      context.read<YourCartScreenCubit>().getCartData();
+    }
+
     return Container(
         padding: EdgeInsets.all(getProportionateScreenWidth(10)),
         child: SingleChildScrollView(
@@ -37,25 +39,42 @@ class Categories extends StatelessWidget {
                   icon: categories[index]['icon'],
                   text: categories[index]['text'],
                   // categoryModel: categoryModel![index],
-                  press: () {
+                  press: () async {
                     if (index == 0) {
-                      Navigator.push(
+                      await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => VegetableScreen(),
                           ));
+                      refreshCartCount();
                     } else if (index == 1) {
-                      Navigator.push(
+                      await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => GroceryScreen(),
                           ));
+                      refreshCartCount();
                     } else if (index == 2) {
-                      Navigator.push(
+                      await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => DrinksScreen(),
                           ));
+                      refreshCartCount();
+                    } else if (index == 3) {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FruitsScreen(),
+                          ));
+                      refreshCartCount();
+                    } else if (index == 4) {
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DairyScreen(),
+                          ));
+                      refreshCartCount();
                     }
                   },
                 ),

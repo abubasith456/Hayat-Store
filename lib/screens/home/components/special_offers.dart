@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../util/size_config.dart';
 import 'section_title.dart';
@@ -26,14 +28,16 @@ class SpecialOffers extends StatelessWidget {
           child: Row(
             children: [
               SpecialOfferCard(
-                image: "assets/images/Image_Banner_2.png",
-                category: "Smartphone",
+                image:
+                    "https://d1jie5o4kjowzg.cloudfront.net/deli-headline-banner-images/schnucks_eatwell_052220_deli-v2.png",
+                category: "New Banner",
                 numOfBrands: 18,
                 press: () {},
               ),
               SpecialOfferCard(
-                image: "assets/images/Image_Banner_3.png",
-                category: "Fashion",
+                image:
+                    "https://www.jiomart.com/images/cms/aw_rbslider/slides/1656675848_Main-banner--756x-325.jpg",
+                category: "Package",
                 numOfBrands: 24,
                 press: () {},
               ),
@@ -66,15 +70,21 @@ class SpecialOfferCard extends StatelessWidget {
       child: GestureDetector(
         onTap: press,
         child: SizedBox(
-          width: getProportionateScreenWidth(335),
-          height: getProportionateScreenHeight(140),
+          width: MediaQuery.of(context).size.width - 60,
+          height: 180,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: Stack(
               children: [
-                Image.asset(
-                  image,
-                  fit: BoxFit.fill,
+                Container(
+                  width: MediaQuery.of(context).size.width - 60,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.fill,
+                    imageUrl: image,
+                    placeholder: (context, url) => cacheShimmer(context),
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.image_search_outlined),
+                  ),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -103,7 +113,7 @@ class SpecialOfferCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextSpan(text: "$numOfBrands Brands")
+                        TextSpan(text: "$numOfBrands Left")
                       ],
                     ),
                   ),
@@ -113,6 +123,19 @@ class SpecialOfferCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  cacheShimmer(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      child: SizedBox(
+          width: getProportionateScreenWidth(335),
+          height: getProportionateScreenHeight(140),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+          )),
     );
   }
 }

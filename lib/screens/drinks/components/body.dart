@@ -4,12 +4,12 @@ import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/drinks_model.dart';
 import 'package:shop_app/models/grocery_model.dart';
-import 'package:shop_app/screens/drinks/components/drinks_details.dart';
-import 'package:shop_app/screens/grocery/components/grocery_details.dart';
+import 'package:shop_app/models/product_model.dart';
+import 'package:shop_app/screens/details_screen/details_screen.dart';
 
 class Body extends StatelessWidget {
   Body({required this.drinksItems, Key? key}) : super(key: key);
-  DrinksModel drinksItems;
+  ProductModel drinksItems;
 
   NetworkImage getImage(String imageName) {
     String url = imageLoadUrl + imageName;
@@ -30,8 +30,8 @@ class Body extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DrinksDetailsView(
-                          drinksProduct: drinksItems.drinksProduct![i])));
+                      builder: (context) => ProductDetailsView(
+                          product: drinksItems.product![i])));
             }),
             child: Container(
               height: 500,
@@ -52,19 +52,19 @@ class Body extends StatelessWidget {
                       Expanded(
                         child: CachedNetworkImage(
                           imageUrl: imageLoadUrl +
-                              drinksItems.drinksProduct![i].drinksImage!,
-                          placeholder: (context, url) => cacheShimmer(context),
+                              drinksItems.product![i].productImage!,
+                          placeholder: (context, url) => Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Icon(Icons.image_search_outlined),
+                            ),
+                          ),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.image_search_outlined),
                         ),
-
-                        //      Image(
-                        //   image:
-                        //       getImage(vegetable.products![i].vegetableImage!),
-                        // )
                       ),
                       Text(
-                        drinksItems.drinksProduct![i].name!,
+                        drinksItems.product![i].productName!,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
@@ -74,7 +74,7 @@ class Body extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'Rs.${drinksItems.drinksProduct![i].price!}',
+                            'Rs.${drinksItems.product![i].productPrice!}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,

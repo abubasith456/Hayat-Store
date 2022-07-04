@@ -28,14 +28,6 @@ class Body extends StatelessWidget {
                   content: Text(state.productError),
                 ),
               );
-            } else if (state is LoadedHomeState) {
-              BlocProvider.of<HomeBloc>(context).add(LoadImageEvent());
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.categoryError),
-                ),
-              );
             }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -73,7 +65,7 @@ class Body extends StatelessWidget {
                               padding: EdgeInsets.symmetric(
                                   horizontal: getProportionateScreenWidth(20)),
                               child: SectionTitle(
-                                  title: "Our Products", press: () {}),
+                                  title: "New Products", press: () {}),
                             ),
                             SizedBox(height: getProportionateScreenWidth(20)),
                             SingleChildScrollView(
@@ -84,8 +76,10 @@ class Body extends StatelessWidget {
                                     state.productModel.count!,
                                     (index) {
                                       return ProductCard(
-                                          product: state
-                                              .productModel.products![index]);
+                                        product:
+                                            state.productModel.product![index],
+                                        id: index,
+                                      );
 
                                       // return SizedBox
                                       //     .shrink(); // here by default width and height is 0

@@ -12,7 +12,7 @@ class VegetableScreenInitial extends VegetableScreenState {}
 class VegetableScreenLoadingState extends VegetableScreenState {}
 
 class VegetableScreenLoadedState extends VegetableScreenState {
-  VegetablesModel vegetablesModel;
+  ProductModel vegetablesModel;
 
   VegetableScreenLoadedState(this.vegetablesModel);
 

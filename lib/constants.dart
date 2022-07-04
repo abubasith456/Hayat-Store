@@ -64,3 +64,11 @@ OutlineInputBorder outlineInputBorder() {
     borderSide: BorderSide(color: kTextColor),
   );
 }
+
+List<Map<String, dynamic>> categories = [
+  {"icon": "assets/icons/vegetablesIcon.svg", "text": "Vegetables"},
+  {"icon": "assets/icons/groceryIcon.svg", "text": "Grocery"},
+  {"icon": "assets/icons/drinksIcon.svg", "text": "Drinks"},
+  {"icon": "assets/icons/fruitsIcon.svg", "text": "Fruits"},
+  {"icon": "assets/icons/dairy.svg", "text": "Dairy"},
+];

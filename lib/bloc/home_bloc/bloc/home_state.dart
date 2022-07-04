@@ -14,11 +14,10 @@ class LoadingHomeState extends HomeState {}
 // ignore: must_be_immutable
 class LoadedHomeState extends HomeState {
   ProductModel productModel;
-  List<CategoryModel> categoryModel;
-  LoadedHomeState(this.productModel, this.categoryModel);
+  LoadedHomeState(this.productModel);
 
   @override
-  List<Object> get props => [productModel, categoryModel];
+  List<Object> get props => [productModel];
 }
 
 class LoadingImageState extends HomeState {}
@@ -28,9 +27,8 @@ class LoadedImageState extends HomeState {}
 // ignore: must_be_immutable
 class HomeErrorState extends HomeState {
   String productError;
-  String categoryError;
-  HomeErrorState(this.productError, this.categoryError);
+  HomeErrorState(this.productError);
 
   @override
-  List<Object> get props => [productError, categoryError];
+  List<Object> get props => [productError];
 }

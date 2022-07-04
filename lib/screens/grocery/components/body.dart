@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/grocery_model.dart';
-import 'package:shop_app/screens/grocery/components/grocery_details.dart';
+import 'package:shop_app/models/product_model.dart';
+import 'package:shop_app/screens/details_screen/details_screen.dart';
 
 class Body extends StatelessWidget {
   Body({required this.groceryItems, Key? key}) : super(key: key);
-  GroceryModel groceryItems;
-
-  NetworkImage getImage(String imageName) {
-    String url = imageLoadUrl + imageName;
-    return NetworkImage(url);
-  }
+  ProductModel groceryItems;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +24,8 @@ class Body extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GroceryDetailsView(
-                          groceryProduct: groceryItems.groceryProduct![i])));
+                      builder: (context) => ProductDetailsView(
+                          product: groceryItems.product![i])));
             }),
             child: Container(
               height: 500,
@@ -50,19 +46,19 @@ class Body extends StatelessWidget {
                       Expanded(
                         child: CachedNetworkImage(
                           imageUrl: imageLoadUrl +
-                              groceryItems.groceryProduct![i].groceryImage!,
-                          placeholder: (context, url) => cacheShimmer(context),
+                              groceryItems.product![i].productImage!,
+                          placeholder: (context, url) => Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Icon(Icons.image_search_outlined),
+                            ),
+                          ),
                           errorWidget: (context, url, error) =>
                               Icon(Icons.image_search_outlined),
                         ),
-
-                        //      Image(
-                        //   image:
-                        //       getImage(vegetable.products![i].vegetableImage!),
-                        // )
                       ),
                       Text(
-                        groceryItems.groceryProduct![i].name!,
+                        groceryItems.product![i].productName!,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
@@ -72,7 +68,7 @@ class Body extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'Rs.${groceryItems.groceryProduct![i].price!}',
+                            'Rs.${groceryItems.product![i].productPrice!}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
@@ -130,24 +126,5 @@ class Body extends StatelessWidget {
     //     //       );
     //     //     })),
     //     );
-  }
-
-  Widget cacheShimmer(BuildContext context) {
-    return Shimmer.fromColors(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(17),
-        ),
-        child: Container(
-          height: 290,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-          margin: EdgeInsets.all(5),
-          padding: EdgeInsets.all(8),
-          child: Container(),
-        ),
-      ),
-      baseColor: Colors.grey.shade300,
-      highlightColor: Colors.grey.shade100,
-    );
   }
 }

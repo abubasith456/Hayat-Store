@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/vegetables_model.dart';
+import 'package:shop_app/screens/details_screen/details_screen.dart';
 import 'package:shop_app/screens/vegetables/components/vegetable_card.dart';
-
-import '../../details_screen/details_screen.dart';
 
 class Body extends StatelessWidget {
   Body({required this.vegetable, Key? key}) : super(key: key);
-  VegetablesModel vegetable;
+  ProductModel vegetable;
 
   NetworkImage getImage(String imageName) {
     String url = imageLoadUrl + imageName;
@@ -32,8 +32,8 @@ class Body extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ProductDetailsView(
-                          vegetable: vegetable.products![i])));
+                      builder: (context) =>
+                          ProductDetailsView(product: vegetable.product![i])));
             }),
             child: Card(
               shape: RoundedRectangleBorder(
@@ -54,15 +54,19 @@ class Body extends StatelessWidget {
                         Expanded(
                           child: CachedNetworkImage(
                             imageUrl: imageLoadUrl +
-                                vegetable.products![i].vegetableImage!,
-                            placeholder: (context, url) =>
-                                cacheShimmer(context),
+                                vegetable.product![i].productImage!,
+                            placeholder: (context, url) => Center(
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Icon(Icons.image_search_outlined),
+                              ),
+                            ),
                             errorWidget: (context, url, error) =>
                                 Icon(Icons.image_search_outlined),
                           ),
                         ),
                         Text(
-                          vegetable.products![i].name!,
+                          vegetable.product![i].productName!,
                           style: TextStyle(
                             fontSize: 18,
                             color: Colors.black,
@@ -72,7 +76,7 @@ class Body extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'Rs.${vegetable.products![i].price!}',
+                              'Rs.${vegetable.product![i].productPrice!}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,

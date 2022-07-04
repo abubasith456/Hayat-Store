@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -14,30 +15,28 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String baseurl = "https://hidden-waters-80713.herokuapp.com/";
-    String formater(String url) {
-      return baseurl + url;
-    }
-
-    NetworkImage getImage(String imageName) {
-      String url = formater(imageName);
-      return NetworkImage(url);
-    }
-
     return Row(
       children: [
         SizedBox(
-          width: 88,
+          width: 95,
           child: AspectRatio(
-            aspectRatio: 0.88,
+            aspectRatio: 0.95,
             child: Container(
               padding: EdgeInsets.all(getProportionateScreenWidth(10)),
               decoration: BoxDecoration(
                 color: Color(0xFFF5F6F9),
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: Image(
-                image: getImage(cart.productImage),
+              child: CachedNetworkImage(
+                imageUrl: imageLoadUrl + cart.productImage,
+                placeholder: (context, url) => Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Icon(Icons.image_search_outlined),
+                  ),
+                ),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.image_search_outlined),
               ),
             ),
           ),

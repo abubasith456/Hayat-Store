@@ -3,7 +3,10 @@ import 'package:shop_app/constants.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-void showSnackBar(BuildContext context, String text, TopSnackBarType type) {
+void showSnackBar(
+    {required BuildContext context,
+    required String text,
+    required TopSnackBarType type}) {
   switch (type) {
     case TopSnackBarType.success:
       return showTopSnackBar(

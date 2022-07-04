@@ -35,8 +35,10 @@ class _DrinksScreenState extends State<DrinksScreen> {
               body: BlocConsumer<DrinksBloc, DrinksState>(
                 listener: (context, state) {
                   if (state is DrinksErrorState) {
-                    showSnackBar(context, "Something went wrong!...",
-                        TopSnackBarType.error);
+                    showSnackBar(
+                        context: context,
+                        text: "Something went wrong!...",
+                        type: TopSnackBarType.error);
                   }
                 },
                 builder: (context, state) {

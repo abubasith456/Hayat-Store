@@ -14,11 +14,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         emit(LoadingHomeState());
         var _productList = await _apiProvider.getProduct();
+    
         List<CategoryModel> _categoryList = await _apiProvider.getCategory();
         if (_productList.error != null) {
-          emit(HomeErrorState(_productList.error!, _categoryList[0].error!));
+          emit(HomeErrorState(_productList.error!));
         } else {
-          emit(LoadedHomeState(_productList, _categoryList));
+          emit(LoadedHomeState(_productList));
         }
 
         //Image loading
@@ -30,8 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         }
       } catch (e) {
         String errorText = "Something went wrong!... ";
-        emit(
-            HomeErrorState(errorText + e.toString(), errorText + e.toString()));
+        emit(HomeErrorState(errorText + e.toString()));
       }
     });
   }

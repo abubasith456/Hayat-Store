@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
+import 'package:shop_app/screens/details_screen/details_screen.dart';
 
 import '../constants.dart';
+import '../cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import '../util/size_config.dart';
 
 class ProductCard extends StatelessWidget {
@@ -14,10 +17,12 @@ class ProductCard extends StatelessWidget {
     this.width = 160,
     this.aspectRetio = 1.02,
     required this.product,
+    required this.id,
   }) : super(key: key);
 
   final double width, aspectRetio;
-  final Products? product;
+  final Product? product;
+  final int id;
 
   NetworkImage getImage(String imageurl) {
     String url = imageLoadUrl + imageurl;
@@ -31,12 +36,20 @@ class ProductCard extends StatelessWidget {
       child: SizedBox(
         width: getProportionateScreenWidth(width),
         child: GestureDetector(
-          onTap: () => {
-            Navigator.pushNamed(
-              context,
-              DetailsScreen.routeName,
-              arguments: ProductDetailsArguments(product: product!),
-            ),
+          onTap: () async => {
+            // await Navigator.pushNamed(
+            //   context,
+            //   DetailsScreen.routeName,
+            //   arguments: ProductDetailsArguments(product: product!),
+            // ),
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetailsView(
+                    product: product!,
+                  ),
+                )),
+            context.read<YourCartScreenCubit>().getCartData()
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,31 +62,34 @@ class ProductCard extends StatelessWidget {
                     color: kSecondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Hero(
-                    tag: product!.sId!,
-                    child: CachedNetworkImage(
-                      imageUrl: imageLoadUrl + product!.productImage!,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        child: Container(
-                            padding:
-                                EdgeInsets.all(getProportionateScreenWidth(20)),
-                            decoration: BoxDecoration(
-                              color: kSecondaryColor.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Container()),
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
+                  child: CachedNetworkImage(
+                    imageUrl: imageLoadUrl + product!.productImage!,
+                    placeholder: (context, url) => Center(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Icon(Icons.image_search_outlined),
                       ),
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.image_search_outlined),
                     ),
+                    //  Shimmer.fromColors(
+                    //   child: Container(
+                    //       padding:
+                    //           EdgeInsets.all(getProportionateScreenWidth(20)),
+                    //       decoration: BoxDecoration(
+                    //         color: kSecondaryColor.withOpacity(0.1),
+                    //         borderRadius: BorderRadius.circular(15),
+                    //       ),
+                    //       child: Container()),
+                    //   baseColor: Colors.grey.shade300,
+                    //   highlightColor: Colors.grey.shade100,
+                    // ),
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.image_search_outlined),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                product!.name!,
+                product!.productName!,
                 style: TextStyle(color: Colors.black),
                 maxLines: 2,
               ),
@@ -81,7 +97,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "\Rs.${product!.price}",
+                    "\Rs.${product!.productPrice}",
                     style: TextStyle(
                       fontSize: getProportionateScreenWidth(18),
                       fontWeight: FontWeight.w600,

@@ -1,45 +1,49 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:animations/animations.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/constants.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:shop_app/cubit/cart_counter/cart_counter_cubit.dart';
+import 'package:shop_app/cubit/like_product/cubit/like_product_cubit.dart';
+import 'package:shop_app/db/database.dart';
+import 'package:shop_app/models/my_db_model.dart';
+import 'package:shop_app/models/product_model.dart';
+import 'package:shop_app/models/vegetables_model.dart';
+import 'package:shop_app/util/custom_snackbar.dart';
 
-import '../../cubit/cart_counter/cart_counter_cubit.dart';
-import '../../db/database.dart';
-import '../../models/my_db_model.dart';
-import '../../models/vegetables_model.dart';
-import '../../util/custom_snackbar.dart';
-// import 'package:get/get.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:ionicons/ionicons.dart';
-// import 'package:product_details/controller/product_controller.dart';
-// import 'package:product_details/model/sm_product_model.dart';
-// import 'package:product_details/utils/color.dart';
+import '../../cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 
-class ProductDetailsView extends StatelessWidget {
-  ProductDetailsView({required this.vegetable, Key? key}) : super(key: key);
-  static String routeName = "/cartDetails";
-  final VegetableProducts vegetable;
+class ProductDetailsView extends StatefulWidget {
+  ProductDetailsView({required this.product, Key? key}) : super(key: key);
+  static String routeName = "/detailsScreen";
+  final Product product;
 
-  String baseurl = "https://hidden-waters-80713.herokuapp.com/";
-  String formater(String url) {
-    return baseurl + url;
+  @override
+  State<ProductDetailsView> createState() => _ProductDetailsViewState();
+}
+
+class _ProductDetailsViewState extends State<ProductDetailsView> {
+  @override
+  void initState() {
+    context.read<YourCartScreenCubit>().getCartData();
+    super.initState();
   }
 
-  NetworkImage getImage(String imageName) {
-    String url = formater(imageName);
+  NetworkImage getImage(String imageUrl) {
+    String url = imageLoadUrl + imageUrl;
     return NetworkImage(url);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CartCounterCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => CartCounterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LikeProductCubit(),
+        ),
+      ],
       child: Scaffold(
         backgroundColor: kPrimaryColor,
         appBar: AppBar(
@@ -71,8 +75,16 @@ class ProductDetailsView extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 30),
               color: kPrimaryColor,
               width: double.infinity,
-              child: Image(
-                image: getImage(vegetable.vegetableImage!),
+              child: CachedNetworkImage(
+                imageUrl: imageLoadUrl + widget.product.productImage!,
+                placeholder: (context, url) => Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Icon(Icons.image_search_outlined),
+                  ),
+                ),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.image_search_outlined),
               ),
               // Image.asset('assets/images/ps4_console_blue_1.png'),
             ),
@@ -106,14 +118,14 @@ class ProductDetailsView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '${vegetable.name}',
+                                '${widget.product.productName}',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                '\Rs.${vegetable.price}',
+                                '\Rs.${widget.product.productPrice}',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
@@ -123,7 +135,7 @@ class ProductDetailsView extends StatelessWidget {
                           ),
                           const SizedBox(height: 25),
                           Text(
-                            '${vegetable.description}',
+                            '${widget.product.productDescription}',
                             style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 15,
@@ -204,28 +216,50 @@ class ProductDetailsView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: Colors.white),
                     ),
-                    child: Icon(
-                      Icons.heart_broken_outlined,
-                      size: 30,
-                      color: Colors.grey,
+                    child: BlocBuilder<LikeProductCubit, bool>(
+                      builder: (context, state) {
+                        return IconButton(
+                          onPressed: () {
+                            if (state) {
+                              context.read<LikeProductCubit>().disLikeProduct();
+                            } else
+                              context.read<LikeProductCubit>().likeProduct();
+                          },
+                          icon: Icon(
+                            state ? Icons.favorite : Icons.favorite_border,
+                            size: 30,
+                            color: state ? Colors.red : Colors.grey,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   SizedBox(width: 20),
                   Expanded(
                     child: InkWell(
                       onTap: () async {
-                        final cart = Cart(
-                            name: vegetable.name!,
-                            price: vegetable.price!.toString(),
-                            description: vegetable.description!,
-                            productImage: vegetable.vegetableImage!,
-                            productId: vegetable.sId!,
-                            quantity: state.toString());
+                        if (state > 0) {
+                          final cart = Cart(
+                              name: widget.product.productName!,
+                              price: widget.product.productPrice!.toString(),
+                              description: widget.product.productDescription!,
+                              productImage: widget.product.productImage!,
+                              productId: widget.product.sId!,
+                              quantity: state.toString());
 
-                        await MyDatabase.instance.create(cart);
+                          await MyDatabase.instance.create(cart);
 
-                        showSnackBar(
-                            context, "Cart Added", TopSnackBarType.success);
+                          showSnackBar(
+                              context: context,
+                              text: "Cart Added",
+                              type: TopSnackBarType.success);
+                        } else {
+                          showSnackBar(
+                              context: context,
+                              text:
+                                  "Please select the quantity... How much you want!",
+                              type: TopSnackBarType.error);
+                        }
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -331,35 +365,6 @@ class ProductDetailsView extends StatelessWidget {
           },
           child: Icon(Icons.remove, color: Colors.black),
           backgroundColor: Colors.white),
-    );
-  }
-}
-
-class OpenContainerWrapper extends StatelessWidget {
-  const OpenContainerWrapper({
-    required this.closedBuilder,
-    required this.transitionType,
-    required this.onClosed,
-    required this.vegetable,
-  });
-
-  final CloseContainerBuilder closedBuilder;
-  final ContainerTransitionType transitionType;
-  final ClosedCallback<bool?> onClosed;
-  final VegetableProducts vegetable;
-
-  @override
-  Widget build(BuildContext context) {
-    return OpenContainer<bool>(
-      transitionType: transitionType,
-      openBuilder: (BuildContext context, VoidCallback _) {
-        return ProductDetailsView(
-          vegetable: vegetable,
-        );
-      },
-      onClosed: onClosed,
-      tappable: false,
-      closedBuilder: closedBuilder,
     );
   }
 }

@@ -51,8 +51,8 @@ class _BodyState extends State<Body> {
                   .read<YourCartScreenCubit>()
                   .deleteCart(widget.cartList[index].id!);
               // await MyDatabase.instance.delete(widget.cartList[index].id!);
-              widget.cartList.removeAt(index);
               print(widget.cartList[index].id!);
+              widget.cartList.removeAt(index);
 
               double totalPrice = 0;
               //Remove from state
