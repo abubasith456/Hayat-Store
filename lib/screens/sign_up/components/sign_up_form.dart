@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:intl/intl.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +9,7 @@ import 'package:shop_app/components/custom_surfix_icon.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/db/userDB.dart';
+import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/models/temp_model.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 
@@ -40,10 +41,14 @@ class _SignUpFormState extends State<SignUpForm> {
   var emailConroller = TextEditingController();
   var passwordController = TextEditingController();
   var cnfrmPassController = TextEditingController();
+  var DOBcontroller = TextEditingController();
   var sharedPref = SharedPref();
   bool isLoading = false;
-
   final List<String?> errors = [];
+
+  static final DateTime now = DateTime.now();
+  static final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formattedDate = formatter.format(now);
 
   void addError({String? error}) {
     if (!errors.contains(error))
@@ -95,12 +100,12 @@ class _SignUpFormState extends State<SignUpForm> {
                 buildConformPassFormField(),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 buildUserNameFormField(),
-                SizedBox(height: getProportionateScreenHeight(30)),
+                SizedBox(height: getProportionateScreenHeight(20)),
                 // buildLastNameFormField(),
                 // SizedBox(height: getProportionateScreenHeight(30)),
                 buildPhoneNumberFormField(),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                buildDateOfBirthFormField(),
+                buildDateOfBirthFormField(context),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 buildAddressFormField(),
                 FormError(errors: errors),
@@ -257,6 +262,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         conform_password = value;
       },
+      textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
@@ -293,6 +299,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         password = value;
       },
+      textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPassNullError);
@@ -329,6 +336,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
+      textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kEmailNullError);
@@ -370,6 +378,7 @@ class _SignUpFormState extends State<SignUpForm> {
         }
         return null;
       },
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: "Address",
         hintText: "Enter your phone address",
@@ -391,20 +400,25 @@ class _SignUpFormState extends State<SignUpForm> {
           removeError(error: kPhoneNumberNullError);
         } else if (value.isNotEmpty && phoneNumber?.length.toInt() == 10) {
           removeError(error: mobileNumberErrorLength);
+        } else if (value.length != 10) {
+          addError(error: mobileNumberErrorLength);
         }
         return null;
       },
+      textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
           addError(error: kPhoneNumberNullError);
           return "";
-        } else if (value.isEmpty && phoneNumber?.length.toInt() != 10) {
+        } else if (value.length != 10) {
           addError(error: mobileNumberErrorLength);
+          return "";
         } else {
           phoneNumber = value;
         }
         return null;
       },
+      maxLength: 10,
       decoration: InputDecoration(
         labelText: "Phone Number",
         hintText: "Enter your phone number",
@@ -416,8 +430,26 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildDateOfBirthFormField() {
+  TextFormField buildDateOfBirthFormField(BuildContext context) {
     return TextFormField(
+      onTap: () async {
+        FocusScope.of(context).unfocus();
+        KeyboardUtil.hideKeyboard(context);
+        DateTime? newDate = await showDatePicker(
+          context: context,
+          initialDate: now,
+          firstDate: DateTime(1900),
+          lastDate: DateTime(2030),
+        );
+        setState(() {
+          if (newDate != null) {
+            DOBcontroller.text = DateFormat('yyyy-MM-dd').format(newDate);
+          }
+        });
+      },
+      showCursor: false,
+      enabled: true,
+      controller: DOBcontroller,
       onSaved: (newValue) => dateOfBirth = newValue,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -479,6 +511,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
         return null;
       },
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         labelText: "User Name",
         hintText: "Enter your username",

@@ -13,8 +13,8 @@ class MyAppBloc extends Bloc<MyAppEvent, MyAppState> {
           emit(LoadingMyAppState());
           var _initialChecking = InitialChecking.instance;
           await _initialChecking.getIsLogged();
-          emit(LoadedMyAppState(
-              _initialChecking.isLogged, _initialChecking.isNotShowWelcome));
+          // emit(LoadedMyAppState(
+          //     _initialChecking.isLogged, _initialChecking.isNotShowWelcome));
         }
       } catch (e) {
         emit(ErrorMyAppState(e.toString()));

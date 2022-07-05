@@ -17,14 +17,18 @@ class InitialChecking {
   late bool _isNotShowWelcome;
 
   bool get isLogged => _isLogged;
-  bool get isNotShowWelcome => _isNotShowWelcome;
+  bool get isNotShowWelcome => _isNotShowWelcome == null ? false : true;
 
   Future getIsLogged() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? tempLogging = prefs.get(loggedKey) as bool?;
-    bool? tempFirstLog = prefs.get(isFirstLogin) as bool?;
-    _isLogged = tempLogging!;
-    _isNotShowWelcome = tempFirstLog!;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      bool? isLogging = prefs.get(loggedKey) as bool;
+      bool? isNotShowWelcome = prefs.get(isFirstLogin) as bool;
+      _isLogged = isLogging;
+      _isNotShowWelcome = false;
+    } catch (e) {
+      _isNotShowWelcome = false;
+    }
   }
 }
 

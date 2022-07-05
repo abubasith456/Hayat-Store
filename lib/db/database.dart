@@ -8,15 +8,16 @@ import '../models/my_db_model.dart';
 
 class MyDatabase {
   static final MyDatabase instance = MyDatabase._init();
-
+  static final filePath = 'CartDb.db';
   static Database? _database;
+  static DatabaseFactory? databaseFactory;
 
   MyDatabase._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('CartDb.db');
+    _database = await _initDB(filePath);
     return _database!;
   }
 
@@ -115,9 +116,13 @@ CREATE TABLE $CartData (
     );
   }
 
+  Future deleteTable() async {
+    final db = await instance.database;
+    db.execute("delete from " + CartData);
+  }
+
   Future close() async {
     final db = await instance.database;
-
     db.close();
   }
 }

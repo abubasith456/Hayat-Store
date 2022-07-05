@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/util/size_config.dart';
 import 'package:shop_app/util/shared_pref.dart';
@@ -30,6 +33,10 @@ class _BodyState extends State<Body> {
       "image": "assets/images/splash_3.png"
     },
   ];
+  final storage = GetStorage();
+  // @override
+  // void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,8 +78,12 @@ class _BodyState extends State<Body> {
                     DefaultButton(
                       text: "Continue",
                       isLoading: false,
-                      press: () {
-                        shredPref.setBoolValue(isFirstLogin, true);
+                      press: () async {
+                        SharedPreferences sharedPreferences =
+                            await SharedPreferences.getInstance();
+                        // sharedPreferences.setInt('onBoard', 0);
+                        sharedPreferences.setBool("seen", true);
+                        storage.write('seen', 'yes');
                         Navigator.pushNamed(context, SignInScreen.routeName);
                       },
                     ),

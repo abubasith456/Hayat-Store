@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
+import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/screens/connection_lost.dart';
 import 'package:shop_app/util/enums.dart';
 import 'package:shop_app/screens/liked_screeen/liked_screen.dart';
@@ -38,6 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    context.read<YourCartScreenCubit>().getCartData();
+    super.initState();
   }
 
   @override
