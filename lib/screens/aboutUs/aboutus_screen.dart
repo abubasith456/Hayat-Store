@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/util/map_style.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -26,18 +27,17 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   void initState() {
     super.initState();
+    getMarker();
     if (defaultTargetPlatform == TargetPlatform.android) {
       AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
     }
-    getMarker();
   }
 
-  Future<void> getMarker() async {
+  getMarker() async {
     final Uint8List markerIcon =
         await getBytesFromAsset('assets/images/logo.png', 300);
-
     _marker = Marker(
-      markerId: const MarkerId('Hayat'),
+      markerId: const MarkerId('Hayat Store'),
       infoWindow: InfoWindow(
           onTap: () {
             MapsLauncher.launchCoordinates(10.882605, 79.679260);
@@ -68,6 +68,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   }
 
   Completer<GoogleMapController> _controller = Completer();
+  late GoogleMapController _googleMapController;
 
   LatLng pinPosition = LatLng(37.3797536, -122.1017334);
 
@@ -85,44 +86,150 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       zoom: 19.151926040649414);
 
 //Animator
-  Future<void> _goToTheLake() async {
+  _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kShop));
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    if (_googleMapController != null) {
+      _googleMapController.dispose();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Stack(children: [
-            GoogleMap(
-              mapType: MapType.hybrid,
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
-              zoomGesturesEnabled: true,
-              initialCameraPosition: _kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                setState(() {
-                  getMarker();
-                });
-                // controller
-                // .animateCamera(CameraUpdate.newCameraPosition(_kShop));
-                controller.setMapStyle(mapStyles);
-                _controller.complete(controller);
-              },
-              markers: {if (_marker != null) _marker!},
+    getMarker();
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          body: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Stack(fit: StackFit.loose, children: [
+              GoogleMap(
+                mapType: MapType.hybrid,
+                zoomControlsEnabled: false,
+                myLocationButtonEnabled: false,
+                zoomGesturesEnabled: true,
+                initialCameraPosition: _kGooglePlex,
+                onMapCreated: (GoogleMapController controller) {
+                  // controller
+                  // .animateCamera(CameraUpdate.newCameraPosition(_kShop));
+
+                  controller.setMapStyle(mapStyles);
+                  _controller.complete(controller);
+                  setState(() {
+                    _googleMapController = controller;
+                    getMarker();
+                  });
+                },
+                markers: {if (_marker != null) _marker!},
+              ),
+              Positioned(
+                top: 50,
+                left: 5,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    if (_googleMapController != null) {
+                      _googleMapController.dispose();
+                    }
+                  },
+                  icon: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 30,
+                left: 10,
+                child: FloatingActionButton.extended(
+                  onPressed: _goToTheLake,
+                  label: Text('To the shop!'),
+                  icon: Icon(Icons.shopping_bag_outlined),
+                ),
+              ),
+            ]),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Container(
+                    height: 140,
+                    child: Image.asset(
+                      "assets/images/logo.png",
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 10, right: 10),
+                  //   child: MaterialButton(
+                  //     onPressed: () {},
+                  //     color: kPrimaryColor,
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                  //     height: MediaQuery.of(context).size.height / 20,
+                  //     minWidth: MediaQuery.of(context).size.width - 100,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Icon(Icons.call, color: Colors.white),
+                  //         SizedBox(
+                  //           width: 10,
+                  //         ),
+                  //         Text(
+                  //           'Pone number',
+                  //           style: TextStyle(color: Colors.white),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 10, right: 10),
+                  //   child: MaterialButton(
+                  //     onPressed: () {},
+                  //     color: kPrimaryColor,
+                  //     shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                  //     height: MediaQuery.of(context).size.height / 20,
+                  //     minWidth: MediaQuery.of(context).size.width - 100,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Icon(Icons.email_rounded, color: Colors.white),
+                  //         SizedBox(
+                  //           width: 10,
+                  //         ),
+                  //         Text(
+                  //           'Email',
+                  //           style: TextStyle(color: Colors.white),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
+                ],
+              ),
             ),
-          ]),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(),
-        )
-      ],
-    ));
+          )
+        ],
+      )),
+    );
 
     //     Stack(
     //   children: [
