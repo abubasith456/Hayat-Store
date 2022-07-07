@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
+import 'package:shop_app/bloc/liked_bloc/bloc/liked_bloc.dart';
 import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
-import 'package:shop_app/screens/connection_lost.dart';
+import 'package:shop_app/util/connection_lost.dart';
 import 'package:shop_app/util/enums.dart';
-import 'package:shop_app/screens/liked_screeen/liked_screen.dart';
+import 'package:shop_app/screens/category_screeen/categories_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 
 import '../../bloc/network_bloc/bloc/network_bloc.dart';
@@ -32,12 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var pages = [
     HomeScreenInit(),
-    LikedScreeen(),
+    CategoryScreeen(),
     ProfileScreen(),
   ];
   onPress(int index) {
     setState(() {
       currentIndex = index;
+      if (index == 1) {
+        // BlocProvider.of<LikedBloc>(context).add(GetLikedDBEvent());
+      }
     });
   }
 
@@ -74,9 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Liked',
               tooltip: 'Liked',
               icon: SvgPicture.asset(
-                "assets/icons/Heart Icon.svg",
+                "assets/icons/category.svg",
                 color: currentIndex == 1 ? kPrimaryColor : inActiveIconColor,
               ),
+              //  SvgPicture.asset(
+              //   "assets/icons/Heart Icon.svg",
+
+              // ),
             ),
             // BottomNavigationBarItem(
             //   label: 'IDK',

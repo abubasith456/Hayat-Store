@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,7 +55,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               Navigator.pop(context);
             },
             icon: const Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_ios_new,
               color: Colors.white,
             ),
           ),
@@ -117,14 +118,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 '${widget.product.productName}',
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 25,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(
+                              AutoSizeText(
                                 '\Rs.${widget.product.productPrice}',
                                 style: TextStyle(
                                     color: Colors.black,
@@ -208,32 +209,32 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white),
-                    ),
-                    child: BlocBuilder<LikeProductCubit, bool>(
-                      builder: (context, state) {
-                        return IconButton(
-                          onPressed: () {
-                            if (state) {
-                              context.read<LikeProductCubit>().disLikeProduct();
-                            } else
-                              context.read<LikeProductCubit>().likeProduct();
-                          },
-                          icon: Icon(
-                            state ? Icons.favorite : Icons.favorite_border,
-                            size: 30,
-                            color: state ? Colors.red : Colors.grey,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  // Container(
+                  //   width: 50,
+                  //   height: 50,
+                  //   alignment: Alignment.center,
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     border: Border.all(color: Colors.white),
+                  //   ),
+                  //   child: BlocBuilder<LikeProductCubit, bool>(
+                  //     builder: (context, state) {
+                  //       return IconButton(
+                  //         onPressed: () {
+                  //           if (state) {
+                  //             context.read<LikeProductCubit>().disLikeProduct();
+                  //           } else
+                  //             context.read<LikeProductCubit>().likeProduct();
+                  //         },
+                  //         icon: Icon(
+                  //           state ? Icons.favorite : Icons.favorite_border,
+                  //           size: 30,
+                  //           color: state ? Colors.red : Colors.grey,
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
                   SizedBox(width: 20),
                   Expanded(
                     child: InkWell(

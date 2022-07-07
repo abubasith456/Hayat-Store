@@ -65,61 +65,57 @@ class SpecialOfferCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: EdgeInsets.only(left: getProportionateScreenWidth(20)),
       child: GestureDetector(
         onTap: press,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width - 60,
-          height: 180,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Stack(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width - 60,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.fill,
-                    imageUrl: image,
-                    placeholder: (context, url) => cacheShimmer(context),
-                    errorWidget: (context, url, error) =>
-                        Icon(Icons.image_search_outlined),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width - 60,
+                child: CachedNetworkImage(
+                  fit: BoxFit.fill,
+                  imageUrl: image,
+                  placeholder: (context, url) => cacheShimmer(context),
+                  errorWidget: (context, url, error) =>
+                      Icon(Icons.image_search_outlined),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    // begin: Align/
+                    colors: [
+                      Color(0xFF343434).withOpacity(0.4),
+                      Color(0xFF343434).withOpacity(0.15),
+                    ],
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      // begin: Align/
-                      colors: [
-                        Color(0xFF343434).withOpacity(0.4),
-                        Color(0xFF343434).withOpacity(0.15),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(15.0),
-                    vertical: getProportionateScreenWidth(10),
-                  ),
-                  child: Text.rich(
-                    TextSpan(
-                      style: TextStyle(color: Colors.white),
-                      children: [
-                        TextSpan(
-                          text: "$category\n",
-                          style: TextStyle(
-                            fontSize: getProportionateScreenWidth(18),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(text: "$numOfBrands Left")
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(
+              //     horizontal: getProportionateScreenWidth(15.0),
+              //     vertical: getProportionateScreenWidth(10),
+              //   ),
+              //   child: Text.rich(
+              //     TextSpan(
+              //       style: TextStyle(color: Colors.white),
+              //       children: [
+              //         TextSpan(
+              //           text: "$category\n",
+              //           style: TextStyle(
+              //             fontSize: getProportionateScreenWidth(18),
+              //             fontWeight: FontWeight.bold,
+              //           ),
+              //         ),
+              //         TextSpan(text: "$numOfBrands Left")
+              //       ],
+              //     ),
+              //   ),
+              // ),
+            ],
           ),
         ),
       ),

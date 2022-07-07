@@ -7,6 +7,7 @@ import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/connection_lost.dart';
 import 'package:shop_app/screens/drinks/components/body.dart';
+import 'package:shop_app/util/shimmer.dart';
 import '../../util/custom_snackbar.dart';
 
 class DrinksScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _DrinksScreenState extends State<DrinksScreen> {
                 },
                 builder: (context, state) {
                   if (state is DrinksLoadingState) {
-                    return shimmerWidget(context);
+                    return shimmerListWidget(context);
                   } else if (state is DrinksLoadedState) {
                     return SafeArea(
                       child: Body(
@@ -51,7 +52,7 @@ class _DrinksScreenState extends State<DrinksScreen> {
                       ),
                     );
                   } else {
-                    return shimmerWidget(context);
+                    return shimmerListWidget(context);
                   }
                 },
               ),
@@ -62,42 +63,5 @@ class _DrinksScreenState extends State<DrinksScreen> {
         }
       },
     );
-  }
-
-  Widget shimmerWidget(BuildContext context) {
-    return Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.count(
-            addAutomaticKeepAlives: true,
-            crossAxisCount:
-                MediaQuery.of(context).orientation == Orientation.landscape
-                    ? 4
-                    : 2,
-            children: List.generate(10, (index) {
-              return Padding(
-                padding: const EdgeInsets.all(3),
-                child: Card(
-                    elevation: 5.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(17),
-                    ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          textColor: Colors.black,
-                          title: Text("Loading"),
-                          subtitle: Text("Rs.0"),
-                          trailing: Icon(Icons.favorite_outline),
-                        ),
-                        SizedBox(height: 130, width: 130, child: SizedBox())
-                      ],
-                    )),
-              );
-            }),
-          ),
-        ));
   }
 }

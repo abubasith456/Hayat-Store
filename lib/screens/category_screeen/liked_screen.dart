@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
 import 'package:shop_app/screens/connection_lost.dart';
 
-import '../liked_Screeen/components/body.dart';
-
 class LikedScreeen extends StatelessWidget {
   const LikedScreeen({Key? key}) : super(key: key);
 

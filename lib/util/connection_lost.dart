@@ -5,12 +5,16 @@ class ConnectionLostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Container(
-        width: 300,
-        height: 300,
-        child: Image.asset("assets/images/connectionLost.jpg"),
-      ),
+        body: Stack(
+      children: [
+        Center(
+          child: Container(
+            width: 300,
+            height: 300,
+            child: Image.asset("assets/images/connectionLost.jpg"),
+          ),
+        ),
+      ],
     )
 
         // Stack(

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/db/database.dart';
 import 'package:shop_app/db/userDB.dart';
+import 'package:shop_app/screens/aboutUs/aboutus_screen.dart';
 import '../../../constants.dart';
 import '../../sign_in/sign_in_screen.dart';
 import '../../user_profile/user_profile_screen.dart';
@@ -17,15 +18,23 @@ class Body extends StatelessWidget {
             height: MediaQuery.of(context).size.height * .15,
             padding: const EdgeInsets.only(bottom: 30),
             color: kPrimaryColor,
-            width: double.infinity,
-            child: Center(
-                child: Text(
-              "Hayat Store",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
-            ))),
+            width: MediaQuery.of(context).size.width,
+            child: SizedBox(
+              child: Image.asset(
+                "assets/images/logoXL.png",
+                filterQuality: FilterQuality.high,
+              ),
+            )
+            //  Center(
+            //   child: Text(
+            //     "Hayat Store",
+            //     style: TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 25,
+            //         fontWeight: FontWeight.bold),
+            //   ),
+            // ),
+            ),
         Expanded(
             flex: 4,
             child: Stack(children: [
@@ -72,9 +81,11 @@ class Body extends StatelessWidget {
                         },
                       ),
                       ProfileMenu(
-                        text: "Help Center",
+                        text: "About Us",
                         icon: "assets/icons/Question mark.svg",
-                        press: () {},
+                        press: () {
+                          Navigator.pushNamed(context, AboutUsScreen.routeName);
+                        },
                       ),
                       ProfileMenu(
                         text: "Log Out",

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
 import 'package:shop_app/screens/home/components/section_title.dart';
+import 'package:shop_app/util/shimmer.dart';
 
 import '../../../components/product_card.dart';
 import '../../../util/size_config.dart';
@@ -38,7 +39,7 @@ class Body extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is HomeInitial) {
-            return shimmerWidget(context);
+            return homeScreenShimmer(context);
           } else if (state is LoadedHomeState) {
             return Stack(
               children: [
@@ -100,7 +101,7 @@ class Body extends StatelessWidget {
               ],
             );
           } else {
-            return shimmerWidget(context);
+            return homeScreenShimmer(context);
           }
         },
       ),

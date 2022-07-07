@@ -53,6 +53,11 @@ dependencies:
   intl: ^0.17.0
   flutter_secure_storage: ^5.0.2
   get_storage: ^2.0.3
+  auto_size_text: ^3.0.0
+  google_maps_flutter: ^2.1.8
+  maps_launcher: ^2.0.1
+  app_settings: ^4.1.8
+  contactus: ^1.2.0
 
 dev_dependencies:
   flutter_test:

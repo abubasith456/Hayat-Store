@@ -94,10 +94,8 @@ class Body extends StatelessWidget {
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 5,
-          mainAxisExtent: 250,
+          crossAxisSpacing: 5.0,
+          mainAxisSpacing: 5.0,
         ),
       ),
     );

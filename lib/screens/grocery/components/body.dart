@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -57,10 +58,10 @@ class Body extends StatelessWidget {
                               Icon(Icons.image_search_outlined),
                         ),
                       ),
-                      Text(
+                      AutoSizeText(
                         groceryItems.product![i].productName!,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 15,
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
@@ -85,10 +86,8 @@ class Body extends StatelessWidget {
         },
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 1.0,
-          crossAxisSpacing: 0.0,
-          mainAxisSpacing: 10,
-          mainAxisExtent: 250,
+          crossAxisSpacing: 5.0,
+          mainAxisSpacing: 5.0,
         ),
       ),
     );

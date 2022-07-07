@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -30,11 +31,10 @@ class ProfileMenu extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(width: 20),
-            Expanded(
-                child: Text(
+            AutoSizeText(
               text,
-              style: TextStyle(fontSize: 20),
-            )),
+              style: TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ),
