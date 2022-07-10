@@ -37,8 +37,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             "passwordConf": event.cnfrmPassword,
           };
 
-          print(mapRegister);
-
           var regsierData = await apiCall.registerUser(mapRegister);
 
           emit(RegisterLoaded(regsierData));

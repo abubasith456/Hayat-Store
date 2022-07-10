@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/drinks_model.dart';
+import 'package:shop_app/models/forgot_pswd_model.dart';
 import 'package:shop_app/models/fruit_model.dart';
 import 'package:shop_app/models/grocery_model.dart';
 import 'package:shop_app/models/product_model.dart';
@@ -54,6 +55,32 @@ class ApiProvider {
     } catch (e) {
       print(e);
       return RegisterModel.error(e.toString());
+    }
+  }
+
+  //Forgot password
+  Future<ForgotPasswordModel> forgotPassword(
+      dynamic forgotPasswordRequest, BuildContext context) async {
+    try {
+      var forgotPasswordUrl =
+          "https://hidden-waters-80713.herokuapp.com/forgotPassword";
+
+      Response response = await _dio.post(
+        forgotPasswordUrl,
+        data: forgotPasswordRequest,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return ForgotPasswordModel.fromJson(response.data);
+      } else {
+        return ForgotPasswordModel.error("Something went wrong!");
+      }
+    } catch (e) {
+      return ForgotPasswordModel.error(e.toString());
     }
   }
 
@@ -113,7 +140,11 @@ class ApiProvider {
 
       Response response = await _dio.get(VegetableUrl);
 
-      return ProductModel.fromJson(response.data);
+      if (response.statusCode == 200) {
+        return ProductModel.fromJson(response.data);
+      } else {
+        return ProductModel.error(response.statusMessage);
+      }
     } catch (e) {
       print(e);
       return ProductModel.error(e.toString());
@@ -127,7 +158,11 @@ class ApiProvider {
 
       Response response = await _dio.get(groceryUrl);
 
-      return ProductModel.fromJson(response.data);
+      if (response.statusCode == 200) {
+        return ProductModel.fromJson(response.data);
+      } else {
+        return ProductModel.error(response.statusMessage);
+      }
     } catch (e) {
       print(e);
       return ProductModel.error(e.toString());
@@ -141,7 +176,11 @@ class ApiProvider {
 
       Response response = await _dio.get(drinksUrl);
 
-      return ProductModel.fromJson(response.data);
+      if (response.statusCode == 200) {
+        return ProductModel.fromJson(response.data);
+      } else {
+        return ProductModel.error(response.statusMessage);
+      }
     } catch (e) {
       print(e);
       return ProductModel.error(e.toString());
@@ -155,7 +194,11 @@ class ApiProvider {
 
       Response response = await _dio.get(fruitsUrl);
 
-      return ProductModel.fromJson(response.data);
+      if (response.statusCode == 200) {
+        return ProductModel.fromJson(response.data);
+      } else {
+        return ProductModel.error(response.statusMessage);
+      }
     } catch (e) {
       print(e);
       return ProductModel.error(e.toString());
@@ -169,7 +212,11 @@ class ApiProvider {
 
       Response response = await _dio.get(dairyUrl);
 
-      return ProductModel.fromJson(response.data);
+      if (response.statusCode == 200) {
+        return ProductModel.fromJson(response.data);
+      } else {
+        return ProductModel.error(response.statusMessage);
+      }
     } catch (e) {
       print(e);
       return ProductModel.error(e.toString());
