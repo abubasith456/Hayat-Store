@@ -7,11 +7,11 @@ abstract class ForgotPasswordEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ForgotPasswordButtonPressed extends ForgotPasswordEvent {
+class ForgotPasswordButtonPressedEvent extends ForgotPasswordEvent {
   String email;
   BuildContext context;
 
-  ForgotPasswordButtonPressed({
+  ForgotPasswordButtonPressedEvent({
     required this.email,
     required this.context,
   });

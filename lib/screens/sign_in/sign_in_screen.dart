@@ -33,12 +33,15 @@ class _SignInScreenState extends State<SignInScreen> {
     return BlocProvider(
       create: (context) => _loginBloc,
       lazy: false,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: SizedBox(),
-          title: Text("Sign In"),
+      child: WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: SizedBox(),
+            title: Text("Sign In"),
+          ),
+          body: Body(),
         ),
-        body: Body(),
       ),
     );
   }

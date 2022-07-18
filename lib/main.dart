@@ -9,7 +9,7 @@ import 'my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var user = await UserDb.instance.readAllcart();
+  var user = await UserDb.instance.readAllUser();
   await GetStorage.init();
   runApp(
     MultiProvider(

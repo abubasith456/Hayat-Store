@@ -59,19 +59,30 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
     return BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
       listener: (context, state) {
         if (state is ForgotPasswordLoaded) {
+          if (state.forgotPasswordModel.status == 200) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OtpScreen(
+                    email: email!,
+                  ),
+                ));
+          } else {
+            showOkAlertDialog(
+              title: "Alert",
+              message: state.forgotPasswordModel.message,
+              context: context,
+              onWillPop: () async => false,
+              barrierDismissible: false,
+            );
+          }
+        } else if (state is ForgotPasswordError) {
           showOkAlertDialog(
             title: "Alert",
-            message: state.forgotPasswordModel.message!,
+            message: state.error,
             context: context,
             onWillPop: () async => false,
             barrierDismissible: false,
-            builder: (context, child) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => OtpScreen(),
-                  ));
-            },
           );
         }
       },
@@ -128,12 +139,12 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               SizedBox(height: SizeConfig.screenHeight * 0.1),
               DefaultButton(
                 text: "Continue",
-                isLoading: state is ForgotPasswordLoaded ? false : true,
+                isLoading: state is ForgotPasswordLoading ? true : false,
                 press: () {
                   if (_formKey.currentState!.validate()) {
                     // Do what you want to do
                     BlocProvider.of<ForgotPasswordBloc>(context).add(
-                      ForgotPasswordButtonPressed(
+                      ForgotPasswordButtonPressedEvent(
                           context: context, email: email!),
                     );
                   }

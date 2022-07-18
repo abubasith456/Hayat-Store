@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ class ForgotPasswordBloc
   ForgotPasswordBloc() : super(ForgotPasswordInitial()) {
     on<ForgotPasswordEvent>((event, emit) async {
       try {
-        if (event is ForgotPasswordButtonPressed) {
+        if (event is ForgotPasswordButtonPressedEvent) {
           emit(ForgotPasswordLoading());
           Map<String, dynamic> forgotPassswordRequest = {
             "email": event.email,

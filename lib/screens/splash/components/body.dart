@@ -41,7 +41,7 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
         child: Column(
           children: <Widget>[
             Expanded(

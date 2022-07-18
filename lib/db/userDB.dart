@@ -60,7 +60,7 @@ CREATE TABLE $UserData (
     return user.copy(id: id);
   }
 
-  Future<List<User>> readAllcart() async {
+  Future<List<User>> readAllUser() async {
     final db = await instance.database;
 
     final name = '${UserFields.name} ASC';

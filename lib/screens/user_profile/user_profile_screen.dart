@@ -25,7 +25,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<List<User>> getAllData() async {
-    List<User> cartList = await UserDb.instance.readAllcart();
+    List<User> cartList = await UserDb.instance.readAllUser();
     print("DB called....");
     return cartList;
   }
