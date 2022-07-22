@@ -15,3 +15,11 @@ class OtpVerifyButtonPressedEvent extends OtpEvent {
 
   OtpVerifyButtonPressedEvent({required this.email, required this.otp});
 }
+
+class OtpValidationEvent extends OtpEvent {
+  String value;
+  OtpValidationEvent(this.value);
+
+  @override
+  List<Object> get props => [value];
+}

@@ -40,8 +40,9 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SizedBox(
-        width: double.infinity,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
             Expanded(
@@ -76,6 +77,7 @@ class _BodyState extends State<Body> {
                     ),
                     Spacer(flex: 3),
                     DefaultButton(
+                      isEnabled: true,
                       text: "Continue",
                       isLoading: false,
                       press: () async {

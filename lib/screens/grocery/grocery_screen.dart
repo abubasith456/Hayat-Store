@@ -29,6 +29,12 @@ class _GroceryScreenState extends State<GroceryScreen> {
             create: (context) => GroceryBloc()..add(GetGroceryListEvent()),
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 title: Text(
                   'Grocery',
                   style: TextStyle(color: Colors.black),

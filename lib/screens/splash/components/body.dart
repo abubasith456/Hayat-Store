@@ -76,6 +76,7 @@ class _BodyState extends State<Body> {
                     ),
                     Spacer(flex: 3),
                     DefaultButton(
+                      isEnabled: true,
                       text: "Continue",
                       isLoading: false,
                       press: () async {

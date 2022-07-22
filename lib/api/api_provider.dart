@@ -84,6 +84,31 @@ class ApiProvider {
     }
   }
 
+  //Verify OTP
+  Future<ForgotPasswordModel> verifyOtp(dynamic verifyOtpRequest) async {
+    try {
+      var forgotPasswordUrl =
+          "https://hidden-waters-80713.herokuapp.com/forgotPassword/verify";
+
+      Response response = await _dio.post(
+        forgotPasswordUrl,
+        data: verifyOtpRequest,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) => true,
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return ForgotPasswordModel.fromJson(response.data);
+      } else {
+        return ForgotPasswordModel.error("Something went wrong!");
+      }
+    } catch (e) {
+      return ForgotPasswordModel.error(e.toString());
+    }
+  }
+
 //product
   Future<ProductModel> getProduct() async {
     try {

@@ -59,6 +59,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
     return BlocConsumer<ForgotPasswordBloc, ForgotPasswordState>(
       listener: (context, state) {
         if (state is ForgotPasswordLoaded) {
+          print(state.forgotPasswordModel.status);
           if (state.forgotPasswordModel.status == 200) {
             Navigator.push(
                 context,
@@ -138,11 +139,13 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               FormError(errors: errors),
               SizedBox(height: SizeConfig.screenHeight * 0.1),
               DefaultButton(
+                isEnabled: true,
                 text: "Continue",
                 isLoading: state is ForgotPasswordLoading ? true : false,
                 press: () {
                   if (_formKey.currentState!.validate()) {
                     // Do what you want to do
+                    print("Button Clicked");
                     BlocProvider.of<ForgotPasswordBloc>(context).add(
                       ForgotPasswordButtonPressedEvent(
                           context: context, email: email!),

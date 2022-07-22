@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/bloc/my_app_bloc/bloc/my_app_bloc.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
@@ -47,6 +48,20 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Hayat Shop',
       theme: theme(),
+      builder: (context, child) => ResponsiveWrapper.builder(
+        child,
+        maxWidth: 1200,
+        minWidth: 480,
+        defaultScale: true,
+        breakpoints: [
+          ResponsiveBreakpoint.autoScale(480, name: MOBILE),
+          ResponsiveBreakpoint.autoScale(800, name: TABLET),
+          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+        ],
+        background: Container(
+          color: Color(0xFFF5F5F5),
+        ),
+      ),
       initialRoute: widget.isLogged
           ? HomeScreen.routeName
           : seen == 'yes'

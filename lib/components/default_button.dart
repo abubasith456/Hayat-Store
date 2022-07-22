@@ -1,40 +1,44 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
 import '../util/size_config.dart';
 
 class DefaultButton extends StatelessWidget {
-  const DefaultButton({
+  DefaultButton({
     Key? key,
     this.text,
     required this.isLoading,
+    required this.isEnabled,
     this.press,
   }) : super(key: key);
+
   final String? text;
   final Function? press;
   final bool isLoading;
+  final bool? isEnabled;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
-      height: getProportionateScreenHeight(56),
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 15,
       child: TextButton(
         style: TextButton.styleFrom(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           primary: Colors.white,
-          backgroundColor: kPrimaryColor,
+          backgroundColor: isEnabled! ? kPrimaryColor : Colors.black12,
         ),
-        onPressed: press as void Function()?,
+        onPressed: isEnabled! ? press as void Function()? : null,
         child: isLoading
             ? CircularProgressIndicator(
                 color: Colors.white,
               )
-            : Text(
+            : AutoSizeText(
                 text!,
                 style: TextStyle(
-                  fontSize: getProportionateScreenWidth(18),
+                  fontSize: 18,
                   color: Colors.white,
                 ),
               ),

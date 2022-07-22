@@ -13,4 +13,22 @@ class OtpEndState extends OtpState {}
 
 class OtpVerificationLoadingState extends OtpState {}
 
-class OtpVerificationLoadedState extends OtpState {}
+class OtpVerificationLoadedState extends OtpState {
+  ForgotPasswordModel otpModel;
+  OtpVerificationLoadedState(this.otpModel);
+  @override
+  List<Object> get props => [otpModel];
+}
+
+class OtpVerificationErrorState extends OtpState {
+  String error;
+
+  OtpVerificationErrorState(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class OtpFieldValidateSuccessState extends OtpState {}
+
+class OtpFieldValidatedFailedState extends OtpState {}

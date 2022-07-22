@@ -155,6 +155,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   },
                   builder: (context, state) {
                     return DefaultButton(
+                      isEnabled: true,
                       text: "Register",
                       isLoading: isLoading,
                       press: () {

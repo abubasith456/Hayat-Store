@@ -44,9 +44,9 @@ class CartScreen extends StatelessWidget {
   AppBar buildAppBar(BuildContext context, int length) {
     return AppBar(
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: Icon(Icons.arrow_back_ios_new),
         onPressed: () {
-          Navigator.of(context).pop();
+          Navigator.pop(context);
         },
       ),
       title: Padding(

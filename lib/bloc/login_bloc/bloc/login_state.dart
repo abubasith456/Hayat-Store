@@ -18,8 +18,8 @@ class LoadedState extends LoginState {
 
   LoadedState(this.loginModel);
 
-  // @override
-  // List<Object> get props => [loginModel];
+  @override
+  List<Object> get props => [loginModel];
 }
 
 class ErrorState extends LoginState {
@@ -27,6 +27,82 @@ class ErrorState extends LoginState {
 
   ErrorState(this.error);
 
-  // @override
-  // List<Object> get props => [error];
+  @override
+  List<Object> get props => [error];
+}
+
+// class LoginFieldValidateState extends LoginState {
+//   final String emailError;
+//   final String passwordError;
+//   final bool emailIsEmpty;
+//   final bool passwordIsEmpty;
+//   LoginFieldValidateState(
+//       {this.emailIsEmpty = false,
+//       this.passwordIsEmpty = false,
+//       this.emailError = "",
+//       this.passwordError = ""});
+
+//   LoginFieldValidateState copyWith({
+//     String? emailError,
+//     String? passwordError,
+//     bool? emailIsEmpty,
+//     bool? passwordIsEmpty,
+//   }) {
+//     return LoginFieldValidateState(
+//       emailError: emailError ?? this.emailError,
+//       passwordError: passwordError ?? this.passwordError,
+//       emailIsEmpty: emailIsEmpty ?? this.emailIsEmpty,
+//       passwordIsEmpty: passwordIsEmpty ?? this.passwordIsEmpty,
+//     );
+//   }
+
+//   @override
+//   List<Object> get props =>
+//       [emailError, passwordError, emailIsEmpty, passwordIsEmpty];
+// }
+
+//Email Field
+class LoginEmailFieldValidateState extends LoginState {
+  final String emailError;
+  final bool emailValidated;
+  LoginEmailFieldValidateState({
+    this.emailError = "",
+    this.emailValidated = false,
+  });
+
+  LoginEmailFieldValidateState copyWith({
+    String? emailError,
+    bool? emailValidated,
+  }) {
+    return LoginEmailFieldValidateState(
+      emailError: emailError ?? this.emailError,
+      emailValidated: emailValidated ?? this.emailValidated,
+    );
+  }
+
+  @override
+  List<Object> get props => [emailError, emailValidated];
+}
+
+//Password Field
+class LoginPasswordFieldValidateState extends LoginState {
+  final String passwordError;
+  final bool passwordValidated;
+  LoginPasswordFieldValidateState({
+    this.passwordValidated = false,
+    this.passwordError = "",
+  });
+
+  LoginPasswordFieldValidateState copyWith({
+    String? passwordError,
+    bool? passwordValidated,
+  }) {
+    return LoginPasswordFieldValidateState(
+      passwordError: passwordError ?? this.passwordError,
+      passwordValidated: passwordValidated ?? this.passwordValidated,
+    );
+  }
+
+  @override
+  List<Object> get props => [passwordError, passwordValidated];
 }

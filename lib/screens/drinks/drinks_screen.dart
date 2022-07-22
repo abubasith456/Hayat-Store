@@ -28,6 +28,12 @@ class _DrinksScreenState extends State<DrinksScreen> {
             create: (context) => DrinksBloc()..add(GetDrinksListEvent()),
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 title: Text(
                   'Drinks',
                   style: TextStyle(color: Colors.black),

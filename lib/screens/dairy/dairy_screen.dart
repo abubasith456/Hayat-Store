@@ -26,6 +26,12 @@ class _DairyScreenState extends State<DairyScreen> {
             create: (context) => DairyBloc()..add(GetDairyListEvent()),
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios_new),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
                 title: Text(
                   'Dairy',
                   style: TextStyle(color: Colors.black),

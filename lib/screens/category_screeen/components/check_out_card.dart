@@ -77,6 +77,7 @@ class CheckoutCard extends StatelessWidget {
                 SizedBox(
                   width: getProportionateScreenWidth(190),
                   child: DefaultButton(
+                    isEnabled: true,
                     text: "Check Out",
                     isLoading: false,
                     press: () {},
