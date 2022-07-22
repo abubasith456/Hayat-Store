@@ -22,7 +22,7 @@ class DefaultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 15,
+      height: 70,
       child: TextButton(
         style: TextButton.styleFrom(
           shape:

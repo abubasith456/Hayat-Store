@@ -14,7 +14,7 @@
 
     <application
          android:name="${applicationName}"
-        android:label="shop_app"
+        android:label="Hayat"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
