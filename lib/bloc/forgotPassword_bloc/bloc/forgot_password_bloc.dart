@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/api/api_provider.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/forgot_pswd_model.dart';
 
 part 'forgot_password_event.dart';
@@ -25,6 +26,20 @@ class ForgotPasswordBloc
             emit(ForgotPasswordError(_forgotpasswordData.error.toString()));
           } else {
             emit(ForgotPasswordLoaded(_forgotpasswordData));
+          }
+        }
+
+        if (event is EmailChangedEvent) {
+          if (event.email == "") {
+            emit(EmailFieldValidateState().copyWith(
+                emailError: "Email is required please enter the value!",
+                emailValidated: false));
+          } else if (!emailValidatorRegExp.hasMatch(event.email)) {
+            emit(EmailFieldValidateState().copyWith(
+                emailError: "Enter valid email!", emailValidated: false));
+          } else {
+            emit(EmailFieldValidateState()
+                .copyWith(emailError: "", emailValidated: true));
           }
         }
       } catch (e) {

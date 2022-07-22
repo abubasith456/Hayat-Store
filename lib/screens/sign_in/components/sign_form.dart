@@ -187,28 +187,6 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  Padding formErrorPasswordText({required String error}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: Row(
-        children: [
-          SvgPicture.asset(
-            "assets/icons/Error.svg",
-            height: getProportionateScreenWidth(14),
-            width: getProportionateScreenWidth(14),
-          ),
-          SizedBox(
-            width: getProportionateScreenWidth(10),
-          ),
-          Text(
-            error,
-            style: TextStyle(color: Colors.red),
-          ),
-        ],
-      ),
-    );
-  }
-
   // bool validate(LoginState state) {
   //   bool? email = false;
   //   bool? password = false;

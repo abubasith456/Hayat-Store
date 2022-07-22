@@ -203,107 +203,179 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         bottomNavigationBar: BlocBuilder<CartCounterCubit, double>(
           builder: (context, state) {
             return Container(
-              height: 70,
               color: Colors.white,
-              padding: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Container(
-                  //   width: 50,
-                  //   height: 50,
-                  //   alignment: Alignment.center,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //     border: Border.all(color: Colors.white),
-                  //   ),
-                  //   child: BlocBuilder<LikeProductCubit, bool>(
-                  //     builder: (context, state) {
-                  //       return IconButton(
-                  //         onPressed: () {
-                  //           if (state) {
-                  //             context.read<LikeProductCubit>().disLikeProduct();
-                  //           } else
-                  //             context.read<LikeProductCubit>().likeProduct();
-                  //         },
-                  //         icon: Icon(
-                  //           state ? Icons.favorite : Icons.favorite_border,
-                  //           size: 30,
-                  //           color: state ? Colors.red : Colors.grey,
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () async {
-                        if (state > 0) {
-                          final cart = Cart(
-                              name: widget.product.productName!,
-                              price: widget.product.productPrice!.toString(),
-                              description: widget.product.productDescription!,
-                              productImage: widget.product.productImage!,
-                              productId: widget.product.sId!,
-                              quantity: state.toString());
+              padding: EdgeInsets.all(20),
+              child: Container(
+                height: 70,
+                color: Colors.white,
+                child: Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      if (state > 0) {
+                        final cart = Cart(
+                            name: widget.product.productName!,
+                            price: widget.product.productPrice!.toString(),
+                            description: widget.product.productDescription!,
+                            productImage: widget.product.productImage!,
+                            productId: widget.product.sId!,
+                            quantity: state.toString());
 
-                          await MyDatabase.instance.create(cart);
+                        await MyDatabase.instance.create(cart);
 
-                          showSnackBar(
-                              context: context,
-                              text: "Cart Added",
-                              type: TopSnackBarType.success);
-                        } else {
-                          showSnackBar(
-                              context: context,
-                              text:
-                                  "Please select the quantity... How much you want!",
-                              type: TopSnackBarType.error);
-                        }
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: kPrimaryColor,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Text(
-                          'Add to Cart',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                          // style: GoogleFonts.poppins(
-                          //   fontSize: 15,
-                          //   fontWeight: FontWeight.w500,
-                          //   color: Colors.white,
-                          // ),
-                        ),
-
-                        //  Obx(
-                        //   () =>
-                        //       ? SizedBox(
-                        //           width: 20,
-                        //           height: 20,
-                        //           child: CircularProgressIndicator(
-                        //             color: Colors.white,
-                        //             strokeWidth: 3,
-                        //           ),
-                        //         )
-                        //       : Text(
-                        //           '+ Add to Cart',
-                        //           // style: GoogleFonts.poppins(
-                        //           //   fontSize: 15,
-                        //           //   fontWeight: FontWeight.w500,
-                        //           //   color: Colors.white,
-                        //           // ),
-                        //         ),
+                        showSnackBar(
+                            context: context,
+                            text: "Cart Added",
+                            type: TopSnackBarType.success);
+                      } else {
+                        showSnackBar(
+                            context: context,
+                            text:
+                                "Please select the quantity... How much you want!",
+                            type: TopSnackBarType.error);
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Text(
+                        'Add to Cart',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                        // style: GoogleFonts.poppins(
+                        //   fontSize: 15,
+                        //   fontWeight: FontWeight.w500,
+                        //   color: Colors.white,
                         // ),
                       ),
+
+                      //  Obx(
+                      //   () =>
+                      //       ? SizedBox(
+                      //           width: 20,
+                      //           height: 20,
+                      //           child: CircularProgressIndicator(
+                      //             color: Colors.white,
+                      //             strokeWidth: 3,
+                      //           ),
+                      //         )
+                      //       : Text(
+                      //           '+ Add to Cart',
+                      //           // style: GoogleFonts.poppins(
+                      //           //   fontSize: 15,
+                      //           //   fontWeight: FontWeight.w500,
+                      //           //   color: Colors.white,
+                      //           // ),
+                      //         ),
+                      // ),
                     ),
                   ),
-                ],
+                ),
+
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     // Container(
+                //     //   width: 50,
+                //     //   height: 50,
+                //     //   alignment: Alignment.center,
+                //     //   decoration: BoxDecoration(
+                //     //     borderRadius: BorderRadius.circular(10),
+                //     //     border: Border.all(color: Colors.white),
+                //     //   ),
+                //     //   child: BlocBuilder<LikeProductCubit, bool>(
+                //     //     builder: (context, state) {
+                //     //       return IconButton(
+                //     //         onPressed: () {
+                //     //           if (state) {
+                //     //             context.read<LikeProductCubit>().disLikeProduct();
+                //     //           } else
+                //     //             context.read<LikeProductCubit>().likeProduct();
+                //     //         },
+                //     //         icon: Icon(
+                //     //           state ? Icons.favorite : Icons.favorite_border,
+                //     //           size: 30,
+                //     //           color: state ? Colors.red : Colors.grey,
+                //     //         ),
+                //     //       );
+                //     //     },
+                //     //   ),
+                //     // ),
+                //     SizedBox(width: 20),
+                //     Expanded(
+                //       child: InkWell(
+                //         onTap: () async {
+                //           if (state > 0) {
+                //             final cart = Cart(
+                //                 name: widget.product.productName!,
+                //                 price: widget.product.productPrice!.toString(),
+                //                 description: widget.product.productDescription!,
+                //                 productImage: widget.product.productImage!,
+                //                 productId: widget.product.sId!,
+                //                 quantity: state.toString());
+
+                //             await MyDatabase.instance.create(cart);
+
+                //             showSnackBar(
+                //                 context: context,
+                //                 text: "Cart Added",
+                //                 type: TopSnackBarType.success);
+                //           } else {
+                //             showSnackBar(
+                //                 context: context,
+                //                 text:
+                //                     "Please select the quantity... How much you want!",
+                //                 type: TopSnackBarType.error);
+                //           }
+                //         },
+                //         child: Container(
+                //           alignment: Alignment.center,
+                //           decoration: BoxDecoration(
+                //             color: kPrimaryColor,
+                //             borderRadius: BorderRadius.circular(15),
+                //           ),
+                //           child: Text(
+                //             'Add to Cart',
+                //             style: TextStyle(
+                //                 color: Colors.white,
+                //                 fontSize: 15,
+                //                 fontWeight: FontWeight.bold),
+                //             // style: GoogleFonts.poppins(
+                //             //   fontSize: 15,
+                //             //   fontWeight: FontWeight.w500,
+                //             //   color: Colors.white,
+                //             // ),
+                //           ),
+
+                //           //  Obx(
+                //           //   () =>
+                //           //       ? SizedBox(
+                //           //           width: 20,
+                //           //           height: 20,
+                //           //           child: CircularProgressIndicator(
+                //           //             color: Colors.white,
+                //           //             strokeWidth: 3,
+                //           //           ),
+                //           //         )
+                //           //       : Text(
+                //           //           '+ Add to Cart',
+                //           //           // style: GoogleFonts.poppins(
+                //           //           //   fontSize: 15,
+                //           //           //   fontWeight: FontWeight.w500,
+                //           //           //   color: Colors.white,
+                //           //           // ),
+                //           //         ),
+                //           // ),
+                //         ),
+                //       ),
+                //     ),
+
+                //   ],
+                // ),
               ),
             );
           },

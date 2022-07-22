@@ -19,3 +19,11 @@ class ForgotPasswordButtonPressedEvent extends ForgotPasswordEvent {
   @override
   List<Object> get props => [email, context];
 }
+
+class EmailChangedEvent extends ForgotPasswordEvent {
+  String email;
+  EmailChangedEvent(this.email);
+
+  @override
+  List<Object> get props => [email];
+}

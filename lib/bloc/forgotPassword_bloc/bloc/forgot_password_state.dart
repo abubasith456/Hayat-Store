@@ -27,3 +27,25 @@ class ForgotPasswordError extends ForgotPasswordState {
   @override
   List<Object> get props => [error];
 }
+
+class EmailFieldValidateState extends ForgotPasswordState {
+  final String emailError;
+  final bool emailValidated;
+  EmailFieldValidateState({
+    this.emailError = "",
+    this.emailValidated = false,
+  });
+
+  EmailFieldValidateState copyWith({
+    String? emailError,
+    bool? emailValidated,
+  }) {
+    return EmailFieldValidateState(
+      emailError: emailError ?? this.emailError,
+      emailValidated: emailValidated ?? this.emailValidated,
+    );
+  }
+
+  @override
+  List<Object> get props => [emailError, emailValidated];
+}
