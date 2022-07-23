@@ -12,6 +12,7 @@ import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/models/temp_model.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
+import 'package:shop_app/util/error_show_field.dart';
 
 import '../../../constants.dart';
 import '../../../cubit/cubit/register_cubit.dart';
@@ -27,42 +28,41 @@ class SignUpForm extends StatefulWidget {
 
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
-  String? email;
-  String? usernmae;
-  String? password;
-  String? conform_password;
-  String? mobileNumber;
-  String? username;
-  // String? lastName;
-  String? phoneNumber;
-  String? address;
-  String? dateOfBirth;
+
   bool remember = false;
+  var usernameController = TextEditingController();
   var emailConroller = TextEditingController();
   var passwordController = TextEditingController();
   var cnfrmPassController = TextEditingController();
-  var DOBcontroller = TextEditingController();
+  var mobilenumberController = TextEditingController();
+  var dOBcontroller = TextEditingController();
+  var addressController = TextEditingController();
   var sharedPref = SharedPref();
+
+  String emailError = "";
+  String usernmaeError = "";
+  String passwordError = "";
+  String conform_passwordError = "";
+  String mobileNumberError = "";
+  String usernameError = "";
+  String phoneNumberError = "";
+  String addressError = "";
+  String dateOfBirthError = "";
+
+  bool emailValidated = false;
+  bool usernameValidated = false;
+  bool passwordValidated = false;
+  bool cnfrmPasswordValidated = false;
+  bool mobileNumberValidated = false;
+  bool dateOfBirthValidated = false;
+  bool addressValidated = false;
+
   bool isLoading = false;
   final List<String?> errors = [];
 
   static final DateTime now = DateTime.now();
   static final DateFormat formatter = DateFormat('yyyy-MM-dd');
   final String formattedDate = formatter.format(now);
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   void dispose() {
@@ -71,136 +71,168 @@ class _SignUpFormState extends State<SignUpForm> {
   }
 
   clearField() {
-    setState(() {
-      cnfrmPassController.text = '';
-      passwordController.text = '';
-      emailConroller.text = '';
-      email = '';
-      password = '';
-      conform_password = '';
-    });
+    passwordController.text = '';
+    emailConroller.text = '';
+    cnfrmPassController.text = '';
+    usernameController.text = '';
+    mobilenumberController.text = '';
+    addressController.text = '';
+    dOBcontroller.text = '';
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: BlocBuilder<RegisterCubit, RegisterCubitState>(
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => RegisterBloc(context),
-            child: Column(
+      child: BlocProvider(
+        create: (context) => RegisterBloc(context),
+        child: BlocConsumer<RegisterBloc, RegisterState>(
+          listener: (context, state) async {
+            if (state is RegsiterError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error),
+                ),
+              );
+              isLoading = false;
+            } else if (state is RegisterLoading) {
+              print('Loading.....');
+              isLoading = true;
+            } else if (state is RegisterLoaded) {
+              if (state.registerModel.status == 200) {
+                isLoading = false;
+                //For loogged state
+                sharedPref.setBoolValue(loggedKey, true);
+                //Store local DB
+                var user = User(
+                    userId: state.registerModel.userData!.userId!.toString(),
+                    password: passwordController.text,
+                    email: emailConroller.text,
+                    name: usernameController.text);
+                UserDb.instance.create(user);
+                //Home naviogator
+                Navigator.pushNamed(context, HomeScreen.routeName);
+              } else if (state.registerModel.status == 400) {
+                isLoading = false;
+                showDialog(context, 'Failed', state.registerModel.message!);
+              }
+            }
+            if (state is EmailFieldState) {
+              emailError = state.emailError;
+              emailValidated = state.emailValidated;
+            } else if (state is UsernameFieldState) {
+              usernameError = state.usernameError;
+              usernameValidated = state.usernameValidated;
+            } else if (state is PasswordFieldState) {
+              passwordError = state.passwordError;
+              passwordValidated = state.passwordValidated;
+              if (!passwordValidated) {
+                cnfrmPassController.text = '';
+              }
+            } else if (state is ConfrmPasswordFieldState) {
+              conform_passwordError = state.cnfrmPasswordError;
+              cnfrmPasswordValidated = state.cnfrmPasswordValidated;
+            } else if (state is MobileNumberFieldState) {
+              mobileNumberError = state.mobileNumberError;
+              mobileNumberValidated = state.mobileNumberValidated;
+            } else if (state is DOBFieldState) {
+              dateOfBirthError = state.dobError;
+              dateOfBirthValidated = state.dobValidated;
+            } else if (state is AddressFieldState) {
+              addressError = state.addressError;
+              addressValidated = state.addressValidated;
+            }
+          },
+          builder: (context, state) {
+            return Column(
               children: [
-                buildEmailFormField(),
+                buildUserNameFormField(context),
+                SizedBox(
+                  height: 5,
+                ),
+                usernameError != ""
+                    ? formErrorText(error: usernameError)
+                    : SizedBox(),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                // builPhoneNumberFormField(),
-                // SizedBox(height: getProportionateScreenHeight(20)),
-                buildPasswordFormField(),
+                buildEmailFormField(context),
+                SizedBox(
+                  height: 5,
+                ),
+                emailError != ""
+                    ? formErrorText(error: emailError)
+                    : SizedBox(),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                buildConformPassFormField(),
+                buildPasswordFormField(context),
+                SizedBox(
+                  height: 5,
+                ),
+                passwordError != ""
+                    ? formErrorText(error: passwordError)
+                    : SizedBox(),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                buildUserNameFormField(),
+                buildConformPassFormField(context, passwordValidated),
+                SizedBox(
+                  height: 5,
+                ),
+                conform_passwordError != ""
+                    ? formErrorText(error: conform_passwordError)
+                    : SizedBox(),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                // buildLastNameFormField(),
-                // SizedBox(height: getProportionateScreenHeight(30)),
-                buildPhoneNumberFormField(),
+                buildMobileNumberFormField(context),
+                SizedBox(
+                  height: 5,
+                ),
+                mobileNumberError != ""
+                    ? formErrorText(error: mobileNumberError)
+                    : SizedBox(),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 buildDateOfBirthFormField(context),
+                SizedBox(
+                  height: 5,
+                ),
+                dateOfBirthError != ""
+                    ? formErrorText(error: dateOfBirthError)
+                    : SizedBox(),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                buildAddressFormField(),
+                buildAddressFormField(context),
+                SizedBox(
+                  height: 5,
+                ),
+                addressError != ""
+                    ? formErrorText(error: addressError)
+                    : SizedBox(),
                 FormError(errors: errors),
                 SizedBox(height: getProportionateScreenHeight(20)),
-                BlocConsumer<RegisterBloc, RegisterState>(
-                  listener: (context, state) async {
-                    if (state is RegsiterError) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.error),
-                        ),
-                      );
-                      setState(() {
-                        isLoading = false;
-                      });
-                    } else if (state is RegisterLoading) {
-                      print('Loading.....');
-                    } else if (state is RegisterLoaded) {
-                      if (state.registerModel.status == 200) {
-                        //For loogged state
-                        sharedPref.setBoolValue(loggedKey, true);
-                        //Store local DB
-                        var user = User(
-                            userId: state.registerModel.userData!.userId!
-                                .toString(),
-                            password: password!,
-                            email: email!,
-                            name: username!);
-                        UserDb.instance.create(user);
-                        //Home naviogator
-                        Navigator.pushNamed(context, HomeScreen.routeName);
-                      } else if (state.registerModel.status == 400) {
-                        setState(() {
-                          isLoading = false;
-                        });
-                        showDialog(
-                            context, 'Failed', state.registerModel.message!);
-                        setState(() {
-                          isLoading = false;
-                        });
-                      }
-                    } else if (state is RegsiterError) {
-                      setState(() {
-                        isLoading = false;
-                      });
+                DefaultButton(
+                  isEnabled: (usernameValidated &&
+                          emailValidated &&
+                          passwordValidated &&
+                          cnfrmPasswordValidated &&
+                          mobileNumberValidated &&
+                          dateOfBirthValidated &&
+                          addressValidated)
+                      ? true
+                      : false,
+                  text: "Register",
+                  isLoading: isLoading,
+                  press: () {
+                    if (_formKey.currentState!.validate()) {
+                      //Bloc called
+                      BlocProvider.of<RegisterBloc>(context).add(
+                          RegisterButtonPressed(
+                              email: emailConroller.text,
+                              password: passwordController.text,
+                              cnfrmPassword: cnfrmPassController.text,
+                              username: usernameController.text,
+                              dateOfBirth: dOBcontroller.text,
+                              mobileNumber: passwordController.text));
                     }
                   },
-                  builder: (context, state) {
-                    return DefaultButton(
-                      isEnabled: true,
-                      text: "Register",
-                      isLoading: isLoading,
-                      press: () {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            isLoading = true;
-                            errors.clear();
-                          });
-
-                          //Bloc called
-                          String username = this.username!;
-                          BlocProvider.of<RegisterBloc>(context).add(
-                              RegisterButtonPressed(
-                                  email: email!,
-                                  password: passwordController.text,
-                                  cnfrmPassword: cnfrmPassController.text,
-                                  username: username,
-                                  dateOfBirth: dateOfBirth!,
-                                  mobileNumber: phoneNumber!));
-                        }
-                      },
-                    );
-                  },
                 ),
-                // DefaultButton(
-                //   text: "Continue",
-                //   isLoading: false,
-                //   press: () {
-                //     if (_formKey.currentState!.validate()) {
-                //       _formKey.currentState!.save();
-                //       // if all are valid then go to success screen
-                //       setValue('email', email!);
-                //       setValue('password', password!);
-                //       setValue('cnfrmPassword', conform_password!);
-
-                //       clearField();
-                //       Navigator.pushNamed(
-                //           context, CompleteProfileScreen.routeName);
-                //     }
-                //   },
-                // ),
               ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -216,66 +248,17 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
-  // TextFormField builPhoneNumberFormField() {
-  //   return TextFormField(
-  //     obscureText: false,
-  //     keyboardType: TextInputType.number,
-  //     onSaved: (newValue) => mobileNumber = newValue,
-  //     onChanged: (value) {
-  //       if (value.isNotEmpty) {
-  //         removeError(error: mobileNumberError);
-  //       } else if (value.isNotEmpty && mobileNumber?.length.toInt() == 10) {
-  //         removeError(error: mobileNumberErrorLength);
-  //       } else {
-  //         mobileNumber = value;
-  //       }
-  //     },
-  //     validator: (value) {
-  //       if (value!.isEmpty) {
-  //         addError(error: mobileNumberError);
-  //         return "";
-  //       } else if (value.isNotEmpty && mobileNumber?.length != 10) {
-  //         addError(error: mobileNumberErrorLength);
-  //       }
-  //       return null;
-  //     },
-  //     decoration: InputDecoration(
-  //       labelText: "Mobile Number",
-  //       hintText: "Enter your mobile number",
-  //       // If  you are using latest version of flutter then lable text and hint text shown like this
-  //       // if you r using flutter less then 1.20.* then maybe this is not working properly
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //       suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Call.svg"),
-  //     ),
-  //   );
-  // }
-
-  TextFormField buildConformPassFormField() {
+  TextFormField buildConformPassFormField(BuildContext context, bool enbled) {
     return TextFormField(
       obscureText: true,
+      enabled: enbled,
       controller: cnfrmPassController,
-      onSaved: (newValue) => conform_password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.isNotEmpty && password == conform_password) {
-          removeError(error: kMatchPassError);
-        }
-        conform_password = value;
+        BlocProvider.of<RegisterBloc>(context).add(
+            RegisterCnfrmPasswordOnChangedEvent(
+                value, passwordController.text));
       },
       textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
-        } else if ((password != value)) {
-          addError(error: kMatchPassError);
-          return "";
-        } else {
-          conform_password = value;
-          return null;
-        }
-      },
       decoration: InputDecoration(
         labelText: "Confirm Password",
         hintText: "Re-enter your password",
@@ -287,32 +270,15 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildPasswordFormField() {
+  TextFormField buildPasswordFormField(BuildContext context) {
     return TextFormField(
       obscureText: true,
       controller: passwordController,
-      onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        password = value;
+        BlocProvider.of<RegisterBloc>(context)
+            .add(RegisterPasswordOnChangedEvent(value));
       },
       textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kPassNullError);
-          return "";
-        } else if (value.length < 8) {
-          addError(error: kShortPassError);
-          return "";
-        } else {
-          password = value;
-          return null;
-        }
-      },
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
@@ -324,32 +290,15 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildEmailFormField() {
+  TextFormField buildEmailFormField(BuildContext context) {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: emailConroller,
-      onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
+        BlocProvider.of<RegisterBloc>(context)
+            .add(RegisterEmailOnChangedEvent(value));
       },
       textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kEmailNullError);
-          return "";
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-          return "";
-        } else {
-          email = value;
-        }
-        return null;
-      },
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
@@ -361,23 +310,12 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildAddressFormField() {
+  TextFormField buildAddressFormField(BuildContext context) {
     return TextFormField(
-      onSaved: (newValue) => address = newValue,
+      controller: addressController,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kAddressNullError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kAddressNullError);
-          return "";
-        } else {
-          address = value;
-        }
-        return null;
+        BlocProvider.of<RegisterBloc>(context)
+            .add(RegisterAddressOnChangedEvent(value));
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -392,37 +330,18 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  TextFormField buildPhoneNumberFormField() {
+  TextFormField buildMobileNumberFormField(BuildContext context) {
     return TextFormField(
       keyboardType: TextInputType.phone,
-      onSaved: (newValue) => phoneNumber = newValue,
+      controller: mobilenumberController,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPhoneNumberNullError);
-        } else if (value.isNotEmpty && phoneNumber?.length.toInt() == 10) {
-          removeError(error: mobileNumberErrorLength);
-        } else if (value.length != 10) {
-          addError(error: mobileNumberErrorLength);
-        }
-        return null;
+        BlocProvider.of<RegisterBloc>(context)
+            .add(RegisterMobileNumOnChangedEvent(value));
       },
       textInputAction: TextInputAction.next,
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: kPhoneNumberNullError);
-          return "";
-        } else if (value.length != 10) {
-          addError(error: mobileNumberErrorLength);
-          return "";
-        } else {
-          phoneNumber = value;
-        }
-        return null;
-      },
-      maxLength: 10,
       decoration: InputDecoration(
-        labelText: "Phone Number",
-        hintText: "Enter your phone number",
+        labelText: "Mobile Number",
+        hintText: "Enter your Mobile number",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -442,30 +361,19 @@ class _SignUpFormState extends State<SignUpForm> {
           firstDate: DateTime(1900),
           lastDate: DateTime(2030),
         );
-        setState(() {
-          if (newDate != null) {
-            DOBcontroller.text = DateFormat('yyyy-MM-dd').format(newDate);
-          }
-        });
+
+        if (newDate != null) {
+          dOBcontroller.text = DateFormat('yyyy-MM-dd').format(newDate);
+          BlocProvider.of<RegisterBloc>(context).add(RegisterDOBOnChangedEvent(
+              DateFormat('yyyy-MM-dd').format(newDate)));
+        }
       },
       showCursor: false,
       enabled: true,
-      controller: DOBcontroller,
-      onSaved: (newValue) => dateOfBirth = newValue,
+      controller: dOBcontroller,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: dateOfError);
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: dateOfError);
-          return "";
-        } else {
-          dateOfBirth = value;
-        }
-        return null;
+        BlocProvider.of<RegisterBloc>(context)
+            .add(RegisterDOBOnChangedEvent(value));
       },
       decoration: InputDecoration(
         labelText: "Date Of Birth",
@@ -478,39 +386,12 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  // TextFormField buildLastNameFormField() {
-  //   return TextFormField(
-  //     onSaved: (newValue) => lastName = newValue,
-  //     decoration: InputDecoration(
-  //       labelText: "Last Name",
-  //       hintText: "Enter your last name (optional)",
-  //       // If  you are using latest version of flutter then lable text and hint text shown like this
-  //       // if you r using flutter less then 1.20.* then maybe this is not working properly
-  //       floatingLabelBehavior: FloatingLabelBehavior.always,
-  //       suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-  //     ),
-  //   );
-  // }
-
-  TextFormField buildUserNameFormField() {
+  TextFormField buildUserNameFormField(BuildContext context) {
     return TextFormField(
-      onSaved: (newValue) => username = newValue,
+      controller: usernameController,
       onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: usernameError);
-        }
-        username = value;
-        return null;
-      },
-      validator: (value) {
-        if (value!.isEmpty) {
-          addError(error: usernameError);
-          return "";
-        } else {
-          username = value;
-        }
-
-        return null;
+        BlocProvider.of<RegisterBloc>(context)
+            .add(RegisterUsernameOnChangedEvent(value));
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
