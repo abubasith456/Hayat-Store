@@ -4,6 +4,7 @@ import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shop_app/bloc/otp_bloc/bloc/otp_bloc.dart';
 import 'package:shop_app/components/default_button.dart';
+import 'package:shop_app/screens/change_password_screen/change_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/util/custom_snackbar.dart';
 import 'package:shop_app/util/size_config.dart';
@@ -67,7 +68,11 @@ class _OtpFormState extends State<OtpForm> {
               type: TopSnackBarType.success);
           //change that page into password field to change apssword
           Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => HomeScreen())));
+            context,
+            MaterialPageRoute(
+                builder: ((context) =>
+                    ChangePasswordScreen(widget.email, true))),
+          );
           otpController.clear();
         } else if (state is OtpVerificationErrorState) {
           showSnackBar(

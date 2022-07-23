@@ -16,7 +16,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         child: Padding(
           padding:

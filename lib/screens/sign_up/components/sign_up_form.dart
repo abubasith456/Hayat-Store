@@ -128,6 +128,7 @@ class _SignUpFormState extends State<SignUpForm> {
               passwordValidated = state.passwordValidated;
               if (!passwordValidated) {
                 cnfrmPassController.text = '';
+                conform_passwordError = "";
               }
             } else if (state is ConfrmPasswordFieldState) {
               conform_passwordError = state.cnfrmPasswordError;
