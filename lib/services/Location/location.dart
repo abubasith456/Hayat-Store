@@ -18,7 +18,7 @@ class Location {
         bearing: 192.8334901395799,
         target: LatLng(10.882605, 79.679260),
         tilt: 59.440717697143555,
-        zoom: 19.151926040649414);
+        zoom: 20.151926040649414);
     return _kShop;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,8 +10,9 @@ import 'my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var user = await UserDb.instance.readAllUser();
   await GetStorage.init();
+  // await Firebase.initializeApp();
+  var user = await UserDb.instance.readAllUser();
   runApp(
     MultiProvider(
       providers: [
