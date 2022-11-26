@@ -45,6 +45,7 @@ const String loggedKey = 'LoggedIn';
 const String isFirstLogin = 'isFirstLogin';
 const String emailKey = 'email';
 const String userIdKey = 'userId';
+const String pushToken = 'pushToken';
 
 //Url
 const String imageLoadUrl = 'https://hidden-waters-80713.herokuapp.com/';

@@ -273,4 +273,27 @@ class ApiProvider {
       return ProductModel.error(e.toString());
     }
   }
+
+  //fcm
+  Future<ForgotPasswordModel> setPushToken(String id, String pushToken) async {
+    try {
+      var tokenUrl = url + "/fcm/pushToken";
+
+      Map<String, String> req = {
+        "unique_id": id,
+        "pushToken": pushToken
+      };
+
+      Response response = await _dio.post(tokenUrl, data: req);
+
+      if (response.statusCode == 200) {
+        return ForgotPasswordModel.fromJson(response.data);
+      } else {
+        return ForgotPasswordModel.error(response.statusMessage);
+      }
+    } catch (e) {
+      print(e);
+      return ForgotPasswordModel.error(e.toString());
+    }
+  }
 }

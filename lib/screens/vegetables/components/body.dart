@@ -9,7 +9,7 @@ import 'package:shop_app/screens/details_screen/details_screen.dart';
 import 'package:shop_app/screens/vegetables/components/vegetable_card.dart';
 
 class Body extends StatelessWidget {
-  Body({required this.vegetable, Key? key}) : super(key: key);
+    Body({required this.vegetable, Key? key}) : super(key: key);
   ProductModel vegetable;
 
   NetworkImage getImage(String imageName) {

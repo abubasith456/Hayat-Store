@@ -10,4 +10,8 @@ class SharedPrefService {
   Object? getData(String key) => sharedPreferences!.get(key);
 
   Future<bool> remove(String key) => sharedPreferences!.remove(key);
+
+  void setData(String key, String value) async {
+    await sharedPreferences?.setString(key, value);
+  }
 }
