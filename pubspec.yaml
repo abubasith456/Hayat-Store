@@ -37,7 +37,7 @@ dependencies:
   loader_overlay: ^2.0.7
   http: ^0.13.4
   adaptive_dialog: ^1.6.4
-  flutter_launcher_icons: ^0.9.3
+  flutter_launcher_icons: ^0.11.0
   shared_preferences: ^2.0.15
   sqflite: ^2.0.2+1
   path_provider: ^2.0.11
@@ -68,10 +68,10 @@ dependencies:
   url_launcher: ^6.1.5
   flutter_phone_direct_caller: ^2.1.1
   flutter_email_sender: ^5.1.0
-  firebase_auth: ^3.6.1
-  firebase_core: ^1.20.0
+  firebase_auth: ^4.1.4
+  firebase_core: ^2.3.0
   flutterfire_cli: ^0.2.4
-  firebase_messaging: ^13.0.0
+  firebase_messaging: ^14.1.2
   flutter_local_notifications: ^9.9.1
   loading_animation_widget: ^1.2.0+3
 
@@ -81,10 +81,11 @@ dev_dependencies:
   auto_route_generator: ^3.2.0              
   build_runner:  
 
-# flutter_icons:
-#   android: true
-#   ios: true
-#   image_path: "assets/images/logo.png"
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/images/logo.png"
+  image_path_ios: "assets/images/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

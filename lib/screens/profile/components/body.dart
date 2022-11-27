@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/db/database.dart';
 import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/screens/aboutUs/aboutus_screen.dart';
+import 'package:shop_app/screens/order_history_screen/order_history_screen.dart';
 import '../../../constants.dart';
 import '../../sign_in/sign_in_screen.dart';
 import '../../user_profile/user_profile_screen.dart';
@@ -59,6 +60,15 @@ class Body extends StatelessWidget {
                           // get the scoped router by calling
                           Navigator.pushNamed(
                               context, UserProfileScreen.routeName),
+                        },
+                      ),
+                      ProfileMenu(
+                        text: "Order History",
+                        icon: "assets/icons/User Icon.svg",
+                        press: () async => {
+                          // get the scoped router by calling
+                          Navigator.pushNamed(
+                              context, OrderHistoryScreen.routeName),
                         },
                       ),
                       ProfileMenu(
