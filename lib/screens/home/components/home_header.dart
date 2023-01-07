@@ -39,6 +39,14 @@ class _HomeHeaderState extends State<HomeHeader> {
           SizedBox(
             width: 20,
           ),
+          IconBtnWithCounter(
+            svgSrc: "assets/icons/Search_Icon.svg",
+            numOfitem: 3,
+            press: () {},
+          ),
+          SizedBox(
+            width: 20,
+          ),
           BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
             builder: (context, state) {
               return IconBtnWithCounter(
