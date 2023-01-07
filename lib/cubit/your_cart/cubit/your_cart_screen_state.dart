@@ -13,10 +13,10 @@ enum YourCartState { initial, loaded, error }
 //   // YourCartScreenInitial(this.items);
 // }
 
-class YourCartItemCount {
-  int item;
-  List<Cart> cartList;
-  double totalAmount;
+class YourCartItemCount extends Equatable {
+  final int item;
+  final List<Cart> cartList;
+  final double totalAmount;
   YourCartState state = YourCartState.initial;
   YourCartItemCount(
       {required this.item,

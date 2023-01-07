@@ -4,7 +4,9 @@ import 'package:shop_app/db/database.dart';
 import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/screens/aboutUs/aboutus_screen.dart';
 import 'package:shop_app/screens/order_history_screen/order_history_screen.dart';
+import 'package:shop_app/services/locator.dart';
 import '../../../constants.dart';
+import '../../../services/shared_preferences/shared_pref.dart';
 import '../../sign_in/sign_in_screen.dart';
 import '../../user_profile/user_profile_screen.dart';
 import 'profile_menu.dart';
@@ -105,6 +107,7 @@ class Body extends StatelessWidget {
                           Navigator.pushNamed(context, SignInScreen.routeName);
                           await UserDb.instance.delete(1);
                           await MyDatabase.instance.deleteTable();
+                          sl<SharedPrefService>().clearData();
                         },
                       ),
                     ],

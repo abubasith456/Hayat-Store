@@ -13,6 +13,7 @@ import 'package:shop_app/screens/otp/otp_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/screens/splash/splash_screen.dart';
+import 'package:shop_app/screens/success_screen/success_screen.dart';
 import 'package:shop_app/screens/user_profile/user_profile_screen.dart';
 import 'package:shop_app/screens/vegetables/vegetable_screen.dart';
 
@@ -39,5 +40,6 @@ final Map<String, WidgetBuilder> routes = {
   GroceryScreen.routeName: (context) => GroceryScreen(),
   AboutUsScreen.routeName: (context) => AboutUsScreen(),
   OrderHistoryScreen.routeName: (context) => OrderHistoryScreen(),
+  SuccessScreen.routeName: (context) => SuccessScreen(),
   // ProductDetailsView.routeName: (context) => ProductDetailsView(),
 };

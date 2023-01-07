@@ -45,10 +45,12 @@ const String loggedKey = 'LoggedIn';
 const String isFirstLogin = 'isFirstLogin';
 const String emailKey = 'email';
 const String userIdKey = 'userId';
+const String userNameKey = 'userName';
 const String pushToken = 'pushToken';
 
 //Url
-const String imageLoadUrl = 'https://hidden-waters-80713.herokuapp.com/';
+const String imageLoadUrl =
+    'http://ec2-43-205-217-128.ap-south-1.compute.amazonaws.com:3000/';
 
 enum TopSnackBarType { success, error, info }
 

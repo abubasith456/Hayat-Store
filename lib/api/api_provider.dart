@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,6 +9,7 @@ import 'package:shop_app/models/drinks_model.dart';
 import 'package:shop_app/models/forgot_pswd_model.dart';
 import 'package:shop_app/models/fruit_model.dart';
 import 'package:shop_app/models/grocery_model.dart';
+import 'package:shop_app/models/order_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/register_model.dart';
 import 'package:shop_app/models/user_profile_model.dart';
@@ -17,12 +19,13 @@ import 'package:flutter/material.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();
-  final url = "https://hidden-waters-80713.herokuapp.com";
+  final BASE_URL =
+      "http://ec2-43-205-217-128.ap-south-1.compute.amazonaws.com:3000/";
 
 //Login user
   Future<LoginModel> loginUser(String email, String password) async {
     try {
-      var loginUrl = "https://hidden-waters-80713.herokuapp.com/login";
+      var loginUrl = BASE_URL + "login";
 
       Map<String, String> mapValue = {
         'email': email,
@@ -41,7 +44,7 @@ class ApiProvider {
 //Regsiter user
   Future<RegisterModel> registerUser(dynamic registerRequest) async {
     try {
-      var registerUrl = "https://hidden-waters-80713.herokuapp.com/register";
+      var registerUrl = BASE_URL + "register";
 
       Response response = await _dio.post(registerUrl,
           data: registerRequest,
@@ -62,8 +65,7 @@ class ApiProvider {
   Future<ForgotPasswordModel> forgotPassword(
       dynamic forgotPasswordRequest, BuildContext context) async {
     try {
-      var forgotPasswordUrl =
-          "https://hidden-waters-80713.herokuapp.com/forgotPassword";
+      var forgotPasswordUrl = BASE_URL + "forgotPassword";
 
       Response response = await _dio.post(
         forgotPasswordUrl,
@@ -88,8 +90,7 @@ class ApiProvider {
   Future<ForgotPasswordModel> changePassword(
       dynamic changePasswordRequest) async {
     try {
-      var changePasswordUrl =
-          "https://hidden-waters-80713.herokuapp.com/changePassword";
+      var changePasswordUrl = BASE_URL + "changePassword";
 
       Response response = await _dio.post(
         changePasswordUrl,
@@ -113,8 +114,7 @@ class ApiProvider {
   //Verify OTP
   Future<ForgotPasswordModel> verifyOtp(dynamic verifyOtpRequest) async {
     try {
-      var forgotPasswordUrl =
-          "https://hidden-waters-80713.herokuapp.com/forgotPassword/verify";
+      var forgotPasswordUrl = BASE_URL + "forgotPassword/verify";
 
       Response response = await _dio.post(
         forgotPasswordUrl,
@@ -138,7 +138,7 @@ class ApiProvider {
 //product
   Future<ProductModel> getProduct() async {
     try {
-      var productUrl = "https://hidden-waters-80713.herokuapp.com/products";
+      var productUrl = BASE_URL + "products";
 
       Response response = await _dio.get(productUrl);
       print(response.data);
@@ -152,7 +152,7 @@ class ApiProvider {
 //Category - no use
   Future getCategory() async {
     try {
-      var registerUrl = "https://hidden-waters-80713.herokuapp.com/category";
+      var registerUrl = BASE_URL + "category";
 
       Response response = await _dio.get(registerUrl);
       List list = response.data;
@@ -169,7 +169,7 @@ class ApiProvider {
 //Profile
   Future<UserProfileModel> getUserProfile(String userId) async {
     try {
-      var profileDta = "https://hidden-waters-80713.herokuapp.com/profile";
+      var profileDta = BASE_URL + "profile";
 
       Map<String, String> mapValue = {
         'userId': userId,
@@ -187,7 +187,7 @@ class ApiProvider {
 //GetVegetables
   Future<ProductModel> getVegetables() async {
     try {
-      var VegetableUrl = "https://hidden-waters-80713.herokuapp.com/vegetables";
+      var VegetableUrl = BASE_URL + "vegetables";
 
       Response response = await _dio.get(VegetableUrl);
 
@@ -205,7 +205,7 @@ class ApiProvider {
 //Get Grocery
   Future<ProductModel> getGroceryItems() async {
     try {
-      var groceryUrl = "https://hidden-waters-80713.herokuapp.com/grocery";
+      var groceryUrl = BASE_URL + "grocery";
 
       Response response = await _dio.get(groceryUrl);
 
@@ -223,7 +223,7 @@ class ApiProvider {
 //Get Drinks
   Future<ProductModel> getDrinksItems() async {
     try {
-      var drinksUrl = "https://hidden-waters-80713.herokuapp.com/drinks";
+      var drinksUrl = BASE_URL + "drinks";
 
       Response response = await _dio.get(drinksUrl);
 
@@ -241,7 +241,7 @@ class ApiProvider {
 //Get Fruits
   Future<ProductModel> getFruitsItems() async {
     try {
-      var fruitsUrl = "https://hidden-waters-80713.herokuapp.com/fruits";
+      var fruitsUrl = BASE_URL + "fruits";
 
       Response response = await _dio.get(fruitsUrl);
 
@@ -259,7 +259,7 @@ class ApiProvider {
 //Get Dairy
   Future<ProductModel> getDairyItems() async {
     try {
-      var dairyUrl = "https://hidden-waters-80713.herokuapp.com/dairy";
+      var dairyUrl = BASE_URL + "dairy";
 
       Response response = await _dio.get(dairyUrl);
 
@@ -274,15 +274,34 @@ class ApiProvider {
     }
   }
 
+  Future<OrdersNewModel> postOrders(dynamic list) async {
+    try {
+      // final req = json.encode(list);
+      final orderUrl = BASE_URL + "orders";
+
+      // print(list);
+
+      Response response = await _dio.post(orderUrl, data: list);
+
+      debugPrint("==> ${response.statusCode} ");
+
+      if (response.statusCode == 500) {
+        return OrdersNewModel.error(response.statusMessage!);
+      } else {
+        return OrdersNewModel.fromJson(response.data);
+      }
+    } catch (e) {
+      print(e.toString());
+      return OrdersNewModel.error(e.toString());
+    }
+  }
+
   //fcm
   Future<ForgotPasswordModel> setPushToken(String id, String pushToken) async {
     try {
-      var tokenUrl = url + "/fcm/pushToken";
+      var tokenUrl = BASE_URL + "fcm/pushToken";
 
-      Map<String, String> req = {
-        "unique_id": id,
-        "pushToken": pushToken
-      };
+      Map<String, String> req = {"unique_id": id, "pushToken": pushToken};
 
       Response response = await _dio.post(tokenUrl, data: req);
 

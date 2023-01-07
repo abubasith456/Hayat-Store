@@ -12,6 +12,8 @@ import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/models/temp_model.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
+import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 import 'package:shop_app/util/error_show_field.dart';
 
 import '../../../constants.dart';
@@ -110,6 +112,10 @@ class _SignUpFormState extends State<SignUpForm> {
                     email: emailConroller.text,
                     name: usernameController.text);
                 UserDb.instance.create(user);
+                sl<SharedPrefService>().setData(userIdKey,
+                    state.registerModel.userData!.userId!.toString());
+                sl<SharedPrefService>().setData(
+                    userNameKey, state.registerModel.userData!.username!);
                 //Home naviogator
                 Navigator.pushNamed(context, HomeScreen.routeName);
               } else if (state.registerModel.status == 400) {

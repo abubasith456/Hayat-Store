@@ -15,11 +15,13 @@ import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/models/user_db_model.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
+import 'package:shop_app/services/locator.dart';
 import 'package:shop_app/util/custom_snackbar.dart';
 import 'package:shop_app/util/shared_pref.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
 import '../../../db/db_services.dart';
+import '../../../services/shared_preferences/shared_pref.dart';
 import '../../../util/size_config.dart';
 import '../../../db/userDB.dart';
 
@@ -82,6 +84,11 @@ class _SignFormState extends State<SignForm> {
                 emailKey, state.loginModel.userData!.email!);
             sharedPref.setStringValue(
                 userIdKey, state.loginModel.userData!.userId!.toString());
+
+            sl<SharedPrefService>().setData(
+                userIdKey, state.loginModel.userData!.userId!.toString());
+            sl<SharedPrefService>()
+                .setData(userNameKey, state.loginModel.userData!.username!);
 
             var user = User(
                 userId: state.loginModel.userData!.userId!.toString(),

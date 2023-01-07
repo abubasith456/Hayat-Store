@@ -1,19 +1,43 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shop_app/bloc/order_bloc/bloc/order_bloc.dart';
 import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
+import 'package:shop_app/db/database.dart';
+import 'package:shop_app/screens/success_screen/success_screen.dart';
+import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/util/custom_dialog.dart';
 
 import '../../../constants.dart';
 import '../../../models/my_db_model.dart';
+import '../../../services/shared_preferences/shared_pref.dart';
 import '../../../util/size_config.dart';
 
-class CheckoutCard extends StatelessWidget {
-  List<Cart> cartList;
+class CheckoutCard extends StatefulWidget {
+  final List<Cart> cartList;
   CheckoutCard({Key? key, required this.cartList}) : super(key: key);
 
   @override
+  State<CheckoutCard> createState() => _CheckoutCardState();
+}
+
+class _CheckoutCardState extends State<CheckoutCard> {
+  late int totalAmount;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    CustomDialog customDialog = CustomDialog(context: context);
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: getProportionateScreenWidth(15),
@@ -79,14 +103,45 @@ class CheckoutCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: getProportionateScreenWidth(190),
-                      child: DefaultButton(
-                        isEnabled: true,
-                        text: "Check Out",
-                        isLoading: false,
-                        press: () {},
-                      ),
-                    ),
+                        width: getProportionateScreenWidth(190),
+                        child: BlocConsumer<OrderBloc, OrderState>(
+                          listener: (context, state) {
+                            if (state is OrderLoadingState) {
+                              customDialog.showProgressDialog();
+                            }
+
+                            if (state is OrderPlaced) {
+                              customDialog.dismissDialog();
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                  context, SuccessScreen.routeName);
+                              MyDatabase.instance.deleteTable();
+                            }
+                          },
+                          builder: ((context, state) {
+                            return DefaultButton(
+                              isEnabled: true,
+                              text: "Check Out",
+                              isLoading: false,
+                              press: () {
+                                debugPrint(sl<SharedPrefService>()
+                                    .getData(userIdKey)
+                                    .toString());
+                                BlocProvider.of<OrderBloc>(context).add(
+                                    PlaceTheOrder(
+                                        userId: int.parse(
+                                            sl<SharedPrefService>()
+                                                .getData(userIdKey)
+                                                .toString()),
+                                        name: sl<SharedPrefService>()
+                                            .getData(userNameKey)
+                                            .toString(),
+                                        listOfProducts: widget.cartList,
+                                        totalAmount: 100));
+                              },
+                            );
+                          }),
+                        )),
                   ],
                 );
               },
@@ -96,4 +151,12 @@ class CheckoutCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void _showBottomSuccessSheet(OrderPlaced state, BuildContext context) {
+  showBottomSheet(
+      context: context,
+      builder: ((context) {
+        return Container();
+      }));
 }

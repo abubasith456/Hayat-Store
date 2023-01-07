@@ -14,4 +14,8 @@ class SharedPrefService {
   void setData(String key, String value) async {
     await sharedPreferences?.setString(key, value);
   }
+
+  void clearData() async {
+    await sharedPreferences?.clear();
+  }
 }

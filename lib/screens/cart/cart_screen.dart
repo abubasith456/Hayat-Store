@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
-import 'package:shop_app/db/database.dart';
-
 import '../../models/my_db_model.dart';
 import '../../util/size_config.dart';
 import 'components/body.dart';
@@ -21,6 +19,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
     return BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
       builder: (context, state) {
         return state.cartList != null
