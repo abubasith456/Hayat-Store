@@ -50,7 +50,7 @@ const String pushToken = 'pushToken';
 
 //Url
 const String imageLoadUrl =
-    'http://ec2-43-205-217-128.ap-south-1.compute.amazonaws.com:3000/';
+    'http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/';
 
 enum TopSnackBarType { success, error, info }
 
