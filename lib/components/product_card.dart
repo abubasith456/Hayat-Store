@@ -62,31 +62,28 @@ class ProductCard extends StatelessWidget {
                     color: kSecondaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Hero(
-                    tag: product!.sId!,
-                    child: CachedNetworkImage(
-                      imageUrl: imageLoadUrl + product!.productImage!,
-                      placeholder: (context, url) => Center(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Icon(Icons.image_search_outlined),
-                        ),
+                  child: CachedNetworkImage(
+                    imageUrl: imageLoadUrl + product!.productImage!,
+                    placeholder: (context, url) => Center(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Icon(Icons.image_search_outlined),
                       ),
-                      //  Shimmer.fromColors(
-                      //   child: Container(
-                      //       padding:
-                      //           EdgeInsets.all(getProportionateScreenWidth(20)),
-                      //       decoration: BoxDecoration(
-                      //         color: kSecondaryColor.withOpacity(0.1),
-                      //         borderRadius: BorderRadius.circular(15),
-                      //       ),
-                      //       child: Container()),
-                      //   baseColor: Colors.grey.shade300,
-                      //   highlightColor: Colors.grey.shade100,
-                      // ),
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.image_search_outlined),
                     ),
+                    //  Shimmer.fromColors(
+                    //   child: Container(
+                    //       padding:
+                    //           EdgeInsets.all(getProportionateScreenWidth(20)),
+                    //       decoration: BoxDecoration(
+                    //         color: kSecondaryColor.withOpacity(0.1),
+                    //         borderRadius: BorderRadius.circular(15),
+                    //       ),
+                    //       child: Container()),
+                    //   baseColor: Colors.grey.shade300,
+                    //   highlightColor: Colors.grey.shade100,
+                    // ),
+                    errorWidget: (context, url, error) =>
+                        Icon(Icons.image_search_outlined),
                   ),
                 ),
               ),
