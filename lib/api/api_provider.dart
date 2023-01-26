@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 class ApiProvider {
   final Dio _dio = Dio();
   final BASE_URL =
-      "http://ec2-43-205-217-128.ap-south-1.compute.amazonaws.com:3000/";
+      "http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/";
 
 //Login user
   Future<LoginModel> loginUser(String email, String password) async {
