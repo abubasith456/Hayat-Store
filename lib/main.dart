@@ -10,6 +10,7 @@ import 'package:shop_app/bloc/order_bloc/bloc/order_bloc.dart';
 import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/db/userDB.dart';
+import 'package:shop_app/firebase_options.dart';
 import 'package:shop_app/services/locator.dart';
 import 'my_app.dart';
 
@@ -28,7 +29,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   await GetStorage.init();
   await setLocator();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);

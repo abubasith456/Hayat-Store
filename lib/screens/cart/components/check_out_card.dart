@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/bloc/order_bloc/bloc/order_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:shop_app/db/database.dart';
 import 'package:shop_app/screens/success_screen/success_screen.dart';
 import 'package:shop_app/services/locator.dart';
 import 'package:shop_app/util/custom_dialog.dart';
+import 'package:shop_app/util/custom_snackbar.dart';
 
 import '../../../constants.dart';
 import '../../../models/my_db_model.dart';
@@ -120,24 +120,27 @@ class _CheckoutCardState extends State<CheckoutCard> {
                           },
                           builder: ((context, state) {
                             return DefaultButton(
-                              isEnabled: true,
+                              isEnabled:
+                                  !widget.cartList.isEmpty ? true : false,
                               text: "Check Out",
                               isLoading: false,
                               press: () {
                                 debugPrint(sl<SharedPrefService>()
                                     .getData(userIdKey)
                                     .toString());
-                                BlocProvider.of<OrderBloc>(context).add(
-                                    PlaceTheOrder(
-                                        userId: int.parse(
-                                            sl<SharedPrefService>()
-                                                .getData(userIdKey)
-                                                .toString()),
-                                        name: sl<SharedPrefService>()
-                                            .getData(userNameKey)
-                                            .toString(),
-                                        listOfProducts: widget.cartList,
-                                        totalAmount: 100));
+                                if (!widget.cartList.isEmpty) {
+                                  BlocProvider.of<OrderBloc>(context).add(
+                                      PlaceTheOrder(
+                                          userId: int.parse(
+                                              sl<SharedPrefService>()
+                                                  .getData(userIdKey)
+                                                  .toString()),
+                                          name: sl<SharedPrefService>()
+                                              .getData(userNameKey)
+                                              .toString(),
+                                          listOfProducts: widget.cartList,
+                                          totalAmount: 100));
+                                }
                               },
                             );
                           }),

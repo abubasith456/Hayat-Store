@@ -10,7 +10,7 @@ import 'package:shop_app/models/my_db_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/vegetables_model.dart';
 import 'package:shop_app/util/custom_snackbar.dart';
-
+import 'dart:io' show Platform;
 import '../../cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 
 class ProductDetailsView extends StatelessWidget {
@@ -199,9 +199,13 @@ class ProductDetailsView extends StatelessWidget {
           bottomNavigationBar: BlocBuilder<CartCounterCubit, double>(
             builder: (context, state) {
               return Container(
-                height: 70,
+                // Need to fix 
+                height: Platform.isIOS ? 80 : 70,
                 color: Colors.white,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.only(
+                    left: Platform.isIOS ? 20 : 10,
+                    right: Platform.isIOS ? 20 : 10,
+                    bottom: Platform.isIOS ? 20 : 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
