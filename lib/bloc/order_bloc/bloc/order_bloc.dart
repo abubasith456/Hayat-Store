@@ -31,14 +31,14 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
         });
 
         OrdersNewModel ordersNewModel = OrdersNewModel(
-            uniqueId: 1,
+            uniqueId: event.userId,
             numOfItems: event.listOfProducts.length,
             userId: event.userId,
             userName: event.name,
             products: prodductList,
             amount: event.totalAmount,
             status: "Preparing",
-            address: "dsd");
+            address: "Chennai");
 
         var response = await api.postOrders(ordersNewModel.toJson());
 

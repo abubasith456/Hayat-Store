@@ -11,7 +11,9 @@ import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/firebase_options.dart';
+import 'package:shop_app/services/firebase_messaging/firebase_messaging.dart';
 import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/notification/notification.dart';
 import 'my_app.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -29,17 +31,29 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await NotificationService.initializeNotification((value) {
+    print("Clicked");
+  });
   await GetStorage.init();
   await setLocator();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  print("FirebaseMessaging called");
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
-
+  FirebaseMessaging.onMessage.listen((event) {
+    print("FirebaseMessaging onMessage called " + event.notification!.body!);
+    NotificationService.pushNotification(
+        id: 0,
+        title: event.notification!.title!,
+        body: event.notification!.body!);
+  });
+  FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    print("FirebaseMessaging onMessageOpenedApp called ==> " +
+        event.notification!.body!);
+  });
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, sound: true, badge: true);
   var user = await UserDb.instance.readAllUser();

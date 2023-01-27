@@ -6,6 +6,7 @@ import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/db/database.dart';
 import 'package:shop_app/screens/success_screen/success_screen.dart';
 import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/notification/notification.dart';
 import 'package:shop_app/util/custom_dialog.dart';
 import 'package:shop_app/util/custom_snackbar.dart';
 
@@ -116,6 +117,14 @@ class _CheckoutCardState extends State<CheckoutCard> {
                               Navigator.pushNamed(
                                   context, SuccessScreen.routeName);
                               MyDatabase.instance.deleteTable();
+                            }
+
+                            if (state is OrderErrorState) {
+                              customDialog.dismissDialog();
+                              showSnackBar(
+                                  context: context,
+                                  text: "Something went wrong...",
+                                  type: TopSnackBarType.error);
                             }
                           },
                           builder: ((context, state) {
