@@ -77,6 +77,8 @@ dependencies:
   flutter_gif: ^0.0.4
   ars_progress_dialog: ^0.0.1 
   stylish_dialog: ^1.0.1
+  expansion_tile_card: ^2.0.0
+  modal_bottom_sheet: ^2.1.2
 
 dev_dependencies:
   flutter_test:

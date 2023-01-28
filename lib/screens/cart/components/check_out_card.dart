@@ -89,6 +89,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
             SizedBox(height: getProportionateScreenHeight(20)),
             BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
               builder: (context, state) {
+                totalAmount = state.totalAmount.toInt();
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -148,7 +149,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                                               .getData(userNameKey)
                                               .toString(),
                                           listOfProducts: widget.cartList,
-                                          totalAmount: 100));
+                                          totalAmount: totalAmount));
                                 }
                               },
                             );
@@ -163,12 +164,4 @@ class _CheckoutCardState extends State<CheckoutCard> {
       ),
     );
   }
-}
-
-void _showBottomSuccessSheet(OrderPlaced state, BuildContext context) {
-  showBottomSheet(
-      context: context,
-      builder: ((context) {
-        return Container();
-      }));
 }

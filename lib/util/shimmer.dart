@@ -12,6 +12,14 @@ import '../screens/home/components/categories.dart';
 import '../screens/home/components/section_title.dart';
 import '../screens/home/components/special_offers.dart';
 
+Widget customShimmer(BuildContext context, Widget child) {
+  return Shimmer.fromColors(
+    child: child,
+    baseColor: Colors.grey.shade300,
+    highlightColor: Colors.grey.shade100,
+  );
+}
+
 Widget shimmerListWidget(BuildContext context) {
   return Shimmer.fromColors(
       baseColor: Colors.grey.shade300,

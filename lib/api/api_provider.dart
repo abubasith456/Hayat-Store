@@ -276,10 +276,7 @@ class ApiProvider {
 
   Future<OrdersNewModel> postOrders(dynamic list) async {
     try {
-      // final req = json.encode(list);
       final orderUrl = BASE_URL + "orders";
-
-      // print(list);
 
       Response response = await _dio.post(orderUrl, data: list);
 
@@ -293,6 +290,26 @@ class ApiProvider {
     } catch (e) {
       print("Ordder==> " + e.toString());
       return OrdersNewModel.error(e.toString());
+    }
+  }
+
+  Future<List> getOrders(String user) async {
+    try {
+      final orderUrl = BASE_URL + "orders";
+
+      Response response =
+          await _dio.get(orderUrl, queryParameters: {"unique_id": user});
+
+      debugPrint("==> ${response.statusCode} ");
+
+      if (response.statusCode == 200) {
+        return response.data as List;
+      } else {
+        return List<OrdersNewModel>.empty();
+      }
+    } catch (e) {
+      print("Ordder==> " + e.toString());
+      return List<OrdersNewModel>.empty();
     }
   }
 
