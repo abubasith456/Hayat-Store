@@ -6,6 +6,7 @@ import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
 import 'package:shop_app/models/order_model.dart';
 import 'package:shop_app/screens/order_history_screen/components/items_card.dart';
+import 'package:shop_app/screens/order_history_screen/details_screen.dart';
 import 'package:shop_app/util/size_config.dart';
 
 class Body extends StatelessWidget {
@@ -22,7 +23,7 @@ class Body extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: ExpansionTileCard(
-              animateTrailing: true,
+              animateTrailing: false,
               elevation: 30,
               leading: CircleAvatar(
                 backgroundColor: kPrimaryColor,
@@ -114,7 +115,10 @@ class Body extends StatelessWidget {
                                 'Cancel',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: Colors.red,
+                                    color: _cancelButtonVisiblity(
+                                            orderHistory![mainIndex].status!)
+                                        ? Colors.red
+                                        : Color.fromARGB(255, 197, 197, 197),
                                     fontWeight: FontWeight.bold),
                               ),
                               onPressed: _cancelButtonVisiblity(
@@ -133,27 +137,63 @@ class Body extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               onPressed: (() {
-                                showBottomSheetOrderDetails(
-                                    context,
-                                    Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: ListView.builder(
-                                          itemCount: orderHistory![mainIndex]
-                                              .products!
-                                              .length,
-                                          shrinkWrap: true,
-                                          itemBuilder: ((context, index) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ItemsCard(
-                                                products:
-                                                    orderHistory![mainIndex]
-                                                        .products![index],
-                                              ),
-                                            );
-                                          })),
-                                    ));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailsScreen(
+                                      products:
+                                          orderHistory![mainIndex].products!,
+                                      totalAmount: orderHistory![mainIndex]
+                                          .amount!
+                                          .toString(),
+                                      noOfProd: orderHistory![mainIndex]
+                                          .numOfItems
+                                          .toString(),
+                                    ),
+                                  ),
+                                );
+
+                                // showBottomSheetOrderDetails(
+                                //   context: context,
+                                //   widget: Padding(
+                                //     padding: EdgeInsets.all(10),
+                                //     child: ListView.builder(
+                                //         itemCount: orderHistory![mainIndex]
+                                //             .products!
+                                //             .length,
+                                //         shrinkWrap: true,
+                                //         itemBuilder: ((context, index) {
+                                //           return SingleChildScrollView(
+                                //             child: Padding(
+                                //               padding: const EdgeInsets.only(
+                                //                   bottom: 30,
+                                //                   top: 8,
+                                //                   left: 8,
+                                //                   right: 8),
+                                //               child: ItemsCard(
+                                //                 products:
+                                //                     orderHistory![mainIndex]
+                                //                         .products![index],
+                                //               ),
+                                //             ),
+                                //           );
+                                //         })),
+                                //   ),
+                                //   numProd: _richTextBuilder(
+                                //       context: context,
+                                //       left: "Number of products: ",
+                                //       right: orderHistory![mainIndex]
+                                //           .numOfItems!
+                                //           .toString(),
+                                //       fontSize: 15),
+                                //   totalPrice: _richTextBuilder(
+                                //       context: context,
+                                //       left: "Total price: ",
+                                //       right: orderHistory![mainIndex]
+                                //           .amount!
+                                //           .toString(),
+                                //       fontSize: 15),
+                                // );
                               }),
                             ),
                           ),

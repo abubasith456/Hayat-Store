@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/components/default_button.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
+import 'package:shop_app/screens/order_history_screen/order_history_screen.dart';
 
 import '../../bloc/yout_cart_bloc/bloc/your_cart_bloc_bloc.dart';
 
@@ -53,14 +55,18 @@ class SuccessScreen extends StatelessWidget {
             SizedBox(
               height: 200,
             ),
-            Text(
-              "See order deatils?",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.black,
-                decoration: TextDecoration.underline,
+            Container(
+              padding: EdgeInsets.only(left: 50, right: 50),
+              child: DefaultButton(
+                text: "Order Details",
+                isLoading: false,
+                isEnabled: true,
+                press: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, OrderHistoryScreen.routeName);
+                },
               ),
-            ),
+            )
           ],
         ),
       ),
