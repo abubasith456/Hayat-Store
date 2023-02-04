@@ -40,6 +40,32 @@ const String kNamelNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 
+//Common buttontext
+const String okButtonString = 'Ok';
+
+//Firebase fierstore update keys
+const String updateCollectionName = 'update_status';
+const String updateDocumentInfoName = 'update_info';
+const String updateFieldMessageKey = 'update_message';
+const String updateDialogTitle = 'Update available';
+const String updateLinkKey = 'update_link';
+const String updateOptionalLinkKey = 'update_optional_link';
+const String cancelUpdateButtonText = 'Cancel';
+const String updateButtonText = 'Update';
+
+//Firebase fierstore Miantenance keys
+const String miantenanceCollectionKey = 'maintenance_status';
+const String miantenanceDocumentKey = 'maintenance_info';
+const String appInMaintenanceMessageKey = 'app_in_maintenance_message';
+const String appWillInMaintenanceMessageKey = 'app_will_in_maintenance_message';
+const String appInMaintenanceTitle = 'Oops!';
+const String appWillInMaintenanceTitle = 'Alert!';
+
+//Remote config
+const String remoteConfigUpdateKey = 'update_available';
+const String remoteConfigAppInMaintenanceKey = 'app_in_maintenance';
+const String remoteConfigAppWillInMaintenance = "app_will_in_maintenance";
+
 //shared pref
 const String loggedKey = 'LoggedIn';
 const String isFirstLogin = 'isFirstLogin';

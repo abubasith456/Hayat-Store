@@ -15,6 +15,7 @@ import 'package:shop_app/services/firebase_messaging/firebase_messaging.dart';
 import 'package:shop_app/services/locator.dart';
 import 'package:shop_app/services/notification/notification.dart';
 import 'my_app.dart';
+import 'services/firestore_and_remoteConfig/firestore_database.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high-importance_channel', 'High Importance Notification',
@@ -31,18 +32,26 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //Firebase initialization
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await NotificationService.initializeNotification((value) {
     print("Clicked");
   });
+
+  //My 3rd party local storage
   await GetStorage.init();
+
+  //Register the locators
   await setLocator();
+
+  // Firebase background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  print("FirebaseMessaging called");
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
+
+  //Firebase message listener
   FirebaseMessaging.onMessage.listen((event) {
     print("FirebaseMessaging onMessage called " + event.notification!.body!);
     NotificationService.pushNotification(
@@ -50,14 +59,22 @@ void main() async {
         title: event.notification!.title!,
         body: event.notification!.body!);
   });
+
+  // Open app when click the notification
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
     print("FirebaseMessaging onMessageOpenedApp called ==> " +
         event.notification!.body!);
   });
+
+  //Foreground notification presentation option
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, sound: true, badge: true);
   var user = await UserDb.instance.readAllUser();
 
+  //Init firebase remoteConfig Settings
+  initRemoteConfig();
+
+//Run Application
   runApp(
     MultiProvider(
       providers: [

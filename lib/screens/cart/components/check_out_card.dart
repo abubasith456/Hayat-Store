@@ -9,6 +9,7 @@ import 'package:shop_app/services/locator.dart';
 import 'package:shop_app/services/notification/notification.dart';
 import 'package:shop_app/util/custom_dialog.dart';
 import 'package:shop_app/util/custom_snackbar.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
 import '../../../constants.dart';
 import '../../../models/my_db_model.dart';
@@ -109,7 +110,9 @@ class _CheckoutCardState extends State<CheckoutCard> {
                         child: BlocConsumer<OrderBloc, OrderState>(
                           listener: (context, state) {
                             if (state is OrderLoadingState) {
-                              customDialog.showProgressDialog();
+                              customDialog.showProgressDialog(
+                                  "Please wait...", "",
+                                  alertType: StylishDialogType.PROGRESS);
                             }
 
                             if (state is OrderPlaced) {
