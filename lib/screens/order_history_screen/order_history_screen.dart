@@ -1,13 +1,21 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:shop_app/bloc/oder_history_bloc/bloc/order_history_bloc.dart';
+import 'package:shop_app/models/orderHistoryModel.dart';
 import 'package:shop_app/screens/order_history_screen/components/body.dart';
 import 'package:shop_app/screens/order_history_screen/components/items_card.dart';
+import 'package:shop_app/services/shared_preferences/shared_pref.dart';
+import 'package:shop_app/util/adaptive_dialog.dart';
+import 'package:shop_app/util/custom_dialog.dart';
 import 'package:shop_app/util/shimmer.dart';
+import 'package:stylish_dialog/stylish_dialog.dart';
 
+import '../../api/api_provider.dart';
 import '../../bloc/network_bloc/bloc/network_bloc.dart';
 import '../../constants.dart';
+import '../../services/locator.dart';
 import '../connection_lost.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
@@ -27,8 +35,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CustomDialog customDialog = CustomDialog(context: context);
     return WillPopScope(
-        onWillPop: () async => false,
+        onWillPop: () async => true,
         child: BlocProvider(
           create: (context) => OrderHistoryBloc()..add(FetchHistoryList()),
           child:
@@ -54,10 +63,70 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   ),
                   body: BlocConsumer<OrderHistoryBloc, OrderHistoryState>(
                       listener: (context, state) {
-                    // TODO: implement listener
+                    if (state is OrderCanceling) {
+                      customDialog.showProgressDialog(
+                          cancelingOrderProgressText, "", false,
+                          alertType: StylishDialogType.PROGRESS);
+                    } else if (state is OrderDeleting) {
+                      customDialog.showProgressDialog(deletingOrder, "", false,
+                          alertType: StylishDialogType.PROGRESS);
+                    }
+
+                    if (state is OrderCancelFailure) {
+                      print("OrderCancelFailure called =====> ");
+                      customDialog.dismissDialog();
+                      BlocProvider.of<OrderHistoryBloc>(context)
+                          .add(FetchHistoryList());
+                      showAdaptiveAlertDialog(
+                          context, exceptinTitle, exceptinMessage, () {
+                        Navigator.of(context).pop();
+                      }, buttonOkText);
+                    }
+
+                    if (state is OrderCancelSuccess) {
+                      customDialog.dismissDialog();
+                      BlocProvider.of<OrderHistoryBloc>(context)
+                          .add(FetchHistoryList());
+                    }
+
+                    if (state is OrderDeleteSuccess) {
+                      customDialog.dismissDialog();
+                      BlocProvider.of<OrderHistoryBloc>(context)
+                          .add(FetchHistoryList());
+                    }
+
+                    if (state is OrderDeleteFailure) {
+                      print("OrderDeleteFailure called =====> ");
+                      customDialog.dismissDialog();
+                      BlocProvider.of<OrderHistoryBloc>(context)
+                          .add(FetchHistoryList());
+                      showAdaptiveAlertDialog(
+                          context, exceptinTitle, exceptinMessage, () {
+                        Navigator.of(context).pop();
+                        BlocProvider.of<OrderHistoryBloc>(context)
+                            .add(FetchHistoryList());
+                      }, buttonOkText);
+                    }
                   }, builder: (context, state) {
                     if (state is FetchOrderHistorySuccess) {
-                      return Body(orderHistory: state.response);
+                      return StreamBuilder(
+                        stream: productsStream(),
+                        builder: (context,
+                            AsyncSnapshot<List<OrderHistoryModel>> snapshot) {
+                          if (snapshot.hasData) {
+                            return Body(orderHistory: snapshot.data);
+                          } else {
+                            return Center(
+                              child: customShimmer(
+                                  context, _shimmeringWidget(context)),
+                            );
+                          }
+                        },
+                      );
+                    } else if (state is FetchOrderHistoryFailure) {
+                      return Center(
+                        child: Text("No data found"),
+                      );
                     } else {
                       return customShimmer(context, _shimmeringWidget(context));
                     }
@@ -133,4 +202,16 @@ _shimmeringWidget(BuildContext context) {
       ),
     ),
   );
+}
+
+Stream<List<OrderHistoryModel>> productsStream() async* {
+  while (true) {
+    await Future.delayed(Duration(seconds: 1));
+    String userId = sl<SharedPrefService>().getData(userIdKey).toString();
+    var api = new ApiProvider();
+    var response = await api.getOrders(userId);
+    List<OrderHistoryModel> responselist =
+        response.map((e) => OrderHistoryModel.fromJson(e)).toList();
+    yield responselist;
+  }
 }

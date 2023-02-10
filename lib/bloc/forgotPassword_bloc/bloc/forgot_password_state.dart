@@ -12,7 +12,7 @@ class ForgotPasswordInitial extends ForgotPasswordState {}
 class ForgotPasswordLoading extends ForgotPasswordState {}
 
 class ForgotPasswordLoaded extends ForgotPasswordState {
-  ForgotPasswordModel forgotPasswordModel;
+  ResponseModel forgotPasswordModel;
 
   ForgotPasswordLoaded(this.forgotPasswordModel);
 

@@ -11,6 +11,7 @@ const kPrimaryGradientColor = LinearGradient(
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Color(0xFF757575);
 const KAshColor = Color.fromARGB(255, 177, 177, 177);
+const buttonDisabledColor = Color.fromARGB(255, 197, 197, 197);
 
 const kAnimationDuration = Duration(milliseconds: 200);
 
@@ -40,8 +41,28 @@ const String kNamelNullError = "Please Enter your name";
 const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 
+//Delete order
+const deleteOrderTitle = "Alert!";
+const deleteOrderMessage =
+    "Are you sure do you want to delete order data from order history?";
+const deletingOrder = "Deleting order...";
+
+//Cancel order
+const String cancelPopupTitle = 'Cancel order';
+const String cancelPopupMessage =
+    'Are you sure, do you want to cancel ypur order?';
+const String cancelingOrderProgressText = "Canceling order...";
+
 //Common buttontext
-const String okButtonString = 'Ok';
+const String buttonOkText = 'Ok';
+const String buttonYesText = "Yes";
+const String buttonNoText = "No";
+const String buttonCancelText = "Cancel";
+
+//Something went wrong
+const String exceptinTitle = 'Alert!';
+const String exceptinMessage =
+    'Something went Wrong. Please try again later...';
 
 //Firebase fierstore update keys
 const String updateCollectionName = 'update_status';

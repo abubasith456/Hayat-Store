@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
+import 'dart:io' show Platform;
 
 class CustomDialog {
   BuildContext context;
@@ -8,12 +10,12 @@ class CustomDialog {
 
   late StylishDialog? progressDialog;
 
-  showProgressDialog(String message, String title,
+  showProgressDialog(String message, String title, bool dismissOnTouchOutside,
       {required StylishDialogType alertType}) {
     if (alertType == StylishDialogType.PROGRESS) {
       progressDialog = StylishDialog(
           context: context,
-          dismissOnTouchOutside: false,
+          dismissOnTouchOutside: dismissOnTouchOutside,
           alertType: alertType,
           content: Text(message));
     } else if (alertType == StylishDialogType.ERROR) {
@@ -66,14 +68,15 @@ class CustomDialog {
     PanaraInfoDialog.show(context,
         message: message,
         buttonText: positiveText,
+        barrierDismissible: false,
         onTapDismiss: possitiveCallback as void Function(),
         panaraDialogType: dialogType);
   }
 
+
   void dismissDialog() {
     if (progressDialog != null) {
       progressDialog!.dismiss();
-      progressDialog = null;
     }
   }
 }

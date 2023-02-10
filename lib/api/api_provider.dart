@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/drinks_model.dart';
-import 'package:shop_app/models/forgot_pswd_model.dart';
+import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/fruit_model.dart';
 import 'package:shop_app/models/grocery_model.dart';
 import 'package:shop_app/models/order_model.dart';
@@ -62,7 +62,7 @@ class ApiProvider {
   }
 
   //Forgot password
-  Future<ForgotPasswordModel> forgotPassword(
+  Future<ResponseModel> forgotPassword(
       dynamic forgotPasswordRequest, BuildContext context) async {
     try {
       var forgotPasswordUrl = BASE_URL + "forgotPassword";
@@ -77,18 +77,17 @@ class ApiProvider {
       );
 
       if (response.statusCode == 200) {
-        return ForgotPasswordModel.fromJson(response.data);
+        return ResponseModel.fromJson(response.data);
       } else {
-        return ForgotPasswordModel.error("Something went wrong!");
+        return ResponseModel.error("Something went wrong!");
       }
     } catch (e) {
-      return ForgotPasswordModel.error(e.toString());
+      return ResponseModel.error(e.toString());
     }
   }
 
   //Change password
-  Future<ForgotPasswordModel> changePassword(
-      dynamic changePasswordRequest) async {
+  Future<ResponseModel> changePassword(dynamic changePasswordRequest) async {
     try {
       var changePasswordUrl = BASE_URL + "changePassword";
 
@@ -102,17 +101,17 @@ class ApiProvider {
       );
 
       if (response.statusCode == 200) {
-        return ForgotPasswordModel.fromJson(response.data);
+        return ResponseModel.fromJson(response.data);
       } else {
-        return ForgotPasswordModel.error("Something went wrong!");
+        return ResponseModel.error("Something went wrong!");
       }
     } catch (e) {
-      return ForgotPasswordModel.error(e.toString());
+      return ResponseModel.error(e.toString());
     }
   }
 
   //Verify OTP
-  Future<ForgotPasswordModel> verifyOtp(dynamic verifyOtpRequest) async {
+  Future<ResponseModel> verifyOtp(dynamic verifyOtpRequest) async {
     try {
       var forgotPasswordUrl = BASE_URL + "forgotPassword/verify";
 
@@ -126,12 +125,12 @@ class ApiProvider {
       );
 
       if (response.statusCode == 200) {
-        return ForgotPasswordModel.fromJson(response.data);
+        return ResponseModel.fromJson(response.data);
       } else {
-        return ForgotPasswordModel.error("Something went wrong!");
+        return ResponseModel.error("Something went wrong!");
       }
     } catch (e) {
-      return ForgotPasswordModel.error(e.toString());
+      return ResponseModel.error(e.toString());
     }
   }
 
@@ -295,10 +294,9 @@ class ApiProvider {
 
   Future<List> getOrders(String user) async {
     try {
-      final orderUrl = BASE_URL + "orders";
+      final orderUrl = BASE_URL + "orders/" + user;
 
-      Response response =
-          await _dio.get(orderUrl, queryParameters: {"unique_id": user});
+      Response response = await _dio.get(orderUrl);
 
       debugPrint("==> ${response.statusCode} ");
 
@@ -313,8 +311,50 @@ class ApiProvider {
     }
   }
 
+  Future<ResponseModel> cancelOrder(String orderId) async {
+    try {
+      final orderUrl = BASE_URL + "orders/" + orderId;
+
+      Map<dynamic, dynamic> request = {
+        "status": "Cancelled",
+      };
+
+      Response response = await _dio.put(orderUrl, data: request);
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return ResponseModel.error("Something went wrong...");
+      }
+    } catch (e) {
+      return ResponseModel.error(e.toString());
+    }
+  }
+
+  Future<ResponseModel> deleteOrder(String orderId) async {
+    try {
+      final orderUrl = BASE_URL + "orders/" + orderId;
+
+      Map<dynamic, dynamic> request = {
+        "status": "Cancelled",
+      };
+
+      Response response = await _dio.delete(orderUrl, data: request);
+
+      print("Status ====> ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return ResponseModel.error("Something went wrong...");
+      }
+    } catch (e) {
+      return ResponseModel.error(e.toString());
+    }
+  }
+
   //fcm
-  Future<ForgotPasswordModel> setPushToken(String id, String pushToken) async {
+  Future<ResponseModel> setPushToken(String id, String pushToken) async {
     try {
       var tokenUrl = BASE_URL + "fcm/pushToken";
 
@@ -323,13 +363,13 @@ class ApiProvider {
       Response response = await _dio.post(tokenUrl, data: req);
 
       if (response.statusCode == 200) {
-        return ForgotPasswordModel.fromJson(response.data);
+        return ResponseModel.fromJson(response.data);
       } else {
-        return ForgotPasswordModel.error(response.statusMessage);
+        return ResponseModel.error(response.statusMessage);
       }
     } catch (e) {
       print(e);
-      return ForgotPasswordModel.error(e.toString());
+      return ResponseModel.error(e.toString());
     }
   }
 }

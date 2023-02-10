@@ -1,14 +1,14 @@
-class ForgotPasswordModel {
+class ResponseModel {
   int? status;
   String? connection;
   String? message;
   String? error;
 
-  ForgotPasswordModel.error(this.error);
+  ResponseModel.error(this.error);
 
-  ForgotPasswordModel({this.status, this.connection, this.message});
+  ResponseModel({this.status, this.connection, this.message});
 
-  ForgotPasswordModel.fromJson(Map<String, dynamic> json) {
+  ResponseModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     connection = json['connection'];
     message = json['message'];

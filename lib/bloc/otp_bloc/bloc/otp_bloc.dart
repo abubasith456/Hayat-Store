@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shop_app/api/api_provider.dart';
 import 'package:shop_app/db/userDB.dart';
-import 'package:shop_app/models/forgot_pswd_model.dart';
+import 'package:shop_app/models/response_model.dart';
 
 part 'otp_event.dart';
 part 'otp_state.dart';

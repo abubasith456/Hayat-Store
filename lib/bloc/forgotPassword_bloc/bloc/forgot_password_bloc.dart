@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/api/api_provider.dart';
 import 'package:shop_app/constants.dart';
-import 'package:shop_app/models/forgot_pswd_model.dart';
+import 'package:shop_app/models/response_model.dart';
 
 part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';

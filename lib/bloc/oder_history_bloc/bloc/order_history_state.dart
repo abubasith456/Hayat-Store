@@ -19,3 +19,17 @@ class FetchOrderHistorySuccess extends OrderHistoryState {
 }
 
 class FetchOrderHistoryFailure extends OrderHistoryState {}
+
+//Cancel order
+class OrderCanceling extends OrderHistoryState {}
+
+class OrderCancelSuccess extends OrderHistoryState {}
+
+class OrderCancelFailure extends OrderHistoryState {}
+
+//Delte the order
+class OrderDeleting extends OrderHistoryState {}
+
+class OrderDeleteSuccess extends OrderHistoryState {}
+
+class OrderDeleteFailure extends OrderHistoryState {}

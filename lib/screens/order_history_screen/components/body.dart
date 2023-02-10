@@ -1,12 +1,18 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:panara_dialogs/panara_dialogs.dart';
+import 'package:shop_app/bloc/oder_history_bloc/bloc/order_history_bloc.dart';
 import 'package:shop_app/components/bottom_sheet.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
 import 'package:shop_app/models/order_model.dart';
 import 'package:shop_app/screens/order_history_screen/components/items_card.dart';
 import 'package:shop_app/screens/order_history_screen/details_screen.dart';
+import 'package:shop_app/util/adaptive_dialog.dart';
+import 'package:shop_app/util/custom_dialog.dart';
 import 'package:shop_app/util/size_config.dart';
 
 class Body extends StatelessWidget {
@@ -123,7 +129,26 @@ class Body extends StatelessWidget {
                               ),
                               onPressed: _cancelButtonVisiblity(
                                       orderHistory![mainIndex].status!)
-                                  ? (() {})
+                                  ? (() {
+                                      buildConfirmDialog(
+                                          context,
+                                          cancelPopupTitle,
+                                          cancelPopupMessage,
+                                          () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          buttonNoText,
+                                          () {
+                                            Navigator.of(context).pop();
+                                            BlocProvider.of<OrderHistoryBloc>(
+                                                    context)
+                                                .add(CancelOrderEvent(
+                                                    orderId:
+                                                        orderHistory![mainIndex]
+                                                            .sId!));
+                                          },
+                                          buttonYesText);
+                                    })
                                   : null,
                             ),
                           ),
@@ -152,48 +177,6 @@ class Body extends StatelessWidget {
                                     ),
                                   ),
                                 );
-
-                                // showBottomSheetOrderDetails(
-                                //   context: context,
-                                //   widget: Padding(
-                                //     padding: EdgeInsets.all(10),
-                                //     child: ListView.builder(
-                                //         itemCount: orderHistory![mainIndex]
-                                //             .products!
-                                //             .length,
-                                //         shrinkWrap: true,
-                                //         itemBuilder: ((context, index) {
-                                //           return SingleChildScrollView(
-                                //             child: Padding(
-                                //               padding: const EdgeInsets.only(
-                                //                   bottom: 30,
-                                //                   top: 8,
-                                //                   left: 8,
-                                //                   right: 8),
-                                //               child: ItemsCard(
-                                //                 products:
-                                //                     orderHistory![mainIndex]
-                                //                         .products![index],
-                                //               ),
-                                //             ),
-                                //           );
-                                //         })),
-                                //   ),
-                                //   numProd: _richTextBuilder(
-                                //       context: context,
-                                //       left: "Number of products: ",
-                                //       right: orderHistory![mainIndex]
-                                //           .numOfItems!
-                                //           .toString(),
-                                //       fontSize: 15),
-                                //   totalPrice: _richTextBuilder(
-                                //       context: context,
-                                //       left: "Total price: ",
-                                //       right: orderHistory![mainIndex]
-                                //           .amount!
-                                //           .toString(),
-                                //       fontSize: 15),
-                                // );
                               }),
                             ),
                           ),
@@ -203,10 +186,35 @@ class Body extends StatelessWidget {
                                 'Delete',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: kPrimaryColor,
+                                    color: _deleteButtonVisibility(
+                                            orderHistory![mainIndex].status!)
+                                        ? kPrimaryColor
+                                        : Color.fromARGB(255, 197, 197, 197),
                                     fontWeight: FontWeight.bold),
                               ),
-                              onPressed: () => null,
+                              onPressed: _deleteButtonVisibility(
+                                      orderHistory![mainIndex].status!)
+                                  ? () {
+                                      buildConfirmDialog(
+                                          context,
+                                          cancelPopupTitle,
+                                          cancelPopupMessage,
+                                          () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          buttonNoText,
+                                          () {
+                                            Navigator.of(context).pop();
+                                            BlocProvider.of<OrderHistoryBloc>(
+                                                    context)
+                                                .add(DeleteOrderEvent(
+                                                    orderId:
+                                                        orderHistory![mainIndex]
+                                                            .sId!));
+                                          },
+                                          buttonYesText);
+                                    }
+                                  : null,
                             ),
                           )
                         ],
@@ -224,9 +232,11 @@ class Body extends StatelessWidget {
 }
 
 MaterialColor _statusTextColor(String value) {
-  if (value.contains("Preparing") || value.contains("Packing")) {
+  if (value.contains("Preparing") ||
+      value.contains("Packing") ||
+      value.contains("preparing")) {
     return Colors.deepPurple;
-  } else if (value.contains("Delivered")) {
+  } else if (value.contains("Delivered") || value.contains("delivered")) {
     return Colors.green;
   } else {
     return Colors.red;
@@ -234,7 +244,17 @@ MaterialColor _statusTextColor(String value) {
 }
 
 bool _cancelButtonVisiblity(String value) {
-  if (value.contains("Preparing") || value.contains("Packing")) {
+  if (value.contains("Preparing") ||
+      value.contains("Packing") ||
+      value.contains("preparing")) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool _deleteButtonVisibility(String value) {
+  if (value == "Cancelled" || value == "cancelled") {
     return true;
   } else {
     return false;

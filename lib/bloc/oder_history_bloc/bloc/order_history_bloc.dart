@@ -13,7 +13,6 @@ part 'order_history_state.dart';
 class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
   OrderHistoryBloc() : super(OrderHistoryInitial()) {
     var api = new ApiProvider();
-    List<OrderHistoryModel> list;
     on<OrderHistoryEvent>((event, emit) async {
       if (event is FetchHistoryList) {
         String userId = sl<SharedPrefService>().getData(userIdKey).toString();
@@ -25,6 +24,28 @@ class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
           List<OrderHistoryModel> responselist =
               response.map((e) => OrderHistoryModel.fromJson(e)).toList();
           emit(FetchOrderHistorySuccess(response: responselist));
+        }
+      }
+
+      if (event is CancelOrderEvent) {
+        emit(OrderCanceling());
+
+        var response = await api.cancelOrder(event.orderId);
+        if (response.status == 400) {
+          emit(OrderCancelFailure());
+        } else {
+          emit(OrderCancelSuccess());
+        }
+      }
+
+      if (event is DeleteOrderEvent) {
+        emit(OrderDeleting());
+        var response = await api.deleteOrder(event.orderId);
+        if (response != null) {
+          emit(OrderDeleteSuccess());
+        } else {
+          print("Else part called =====> ");
+          emit(OrderCancelFailure());
         }
       }
     });

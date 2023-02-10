@@ -69,7 +69,9 @@ void listernUpdateAvailable(BuildContext context) {
         }
         CustomDialog customDialog = CustomDialog(context: context);
         customDialog.showProgressDialog(
-            maintenanceMessage!.replaceAll("\\n", "\n"), appInMaintenanceTitle,
+            maintenanceMessage!.replaceAll("\\n", "\n"),
+            appInMaintenanceTitle,
+            false,
             alertType: StylishDialogType.ERROR);
       } else if (isAppWillInMaintenance) {
         // ---------------------------- App will be in Maintenance --------------------------
@@ -88,7 +90,7 @@ void listernUpdateAvailable(BuildContext context) {
             possitiveCallback: () {
               Navigator.of(context).pop();
             },
-            positiveText: okButtonString,
+            positiveText: buttonOkText,
             dialogType: PanaraDialogType.warning);
       }
     });

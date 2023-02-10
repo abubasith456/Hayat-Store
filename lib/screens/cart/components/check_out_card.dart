@@ -111,7 +111,7 @@ class _CheckoutCardState extends State<CheckoutCard> {
                           listener: (context, state) {
                             if (state is OrderLoadingState) {
                               customDialog.showProgressDialog(
-                                  "Please wait...", "",
+                                  "Please wait...", "", false,
                                   alertType: StylishDialogType.PROGRESS);
                             }
 

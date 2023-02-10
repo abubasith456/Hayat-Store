@@ -12,7 +12,7 @@ class ChangePasswordInitial extends ChangePasswordState {}
 class ChangePasswordLoadingState extends ChangePasswordState {}
 
 class ChangePasswordLoadedState extends ChangePasswordState {
-  ForgotPasswordModel changePasswordRes;
+  ResponseModel changePasswordRes;
 
   ChangePasswordLoadedState(this.changePasswordRes);
 
