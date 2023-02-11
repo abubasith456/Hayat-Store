@@ -15,59 +15,62 @@ class SuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        actions: [
-          IconButton(
-            onPressed: (() {
-              Navigator.pop(context);
-              _yourCartBloc.add(GetCartDBEvent());
-              BlocProvider.of<YourCartScreenCubit>(context)..getCartData();
-            }),
-            icon: Icon(
-              Icons.close,
-              size: 24.0,
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage(
-                "assets/images/success_tick.png",
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Container(),
+          actions: [
+            IconButton(
+              onPressed: (() {
+                Navigator.pop(context);
+                _yourCartBloc.add(GetCartDBEvent());
+                BlocProvider.of<YourCartScreenCubit>(context)..getCartData();
+              }),
+              icon: Icon(
+                Icons.close,
+                size: 24.0,
               ),
-              width: 200,
-              height: 200,
             ),
-            Text(
-              "Order Placed Successfully",
-              style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-            SizedBox(
-              height: 200,
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 50, right: 50),
-              child: DefaultButton(
-                text: "Order Details",
-                isLoading: false,
-                isEnabled: true,
-                press: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, OrderHistoryScreen.routeName);
-                },
-              ),
-            )
           ],
+        ),
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage(
+                  "assets/images/success_tick.png",
+                ),
+                width: 200,
+                height: 200,
+              ),
+              Text(
+                "Order Placed Successfully",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),
+              SizedBox(
+                height: 200,
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 50, right: 50),
+                child: DefaultButton(
+                  text: "Order Details",
+                  isLoading: false,
+                  isEnabled: true,
+                  press: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, OrderHistoryScreen.routeName);
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
