@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:shop_app/constants.dart';
 
 final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
 
@@ -20,6 +21,13 @@ FirebaseRemoteConfig? getRemoteConfig() {
 // Fetching, caching, and activating remote config
 void _fetchConfig() async {
   await _remoteConfig.fetchAndActivate();
+  var remoteUrl = await _remoteConfig.getString(baseUrlKey);
+  if (remoteUrl != null && remoteUrl.isNotEmpty && remoteUrl != "AWS") {
+    imageLoadUrl = remoteUrl;
+    APP_BASE_URL = remoteUrl;
+  }
+
+  print("BaseURL ===> " + APP_BASE_URL);
 }
 
 CollectionReference<Object?>? getCollectionData(

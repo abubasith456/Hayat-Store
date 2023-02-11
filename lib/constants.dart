@@ -86,6 +86,7 @@ const String appWillInMaintenanceTitle = 'Alert!';
 const String remoteConfigUpdateKey = 'update_available';
 const String remoteConfigAppInMaintenanceKey = 'app_in_maintenance';
 const String remoteConfigAppWillInMaintenance = "app_will_in_maintenance";
+const String baseUrlKey = "base_url";
 
 //shared pref
 const String loggedKey = 'LoggedIn';
@@ -96,8 +97,10 @@ const String userNameKey = 'userName';
 const String pushToken = 'pushToken';
 
 //Url
-const String imageLoadUrl =
+String imageLoadUrl =
     'http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/';
+String APP_BASE_URL =
+    "http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/";
 
 enum TopSnackBarType { success, error, info }
 

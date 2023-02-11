@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/drinks_model.dart';
 import 'package:shop_app/models/response_model.dart';
@@ -19,8 +20,7 @@ import 'package:flutter/material.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();
-  final BASE_URL =
-      "http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/";
+  final BASE_URL = APP_BASE_URL;
 
 //Login user
   Future<LoginModel> loginUser(String email, String password) async {
