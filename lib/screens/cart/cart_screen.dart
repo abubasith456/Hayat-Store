@@ -49,10 +49,12 @@ class CartScreen extends StatelessWidget {
         },
       ),
       title: Padding(
-        padding: const EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 5),
         child: BlocBuilder<YourCartScreenCubit, YourCartItemCount>(
           builder: (context, state) {
             return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Your Cart",

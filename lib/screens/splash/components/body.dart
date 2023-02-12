@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
+import 'package:shop_app/services/Location/location.dart';
+import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/util/adaptive_dialog.dart';
 import 'package:shop_app/util/size_config.dart';
 import 'package:shop_app/util/shared_pref.dart';
 
 // This is the best practice
+import '../../../services/permission/permission.dart';
 import '../components/splash_content.dart';
 import '../../../components/default_button.dart';
 
@@ -33,8 +38,43 @@ class _BodyState extends State<Body> {
     },
   ];
   final storage = GetStorage();
-  // @override
-  // void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
+  @override
+  void initState() {
+    super.initState();
+    sl<PermissionService>().getLocationPermission().then((value) {
+      if (!value) {
+        showAdaptiveAlertDialog(
+            context, permisstionNeededTitle, permisstionNeededMessage, () {
+          openAppSettings();
+          Navigator.of(context).pop();
+        }, permisionNeededbtNText);
+      } else {
+        sl<LocationService>().getAddressDetailsGeo();
+      }
+    });
+  }
+
+  // _getAddressDetailsGeo() async {
+  //   try {
+  //     await sl<PermissionService>().getLocationPermission().then((value) async {
+  //       if (value) {
+  //         print("getLocationPermission caled ===> ");
+  //         await sl<LocationService>()
+  //             .determinePosition()
+  //             .then((position) async {
+  //           print("determinePosition caled ===> ");
+  //           sl<LocationService>().getAdressDetailsFromGeo(position);
+  //         });
+  //       } else {
+  //         return;
+  //       }
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //     return;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

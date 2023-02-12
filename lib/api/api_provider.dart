@@ -20,17 +20,19 @@ import 'package:flutter/material.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();
-  final BASE_URL = APP_BASE_URL;
+  var BASE_URL = APP_BASE_URL;
 
 //Login user
   Future<LoginModel> loginUser(String email, String password) async {
     try {
-      var loginUrl = BASE_URL + "login";
+      var loginUrl = APP_BASE_URL + "login";
 
       Map<String, String> mapValue = {
         'email': email,
         'password': password,
       };
+
+      print(loginUrl + "request ==> $mapValue");
 
       Response response = await _dio.post(loginUrl, data: mapValue);
 
@@ -44,7 +46,7 @@ class ApiProvider {
 //Regsiter user
   Future<RegisterModel> registerUser(dynamic registerRequest) async {
     try {
-      var registerUrl = BASE_URL + "register";
+      var registerUrl = APP_BASE_URL + "register";
 
       Response response = await _dio.post(registerUrl,
           data: registerRequest,
@@ -65,7 +67,7 @@ class ApiProvider {
   Future<ResponseModel> forgotPassword(
       dynamic forgotPasswordRequest, BuildContext context) async {
     try {
-      var forgotPasswordUrl = BASE_URL + "forgotPassword";
+      var forgotPasswordUrl = APP_BASE_URL + "forgotPassword";
 
       Response response = await _dio.post(
         forgotPasswordUrl,
@@ -89,7 +91,7 @@ class ApiProvider {
   //Change password
   Future<ResponseModel> changePassword(dynamic changePasswordRequest) async {
     try {
-      var changePasswordUrl = BASE_URL + "changePassword";
+      var changePasswordUrl = APP_BASE_URL + "changePassword";
 
       Response response = await _dio.post(
         changePasswordUrl,
@@ -113,7 +115,7 @@ class ApiProvider {
   //Verify OTP
   Future<ResponseModel> verifyOtp(dynamic verifyOtpRequest) async {
     try {
-      var forgotPasswordUrl = BASE_URL + "forgotPassword/verify";
+      var forgotPasswordUrl = APP_BASE_URL + "forgotPassword/verify";
 
       Response response = await _dio.post(
         forgotPasswordUrl,
@@ -137,7 +139,7 @@ class ApiProvider {
 //product
   Future<ProductModel> getProduct() async {
     try {
-      var productUrl = BASE_URL + "products";
+      var productUrl = APP_BASE_URL + "products";
 
       Response response = await _dio.get(productUrl);
       print(response.data);
@@ -151,7 +153,7 @@ class ApiProvider {
 //Category - no use
   Future getCategory() async {
     try {
-      var registerUrl = BASE_URL + "category";
+      var registerUrl = APP_BASE_URL + "category";
 
       Response response = await _dio.get(registerUrl);
       List list = response.data;
@@ -168,7 +170,7 @@ class ApiProvider {
 //Profile
   Future<UserProfileModel> getUserProfile(String userId) async {
     try {
-      var profileDta = BASE_URL + "profile";
+      var profileDta = APP_BASE_URL + "profile";
 
       Map<String, String> mapValue = {
         'userId': userId,
@@ -186,7 +188,7 @@ class ApiProvider {
 //GetVegetables
   Future<ProductModel> getVegetables() async {
     try {
-      var VegetableUrl = BASE_URL + "vegetables";
+      var VegetableUrl = APP_BASE_URL + "vegetables";
 
       Response response = await _dio.get(VegetableUrl);
 
@@ -204,7 +206,7 @@ class ApiProvider {
 //Get Grocery
   Future<ProductModel> getGroceryItems() async {
     try {
-      var groceryUrl = BASE_URL + "grocery";
+      var groceryUrl = APP_BASE_URL + "grocery";
 
       Response response = await _dio.get(groceryUrl);
 
@@ -222,7 +224,7 @@ class ApiProvider {
 //Get Drinks
   Future<ProductModel> getDrinksItems() async {
     try {
-      var drinksUrl = BASE_URL + "drinks";
+      var drinksUrl = APP_BASE_URL + "drinks";
 
       Response response = await _dio.get(drinksUrl);
 
@@ -240,7 +242,7 @@ class ApiProvider {
 //Get Fruits
   Future<ProductModel> getFruitsItems() async {
     try {
-      var fruitsUrl = BASE_URL + "fruits";
+      var fruitsUrl = APP_BASE_URL + "fruits";
 
       Response response = await _dio.get(fruitsUrl);
 
@@ -258,7 +260,7 @@ class ApiProvider {
 //Get Dairy
   Future<ProductModel> getDairyItems() async {
     try {
-      var dairyUrl = BASE_URL + "dairy";
+      var dairyUrl = APP_BASE_URL + "dairy";
 
       Response response = await _dio.get(dairyUrl);
 
@@ -275,7 +277,7 @@ class ApiProvider {
 
   Future<OrdersNewModel> postOrders(dynamic list) async {
     try {
-      final orderUrl = BASE_URL + "orders";
+      final orderUrl = APP_BASE_URL + "orders";
 
       Response response = await _dio.post(orderUrl, data: list);
 
@@ -294,7 +296,7 @@ class ApiProvider {
 
   Future<List> getOrders(String user) async {
     try {
-      final orderUrl = BASE_URL + "orders/" + user;
+      final orderUrl = APP_BASE_URL + "orders/" + user;
 
       Response response = await _dio.get(orderUrl);
 
@@ -313,7 +315,7 @@ class ApiProvider {
 
   Future<ResponseModel> cancelOrder(String orderId) async {
     try {
-      final orderUrl = BASE_URL + "orders/" + orderId;
+      final orderUrl = APP_BASE_URL + "orders/" + orderId;
 
       Map<dynamic, dynamic> request = {
         "status": "Cancelled",
@@ -333,7 +335,7 @@ class ApiProvider {
 
   Future<ResponseModel> deleteOrder(String orderId) async {
     try {
-      final orderUrl = BASE_URL + "orders/" + orderId;
+      final orderUrl = APP_BASE_URL + "orders/" + orderId;
 
       Map<dynamic, dynamic> request = {
         "status": "Cancelled",
@@ -356,7 +358,7 @@ class ApiProvider {
   //fcm
   Future<ResponseModel> setPushToken(String id, String pushToken) async {
     try {
-      var tokenUrl = BASE_URL + "fcm/pushToken";
+      var tokenUrl = APP_BASE_URL + "fcm/pushToken";
 
       Map<String, String> req = {"unique_id": id, "pushToken": pushToken};
 

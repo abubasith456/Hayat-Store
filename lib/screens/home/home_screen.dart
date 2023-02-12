@@ -43,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
   onPress(int index) {
     setState(() {
       currentIndex = index;
-      if (index == 1) {
+      if (index == 0) {
+        //To refresh the cart count
+        context.read<YourCartScreenCubit>().getCartData();
         // BlocProvider.of<LikedBloc>(context).add(GetLikedDBEvent());
       }
     });
@@ -94,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIconTheme: IconThemeData(color: kPrimaryColor),
             showUnselectedLabels: false,
             showSelectedLabels: false,
-            elevation: 10,
+            elevation: 0,
             onTap: (value) => onPress(value),
             items: [
               BottomNavigationBarItem(

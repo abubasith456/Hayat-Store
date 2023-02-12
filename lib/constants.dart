@@ -98,6 +98,12 @@ const String pushToken = 'pushToken';
 const String areaNameKey = 'areaName';
 const String pinCodeKey = 'pinCode';
 
+//Permission related
+const String permisstionNeededTitle = "Premission";
+const String permisstionNeededMessage =
+    "Location permission needed to find your accurate address!.";
+const String permisionNeededbtNText = "Go to Settings";
+
 //Url
 String imageLoadUrl =
     'http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/';

@@ -27,7 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         try {
           emit(LoadingHomeState());
 
-          _getAddressDetailsGeo();
+          _getAddressDetails();
 
           var _productList = await _apiProvider.getProduct();
 
@@ -60,9 +60,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 }
 
-_getAddressDetailsGeo() {
+_getAddressDetails() {
   try {
-    sl<PermissionService>().getLocationPermission().then((value) async {
+    sl<PermissionService>().isLocationPermissionGranted().then((value) async {
       if (value) {
         print("getLocationPermission caled ===> ");
         await sl<LocationService>().determinePosition().then((position) async {

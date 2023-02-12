@@ -11,7 +11,9 @@ import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/home/components/icon_btn_with_counter.dart';
 import 'package:shop_app/screens/home/components/section_title.dart';
+import 'package:shop_app/services/Location/location.dart';
 import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/permission/permission.dart';
 import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 import 'package:shop_app/util/scroll_behaviour.dart';
 import 'package:shop_app/util/shimmer.dart';
@@ -24,9 +26,20 @@ import 'home_header.dart';
 import 'popular_product.dart';
 import 'special_offers.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   String? area = null;
+
   String? pinCode = null;
+
+  @override
+  void initState() {
+    super.initState();
+  }
   // var _provider = ApiProvider();
   @override
   Widget build(BuildContext context) {
@@ -229,7 +242,10 @@ class Body extends StatelessWidget {
   }
 
   bool _validateAddress(String? area, String? pinCode) {
-    if (area != null && pinCode != null) {
+    if (area != null &&
+        pinCode != null &&
+        area != "null" &&
+        pinCode != "null") {
       if (area.isNotEmpty && pinCode.isNotEmpty) {
         return true;
       }

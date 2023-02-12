@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:shop_app/constants.dart';
+import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/permission/permission.dart';
+import 'package:shop_app/util/adaptive_dialog.dart';
 
 import '../../bloc/login_bloc/bloc/login_bloc.dart';
 import '../../util/size_config.dart';
@@ -17,13 +22,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() async {
-    // await _loginBloc.close().then((value) => print('Login page disposed'));
     super.dispose();
   }
 

@@ -3,11 +3,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/permission/permission.dart';
 import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 
 abstract class LocationService {
   getAdressDetailsFromGeo(Position position);
   determinePosition();
+  getAddressDetailsGeo();
 }
 
 class LocationServiceImpl implements LocationService {
@@ -51,7 +53,7 @@ class LocationServiceImpl implements LocationService {
     );
   }
 
-  //Get address from the Geao locaton
+  //Get address from the Geao locaton and store to shared pref
   @override
   getAdressDetailsFromGeo(Position position) async {
     await placemarkFromCoordinates(position.latitude, position.longitude,
@@ -64,6 +66,25 @@ class LocationServiceImpl implements LocationService {
           "Place GetGeoAddressEvent ===> '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';");
       return;
     });
+  }
+
+  //Call the gea address anywhere using this
+  @override
+  getAddressDetailsGeo() async {
+    try {
+      await sl<PermissionService>().getLocationPermission().then((value) async {
+        if (value) {
+          await determinePosition().then((position) async {
+            getAdressDetailsFromGeo(position);
+          });
+        } else {
+          return;
+        }
+      });
+    } catch (e) {
+      print(e);
+      return;
+    }
   }
 }
 
