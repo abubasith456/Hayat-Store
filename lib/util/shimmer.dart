@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/components/product_card.dart';
 import 'package:shop_app/models/product_model.dart';
+import 'package:shop_app/screens/home/components/icon_btn_with_counter.dart';
 import 'package:shop_app/util/size_config.dart';
 
 import '../constants.dart';
@@ -79,132 +80,47 @@ Widget homeScreenShimmer(BuildContext context) {
       highlightColor: Colors.grey.shade100,
       child: Stack(
         children: [
-          Positioned(
-            top: 10,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: getProportionateScreenWidth(20)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: SizeConfig.screenWidth * 0.6,
-                    decoration: BoxDecoration(
-                      color: kSecondaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextField(
-                      onChanged: (value) => print(value),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: getProportionateScreenWidth(20),
-                              vertical: getProportionateScreenWidth(9)),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          hintText: "Search product",
-                          prefixIcon: Icon(Icons.search)),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: ListTile(
+                  title: Text(
+                    "HAYAT",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.black),
+                  ),
+                  subtitle: Text(
+                    'Smart shoping',
+                    style: TextStyle(
+                      color: Color(0xffd4d4d4),
                     ),
                   ),
-                  SizedBox(
-                    width: 20,
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconBtnWithCounter(
+                        svgSrc: "assets/icons/Cart Icon.svg",
+                        press: () {},
+                        numOfitem: 1,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      IconBtnWithCounter(
+                        svgSrc: "assets/icons/Bell.svg",
+                        numOfitem: 3,
+                        press: () {},
+                      ),
+                    ],
                   ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: () {},
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          padding:
-                              EdgeInsets.all(getProportionateScreenWidth(12)),
-                          height: getProportionateScreenWidth(39),
-                          width: getProportionateScreenWidth(39),
-                          decoration: BoxDecoration(
-                            color: kSecondaryColor.withOpacity(0.1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: SvgPicture.asset("assets/icons/Cart Icon.svg"),
-                        ),
-                        Positioned(
-                          top: -3,
-                          right: 0,
-                          child: Container(
-                            height: getProportionateScreenWidth(16),
-                            width: getProportionateScreenWidth(16),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFF4848),
-                              shape: BoxShape.circle,
-                              border:
-                                  Border.all(width: 1.5, color: Colors.white),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "",
-                                style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(10),
-                                  height: 1,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: () {},
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          padding:
-                              EdgeInsets.all(getProportionateScreenWidth(12)),
-                          height: getProportionateScreenWidth(39),
-                          width: getProportionateScreenWidth(39),
-                          decoration: BoxDecoration(
-                            color: kSecondaryColor.withOpacity(0.1),
-                            shape: BoxShape.circle,
-                          ),
-                          child: SvgPicture.asset("assets/icons/Bell.svg"),
-                        ),
-                        Positioned(
-                          top: -3,
-                          right: 0,
-                          child: Container(
-                            height: getProportionateScreenWidth(16),
-                            width: getProportionateScreenWidth(16),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFF4848),
-                              shape: BoxShape.circle,
-                              border:
-                                  Border.all(width: 1.5, color: Colors.white),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "",
-                                style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(10),
-                                  height: 1,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              )
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 70),
@@ -399,123 +315,5 @@ Widget homeScreenShimmer(BuildContext context) {
             ),
           ),
         ],
-      )
-
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: [
-      //     Container(
-      //       width: SizeConfig.screenWidth * 0.6,
-      //       decoration: BoxDecoration(
-      //         color: kSecondaryColor.withOpacity(0.1),
-      //         borderRadius: BorderRadius.circular(15),
-      //       ),
-      //       child: TextField(
-      //         onChanged: (value) => print(value),
-      //         decoration: InputDecoration(
-      //             contentPadding: EdgeInsets.symmetric(
-      //                 horizontal: getProportionateScreenWidth(20),
-      //                 vertical: getProportionateScreenWidth(9)),
-      //             border: InputBorder.none,
-      //             focusedBorder: InputBorder.none,
-      //             enabledBorder: InputBorder.none,
-      //             hintText: "Search product",
-      //             prefixIcon: Icon(Icons.search)),
-      //       ),
-      //     ),
-      //     SizedBox(
-      //       width: 20,
-      //     ),
-      //     InkWell(
-      //       borderRadius: BorderRadius.circular(100),
-      //       onTap: () {},
-      //       child: Stack(
-      //         clipBehavior: Clip.none,
-      //         children: [
-      //           Container(
-      //             padding: EdgeInsets.all(getProportionateScreenWidth(12)),
-      //             height: getProportionateScreenWidth(39),
-      //             width: getProportionateScreenWidth(39),
-      //             decoration: BoxDecoration(
-      //               color: kSecondaryColor.withOpacity(0.1),
-      //               shape: BoxShape.circle,
-      //             ),
-      //             child: SvgPicture.asset(""),
-      //           ),
-      //           Positioned(
-      //             top: -3,
-      //             right: 0,
-      //             child: Container(
-      //               height: getProportionateScreenWidth(16),
-      //               width: getProportionateScreenWidth(16),
-      //               decoration: BoxDecoration(
-      //                 color: Color(0xFFFF4848),
-      //                 shape: BoxShape.circle,
-      //                 border: Border.all(width: 1.5, color: Colors.white),
-      //               ),
-      //               child: Center(
-      //                 child: Text(
-      //                   "",
-      //                   style: TextStyle(
-      //                     fontSize: getProportionateScreenWidth(10),
-      //                     height: 1,
-      //                     fontWeight: FontWeight.w600,
-      //                     color: Colors.white,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //     SizedBox(
-      //       width: 10,
-      //     ),
-      //     InkWell(
-      //       borderRadius: BorderRadius.circular(100),
-      //       onTap: () {},
-      //       child: Stack(
-      //         clipBehavior: Clip.none,
-      //         children: [
-      //           Container(
-      //             padding: EdgeInsets.all(getProportionateScreenWidth(12)),
-      //             height: getProportionateScreenWidth(39),
-      //             width: getProportionateScreenWidth(39),
-      //             decoration: BoxDecoration(
-      //               color: kSecondaryColor.withOpacity(0.1),
-      //               shape: BoxShape.circle,
-      //             ),
-      //             child: SvgPicture.asset(""),
-      //           ),
-      //           Positioned(
-      //             top: -3,
-      //             right: 0,
-      //             child: Container(
-      //               height: getProportionateScreenWidth(16),
-      //               width: getProportionateScreenWidth(16),
-      //               decoration: BoxDecoration(
-      //                 color: Color(0xFFFF4848),
-      //                 shape: BoxShape.circle,
-      //                 border: Border.all(width: 1.5, color: Colors.white),
-      //               ),
-      //               child: Center(
-      //                 child: Text(
-      //                   "",
-      //                   style: TextStyle(
-      //                     fontSize: getProportionateScreenWidth(10),
-      //                     height: 1,
-      //                     fontWeight: FontWeight.w600,
-      //                     color: Colors.white,
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
-      );
+      ));
 }

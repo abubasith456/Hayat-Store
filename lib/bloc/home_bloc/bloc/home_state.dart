@@ -24,6 +24,12 @@ class LoadingImageState extends HomeState {}
 
 class LoadedImageState extends HomeState {}
 
+class StreetAdressState extends HomeState {
+  final String area;
+  final String pinCode;
+  StreetAdressState({required this.area, required this.pinCode});
+}
+
 // ignore: must_be_immutable
 class HomeErrorState extends HomeState {
   String productError;

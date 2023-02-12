@@ -13,4 +13,6 @@ class CartCounterCubit extends Cubit<double> {
       emit(0);
     }
   }
+
+  void reset() => emit(0);
 }

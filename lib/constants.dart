@@ -95,6 +95,8 @@ const String emailKey = 'email';
 const String userIdKey = 'userId';
 const String userNameKey = 'userName';
 const String pushToken = 'pushToken';
+const String areaNameKey = 'areaName';
+const String pinCodeKey = 'pinCode';
 
 //Url
 String imageLoadUrl =

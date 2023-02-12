@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
 import 'package:shop_app/bloc/order_bloc/bloc/order_bloc.dart';
+import 'package:shop_app/constants.dart';
 import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/db/userDB.dart';
@@ -16,6 +17,7 @@ import 'package:shop_app/services/locator.dart';
 import 'package:shop_app/services/notification/notification.dart';
 import 'my_app.dart';
 import 'services/firestore_and_remoteConfig/firestore_database.dart';
+import 'services/shared_preferences/shared_pref.dart';
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high-importance_channel', 'High Importance Notification',
@@ -70,6 +72,17 @@ void main() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, sound: true, badge: true);
   var user = await UserDb.instance.readAllUser();
+
+  //FIrebase token refresh listerner
+  //refresh token listener
+  FirebaseMessaging.instance.onTokenRefresh.listen((String token) {
+    print("Push token refresed ==> $token");
+    if (sl<SharedPrefService>().getData(pushToken) != token) {
+      //store refresh token
+      sl<SharedPrefService>().setData(pushToken, token);
+    }
+    // sync token to server
+  });
 
   //Init firebase remoteConfig Settings
   initRemoteConfig();

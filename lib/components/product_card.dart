@@ -47,6 +47,7 @@ class ProductCard extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ProductDetailsView(
                     product: product!,
+                    category: "",
                   ),
                 )),
             context.read<YourCartScreenCubit>().getCartData()

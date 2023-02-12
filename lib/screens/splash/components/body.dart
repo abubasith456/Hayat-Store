@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/constants.dart';
-import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/util/size_config.dart';
 import 'package:shop_app/util/shared_pref.dart';

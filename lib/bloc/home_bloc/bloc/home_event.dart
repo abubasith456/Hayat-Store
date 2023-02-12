@@ -7,6 +7,11 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetProductListEvent extends HomeEvent {}
+class GetProductListEvent extends HomeEvent {
+  final BuildContext context;
+  GetProductListEvent({required this.context});
+
+  List<Object> get props => [context];
+}
 
 class LoadImageEvent extends HomeEvent {}

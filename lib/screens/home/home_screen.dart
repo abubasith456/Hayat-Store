@@ -10,6 +10,7 @@ import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
 import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
+import 'package:shop_app/services/firebase_messaging/firebase_messaging.dart';
 import 'package:shop_app/services/locator.dart';
 import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 import 'package:shop_app/util/connection_lost.dart';
@@ -50,10 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    var id = sl<SharedPrefService>().getData(userIdKey);
-    context.read<FirebaseCubit>().setToken(id.toString());
+    _storePushToken();
     context.read<YourCartScreenCubit>().getCartData();
     super.initState();
+  }
+
+  _storePushToken() async {
+    String token = await FirebaseMessagingService.getToken();
+    sl<SharedPrefService>().setData(pushToken, token);
+    print("Push Token ===> " + token);
   }
 
   @override

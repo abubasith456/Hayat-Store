@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/services/Location/location.dart';
 import 'package:shop_app/services/permission/permission.dart';
 import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 
@@ -19,5 +20,8 @@ setLocator() async {
   );
   getIt.registerLazySingleton<PermissionService>(
     () => PermissionServiceImpl(),
+  );
+  getIt.registerLazySingleton<LocationService>(
+    () => LocationServiceImpl(),
   );
 }

@@ -8,8 +8,8 @@ abstract class AboutUsState extends Equatable {
 }
 
 class AboutUsInitial extends AboutUsState {
-  get shopLocation => Location.shopPosition();
-  get cameraPosition => Location.cameraPosition();
+  get shopLocation => LocationUtils.shopPosition();
+  get cameraPosition => LocationUtils.cameraPosition();
 }
 
 class OnMapCreatedState extends AboutUsState {

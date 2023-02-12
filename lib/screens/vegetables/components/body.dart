@@ -12,12 +12,7 @@ import 'package:shop_app/util/scroll_behaviour.dart';
 class Body extends StatelessWidget {
   Body({required this.vegetable, Key? key}) : super(key: key);
   ProductModel vegetable;
-
-  NetworkImage getImage(String imageName) {
-    String url = imageLoadUrl + imageName;
-    return NetworkImage(url);
-  }
-
+//Vegetable Cards
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,10 +28,14 @@ class Body extends StatelessWidget {
             return GestureDetector(
               onTap: (() {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProductDetailsView(
-                            product: vegetable.product![i])));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailsView(
+                      product: vegetable.product![i],
+                      category: "vegetables",
+                    ),
+                  ),
+                );
               }),
               child: Card(
                 shape: RoundedRectangleBorder(

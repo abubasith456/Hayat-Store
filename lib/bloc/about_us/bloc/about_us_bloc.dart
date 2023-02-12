@@ -25,7 +25,7 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       if (event is GoToShop) {
         final GoogleMapController controller = await _controller.future;
         controller.animateCamera(
-            CameraUpdate.newCameraPosition(Location.shopPosition()));
+            CameraUpdate.newCameraPosition(LocationUtils.shopPosition()));
       }
     });
   }

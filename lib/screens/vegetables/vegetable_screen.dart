@@ -4,8 +4,10 @@ import 'package:shimmer/shimmer.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
 import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/screens/connection_lost.dart';
+import 'package:shop_app/screens/home/components/icon_btn_with_counter.dart';
 import 'package:shop_app/screens/vegetables/components/body.dart';
 import 'package:shop_app/util/shimmer.dart';
+import 'package:search_page/search_page.dart';
 
 import '../../constants.dart';
 
@@ -38,6 +40,28 @@ class _VegetableScreenState extends State<VegetableScreen> {
                         Navigator.pop(context);
                       },
                     ),
+                    actions: [
+                      // IconBtnWithCounter(
+                      //   svgSrc: "assets/icons/Search_Icon.svg",
+                      //   numOfitem: 3,
+                      //   press: () {},
+                      // ),
+                      InkWell(
+                          borderRadius: BorderRadius.circular(100),
+                          onTap: () {},
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            child: Icon(Icons.search),
+                            decoration: BoxDecoration(
+                              color: kSecondaryColor.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                          )),
+                      SizedBox(
+                        width: 15,
+                      )
+                    ],
                     title: Text('Vegetables',
                         style: TextStyle(color: Colors.black)),
                   ),

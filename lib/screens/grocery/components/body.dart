@@ -26,7 +26,9 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProductDetailsView(
-                          product: groceryItems.product![i])));
+                            product: groceryItems.product![i],
+                            category: "grocery",
+                          )));
             }),
             child: Container(
               height: 500,

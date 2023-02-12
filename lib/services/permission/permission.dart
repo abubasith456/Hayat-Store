@@ -27,6 +27,8 @@ abstract class PermissionService {
 
   Future<bool> isLocationPermissionGranted();
 
+  Future<bool> isLocationPermissionDeniedPermanently();
+
   void bgBiometricHandled();
 
   Future<bool> getStoragePermission();
@@ -110,6 +112,16 @@ class PermissionServiceImpl implements PermissionService {
   @override
   Future<bool> isLocationPermissionGranted() async {
     return Permission.location.isGranted;
+  }
+
+  @override
+  Future<bool> isLocationPermissionDeniedPermanently() async {
+    var status = Permission.location.status;
+    if (status == PermissionStatus.permanentlyDenied) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override

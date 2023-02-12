@@ -28,15 +28,5 @@ class FirebaseCubit extends Cubit<FirebaseState> {
     } else {
       emit(PushTokenStoredState());
     }
-
-    //refresh token listener
-    FirebaseMessaging.instance.onTokenRefresh.listen((String token) {
-      if (sl<SharedPrefService>().getData(pushToken) != token) {
-        //store refresh token
-        sl<SharedPrefService>().setData(pushToken, token);
-      }
-      emit(PushTokenStoringState());
-      // sync token to server
-    });
   }
 }

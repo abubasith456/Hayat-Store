@@ -35,8 +35,8 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
     }
   }
 
-  late CameraPosition _kGooglePlex = Location.cameraPosition();
-  late CameraPosition _kShop = Location.shopPosition();
+  late CameraPosition _kGooglePlex = LocationUtils.cameraPosition();
+  late CameraPosition _kShop = LocationUtils.shopPosition();
   Maptheme maptheme = Maptheme();
 
   Set<Marker> _setMarkers = {};

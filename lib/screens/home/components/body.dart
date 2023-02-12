@@ -1,11 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:shop_app/api/api_provider.dart';
 import 'package:shop_app/bloc/home_bloc/bloc/home_bloc.dart';
+import 'package:shop_app/constants.dart';
+import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/home/components/icon_btn_with_counter.dart';
 import 'package:shop_app/screens/home/components/section_title.dart';
+import 'package:shop_app/services/locator.dart';
+import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 import 'package:shop_app/util/scroll_behaviour.dart';
 import 'package:shop_app/util/shimmer.dart';
 
@@ -18,6 +25,9 @@ import 'popular_product.dart';
 import 'special_offers.dart';
 
 class Body extends StatelessWidget {
+  String? area = null;
+  String? pinCode = null;
+  // var _provider = ApiProvider();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -25,7 +35,20 @@ class Body extends StatelessWidget {
       listener: (context, state) {
         if (state is LoadingHomeState) {
           Center(child: CircularProgressIndicator(color: Colors.black));
-        } else if (state is HomeErrorState) {
+        }
+
+        if (state is StreetAdressState) {
+          area = state.area;
+          pinCode = state.pinCode;
+        }
+
+        if (state is LoadedHomeState) {
+          area = sl<SharedPrefService>().getData(areaNameKey).toString();
+          pinCode = sl<SharedPrefService>().getData(pinCodeKey).toString();
+          print("LoadedHomeState ===> $area , and $pinCode");
+        }
+
+        if (state is HomeErrorState) {
           if (state.productError != "") {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -91,21 +114,19 @@ class Body extends StatelessWidget {
                       Align(
                         alignment: Alignment.topRight,
                         child: ListTile(
-                          // leading: ClipRRect(
-                          //   borderRadius: BorderRadius.circular(30),
-                          //   child: Icon(Icons.abc_rounded),
-                          // ),
                           title: Text(
                             "HAYAT",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 25,
                                 fontWeight: FontWeight.w900,
                                 color: Colors.black),
                           ),
                           subtitle: Text(
-                            'Smart shoping',
+                            _validateAddress(area, pinCode)
+                                ? '$area,$pinCode'
+                                : 'Smart Shoping',
                             style: TextStyle(
-                              color: Color(0xffd4d4d4),
+                              color: Colors.black,
                             ),
                           ),
                           trailing: Row(
@@ -205,6 +226,15 @@ class Body extends StatelessWidget {
         }
       },
     );
+  }
+
+  bool _validateAddress(String? area, String? pinCode) {
+    if (area != null && pinCode != null) {
+      if (area.isNotEmpty && pinCode.isNotEmpty) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Widget shimmerWidget(BuildContext context) {
