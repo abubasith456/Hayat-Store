@@ -1,10 +1,14 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:shop_app/bloc/oder_history_bloc/bloc/order_history_bloc.dart';
 import 'package:shop_app/bloc/orders_admin_bloc/bloc/orders_admin_bloc.dart';
+import 'package:shop_app/db/database.dart';
+import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
 import 'package:shop_app/admin_screens/components/body.dart';
+import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/services/firebase_push/firebase_push.dart';
 import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 import 'package:shop_app/util/adaptive_dialog.dart';
@@ -109,7 +113,31 @@ class _OrdersListAdminScreenState extends State<OrdersListAdminScreen> {
                     } else {
                       return customShimmer(context, _shimmeringWidget(context));
                     }
-                  }));
+                  }),
+                  floatingActionButton: SpeedDial(
+                    animatedIcon: AnimatedIcons.menu_arrow,
+                    overlayColor: Colors.black,
+                    overlayOpacity: 0.4,
+                    spacing: 10,
+                    closeManually: false,
+                    children: [
+                      SpeedDialChild(
+                          child: const Icon(Icons.logout),
+                          label: "Logout",
+                          onTap: () async {
+                            Navigator.pushNamed(
+                                context, SignInScreen.routeName);
+                            await UserDb.instance.delete(1);
+                            await MyDatabase.instance.deleteTable();
+                            sl<SharedPrefService>().clearData();
+                          })
+                    ],
+                  )
+                  // FloatingActionButton(
+                  //     splashColor: Colors.purple,
+                  //     hoverColor: Colors.orange,
+                  //     onPressed: () {}),
+                  );
             } else if (state is ConnectionFailure) {
               return ConnectionLostScreen();
             } else {

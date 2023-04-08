@@ -271,7 +271,8 @@ bool _isPreparingBtnVisiblity(String status) {
       status.contains("pending") ||
       status.contains("Preparing") ||
       status.contains("preparing") ||
-      status.contains("Delivered")) {
+      status.contains("Delivered") ||
+      status.contains("Cancelled")) {
     return false;
   } else {
     return true;
