@@ -1,19 +1,11 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:shop_app/bloc/oder_history_bloc/bloc/order_history_bloc.dart';
-import 'package:shop_app/components/bottom_sheet.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
-import 'package:shop_app/models/order_model.dart';
-import 'package:shop_app/screens/order_history_screen/components/items_card.dart';
 import 'package:shop_app/screens/order_history_screen/details_screen.dart';
 import 'package:shop_app/util/adaptive_dialog.dart';
-import 'package:shop_app/util/custom_dialog.dart';
-import 'package:shop_app/util/size_config.dart';
 
 class Body extends StatelessWidget {
   Body({required this.orderHistory, Key? key}) : super(key: key);
@@ -23,7 +15,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView.builder(
-        padding: EdgeInsets.all(20),
+        padding:const EdgeInsets.all(20),
         itemCount: orderHistory?.length,
         itemBuilder: ((context, mainIndex) {
           return Padding(
@@ -33,15 +25,15 @@ class Body extends StatelessWidget {
               elevation: 30,
               leading: CircleAvatar(
                 backgroundColor: kPrimaryColor,
-                child: Text(orderHistory![mainIndex].numOfItems.toString(),
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
                 radius: 30,
+                child: Text(orderHistory![mainIndex].numOfItems.toString(),
+                    style: const TextStyle(fontSize: 18, color: Colors.white)),
               ),
               title: RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
                   children: <TextSpan>[
-                    TextSpan(
+                    const TextSpan(
                         text: 'Rs. ',
                         style: TextStyle(
                             fontSize: 15,
@@ -49,7 +41,7 @@ class Body extends StatelessWidget {
                             fontWeight: FontWeight.bold)),
                     TextSpan(
                         text: orderHistory![mainIndex].amount.toString(),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           color: Colors.black,
                         )),
@@ -60,7 +52,7 @@ class Body extends StatelessWidget {
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
                   children: <TextSpan>[
-                    TextSpan(
+                    const TextSpan(
                         text: 'Status: ',
                         style: TextStyle(
                             fontSize: 15,
@@ -86,7 +78,7 @@ class Body extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       _richTextBuilder(
@@ -94,7 +86,7 @@ class Body extends StatelessWidget {
                           left: "Order ID: ",
                           right: orderHistory![mainIndex].sId.toString(),
                           fontSize: 12),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       _richTextBuilder(
@@ -102,7 +94,7 @@ class Body extends StatelessWidget {
                           left: "Ordered Date: ",
                           right: orderHistory![mainIndex].createdAt.toString(),
                           fontSize: 12),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       _richTextBuilder(
@@ -110,23 +102,13 @@ class Body extends StatelessWidget {
                           left: "Address: ",
                           right: orderHistory![mainIndex].address.toString(),
                           fontSize: 12),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Row(
                         children: <Widget>[
                           Expanded(
                             child: TextButton(
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: _cancelButtonVisiblity(
-                                            orderHistory![mainIndex].status!)
-                                        ? Colors.red
-                                        : Color.fromARGB(255, 197, 197, 197),
-                                    fontWeight: FontWeight.bold),
-                              ),
                               onPressed: _cancelButtonVisiblity(
                                       orderHistory![mainIndex].status!)
                                   ? (() {
@@ -150,17 +132,20 @@ class Body extends StatelessWidget {
                                           buttonYesText);
                                     })
                                   : null,
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: _cancelButtonVisiblity(
+                                            orderHistory![mainIndex].status!)
+                                        ? Colors.red
+                                        : Color.fromARGB(255, 197, 197, 197),
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                           Expanded(
                             child: TextButton(
-                              child: Text(
-                                'Details',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: kPrimaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
                               onPressed: (() {
                                 Navigator.push(
                                   context,
@@ -178,20 +163,17 @@ class Body extends StatelessWidget {
                                   ),
                                 );
                               }),
+                              child: const Text(
+                                'Details',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                           Expanded(
                             child: TextButton(
-                              child: Text(
-                                'Delete',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: _deleteButtonVisibility(
-                                            orderHistory![mainIndex].status!)
-                                        ? kPrimaryColor
-                                        : Color.fromARGB(255, 197, 197, 197),
-                                    fontWeight: FontWeight.bold),
-                              ),
                               onPressed: _deleteButtonVisibility(
                                       orderHistory![mainIndex].status!)
                                   ? () {
@@ -215,6 +197,17 @@ class Body extends StatelessWidget {
                                           buttonYesText);
                                     }
                                   : null,
+                              child: Text(
+                                'Delete',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: _deleteButtonVisibility(
+                                            orderHistory![mainIndex].status!)
+                                        ? kPrimaryColor
+                                        : const Color.fromARGB(
+                                            255, 197, 197, 197),
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           )
                         ],
@@ -258,7 +251,10 @@ bool _cancelButtonVisiblity(String value) {
 }
 
 bool _deleteButtonVisibility(String value) {
-  if (value == "Cancelled" || value == "cancelled") {
+  if (value == "Cancelled" ||
+      value == "cancelled" ||
+      value == "Delivered" ||
+      value == "delivered") {
     return true;
   } else {
     return false;
