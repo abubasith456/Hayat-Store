@@ -35,3 +35,12 @@ class CancelOrderEvent extends OrdersAdminEvent {
   @override
   List<Object> get props => [userId, orderId];
 }
+
+class DeliveredOrderEvent extends OrdersAdminEvent {
+  final String userId;
+  final String orderId;
+  const DeliveredOrderEvent({required this.userId, required this.orderId});
+
+  @override
+  List<Object> get props => [userId, orderId];
+}

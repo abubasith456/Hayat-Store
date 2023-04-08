@@ -59,3 +59,15 @@ class CancellingError extends OrdersAdminState {
   @override
   List<Object> get props => [error];
 }
+
+// Canceling Order
+class DeliveringOrder extends OrdersAdminState {}
+
+class DeliveredOrderSuccess extends OrdersAdminState {}
+
+class DeliveringError extends OrdersAdminState {
+  final String error;
+  const DeliveringError({required this.error});
+  @override
+  List<Object> get props => [error];
+}

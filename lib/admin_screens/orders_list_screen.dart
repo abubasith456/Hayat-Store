@@ -86,19 +86,6 @@ class _OrdersListAdminScreenState extends State<OrdersListAdminScreen> {
                         // Will add cancel order api
                       }, buttonOkText);
                     }
-
-                    // if (state is OrderDeleteFailure) {
-                    //   print("OrderDeleteFailure called =====> ");
-                    //   customDialog.dismissDialog();
-                    //   BlocProvider.of<OrderHistoryBloc>(context)
-                    //       .add(FetchOrdersList());
-                    //   showAdaptiveAlertDialog(
-                    //       context, exceptinTitle, exceptinMessage, () {
-                    //     Navigator.of(context).pop();
-                    //     BlocProvider.of<OrderHistoryBloc>(context)
-                    //         .add(FetchHistoryList());
-                    //   }, buttonOkText);
-                    // }
                   }, builder: (context, state) {
                     if (state is FetchOrderForAdminSuccess) {
                       return StreamBuilder(

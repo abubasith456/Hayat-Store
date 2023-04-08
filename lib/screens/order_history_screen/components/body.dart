@@ -232,11 +232,12 @@ class Body extends StatelessWidget {
 }
 
 MaterialColor _statusTextColor(String value) {
-  if (value.contains("Preparing") ||
-      value.contains("Packing") ||
-      value.contains("preparing")) {
+  if (value.contains("Preparing") || value.contains("preparing")) {
     return Colors.deepPurple;
-  } else if (value.contains("Delivered") || value.contains("delivered")) {
+  } else if (value.contains("Delivered") ||
+      value.contains("delivered") ||
+      value.contains("Accepted") ||
+      value.contains("accepted")) {
     return Colors.green;
   } else {
     return Colors.red;
@@ -246,8 +247,10 @@ MaterialColor _statusTextColor(String value) {
 bool _cancelButtonVisiblity(String value) {
   if (value.contains("Preparing") ||
       value.contains("Packing") ||
-      value.contains("preparing") || 
-         value.contains("Pending") ||    value.contains("preparing") ) {
+      value.contains("preparing") ||
+      value.contains("preparing") ||
+      value.contains("Accepted") ||
+      value.contains("accepted")) {
     return true;
   } else {
     return false;

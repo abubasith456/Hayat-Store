@@ -1,22 +1,12 @@
-import 'dart:math';
-
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:shop_app/bloc/oder_history_bloc/bloc/order_history_bloc.dart';
 import 'package:shop_app/bloc/orders_admin_bloc/bloc/orders_admin_bloc.dart';
-import 'package:shop_app/components/bottom_sheet.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
-import 'package:shop_app/models/order_model.dart';
-import 'package:shop_app/screens/order_history_screen/components/items_card.dart';
-import 'package:shop_app/screens/order_history_screen/details_screen.dart';
+import 'package:shop_app/admin_screens/components/details_screen.dart';
 import 'package:shop_app/util/adaptive_dialog.dart';
-import 'package:shop_app/util/custom_dialog.dart';
-import 'package:shop_app/util/size_config.dart';
 
 class Body extends StatelessWidget {
   Body({required this.orderHistory, Key? key}) : super(key: key);
@@ -121,134 +111,139 @@ class Body extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Expanded(
-                              child: _isOrderNotAcepted(orderHistory![mainIndex]
-                                      .status
-                                      .toString())
-                                  ? FloatingActionButton(
-                                      backgroundColor: Colors.green,
-                                      onPressed: () {
-                                        BlocProvider.of<OrdersAdminBloc>(
-                                                context)
-                                            .add(AcceptOrderEvent(
-                                                orderId:
-                                                    orderHistory![mainIndex]
-                                                        .sId
-                                                            .toString(),
-                                                userId: orderHistory![mainIndex]
-                                                    .uniqueId
-                                                    .toString()));
-                                      },
-                                      child: const Text(
-                                        'Accept',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  : const SizedBox()
-
-                              //  TextButton(
-                              //   onPressed: _cancelButtonVisiblity(
-                              //           orderHistory![mainIndex].status!)
-                              //       ? (() {
-                              //           buildConfirmDialog(
-                              //               context,
-                              //               cancelPopupTitle,
-                              //               cancelPopupMessage,
-                              //               () {
-                              //                 Navigator.of(context).pop();
-                              //               },
-                              //               buttonNoText,
-                              //               () {
-                              //                 Navigator.of(context).pop();
-                              //                 BlocProvider.of<OrderHistoryBloc>(
-                              //                         context)
-                              //                     .add(CancelOrderEvent(
-                              //                         orderId:
-                              //                             orderHistory![mainIndex]
-                              //                                 .sId!));
-                              //               },
-                              //               buttonYesText);
-                              //         })
-                              //       : null,
-                              //   child: Text(
-                              //     'Cancel',
-                              //     style: TextStyle(
-                              //         fontSize: 15,
-                              //         color: _cancelButtonVisiblity(
-                              //                 orderHistory![mainIndex].status!)
-                              //             ? Colors.red
-                              //             : const Color.fromARGB(255, 197, 197, 197),
-                              //         fontWeight: FontWeight.bold),
-                              //   ),
-                              // ),
-                              ),
-                          Expanded(
-                            child: TextButton(
-                              child: Text(
-                                'Details',
+                              child: SizedBox(
+                            height: 80,
+                            width: 80,
+                            child: FloatingActionButton(
+                              backgroundColor: _isOrderNotAcepted(
+                                      orderHistory![mainIndex]
+                                          .status
+                                          .toString())
+                                  ? Colors.green
+                                  : const Color.fromARGB(255, 197, 197, 197),
+                              onPressed: () {
+                                _isOrderNotAcepted(orderHistory![mainIndex]
+                                        .status
+                                        .toString())
+                                    ? BlocProvider.of<OrdersAdminBloc>(context)
+                                        .add(AcceptOrderEvent(
+                                            orderId: orderHistory![mainIndex]
+                                                .sId
+                                                .toString(),
+                                            userId: orderHistory![mainIndex]
+                                                .uniqueId
+                                                .toString()))
+                                    : null;
+                              },
+                              child: const Text(
+                                'Accept',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: kPrimaryColor,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
-                              onPressed: (() {
+                            ),
+                          )),
+
+                          Expanded(
+                              child: SizedBox(
+                            height: 80,
+                            width: 80,
+                            child: FloatingActionButton(
+                              backgroundColor: _isPreparingBtnVisiblity(
+                                      orderHistory![mainIndex]
+                                          .status
+                                          .toString())
+                                  ? Colors.green
+                                  : const Color.fromARGB(255, 197, 197, 197),
+                              onPressed: () => _isPreparingBtnVisiblity(
+                                      orderHistory![mainIndex]
+                                          .status
+                                          .toString())
+                                  ? BlocProvider.of<OrdersAdminBloc>(context)
+                                      .add(PreparingOrderEvent(
+                                          orderId: orderHistory![mainIndex]
+                                              .sId
+                                              .toString(),
+                                          userId: orderHistory![mainIndex]
+                                              .uniqueId
+                                              .toString()))
+                                  : null,
+                              child: const Text(
+                                'Preparing',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          )),
+
+                          Expanded(
+                              child: SizedBox(
+                            height: 80,
+                            width: 80,
+                            child: FloatingActionButton(
+                              backgroundColor: Colors.deepPurple,
+                              onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => DetailsScreen(
-                                      products:
-                                          orderHistory![mainIndex].products!,
-                                      totalAmount: orderHistory![mainIndex]
-                                          .amount!
-                                          .toString(),
-                                      noOfProd: orderHistory![mainIndex]
-                                          .numOfItems
-                                          .toString(),
+                                      orderModel: orderHistory![mainIndex],
+                                      // totalAmount: orderHistory![mainIndex]
+                                      //     .amount!
+                                      //     .toString(),
+                                      // noOfProd: orderHistory![mainIndex]
+                                      //     .numOfItems
+                                      //     .toString(),
                                     ),
                                   ),
                                 );
-                              }),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextButton(
-                              child: Text(
-                                'Delete',
+                              },
+                              child: const Text(
+                                'Details',
                                 style: TextStyle(
                                     fontSize: 15,
-                                    color: _deleteButtonVisibility(
-                                            orderHistory![mainIndex].status!)
-                                        ? kPrimaryColor
-                                        : Color.fromARGB(255, 197, 197, 197),
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
-                              onPressed: _deleteButtonVisibility(
-                                      orderHistory![mainIndex].status!)
-                                  ? () {
-                                      buildConfirmDialog(
-                                          context,
-                                          cancelPopupTitle,
-                                          cancelPopupMessage,
-                                          () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          buttonNoText,
-                                          () {
-                                            Navigator.of(context).pop();
-                                            BlocProvider.of<OrderHistoryBloc>(
-                                                    context)
-                                                .add(DeleteOrderEvent(
-                                                    orderId:
-                                                        orderHistory![mainIndex]
-                                                            .sId!));
-                                          },
-                                          buttonYesText);
-                                    }
-                                  : null,
                             ),
-                          )
+                          )),
+
+                          // Expanded(
+                          //     child: SizedBox(
+                          //   height: 70,
+                          //   width: 70,
+                          //   child: FloatingActionButton(
+                          //     backgroundColor: Colors.red,
+                          //     onPressed: () {
+                          //       buildConfirmDialog(
+                          //           context,
+                          //           cancelPopupTitle,
+                          //           cancelPopupMessage,
+                          //           () {
+                          //             Navigator.of(context).pop();
+                          //           },
+                          //           buttonNoText,
+                          //           () {
+                          //             Navigator.of(context).pop();
+                          //             BlocProvider.of<OrderHistoryBloc>(context)
+                          //                 .add(DeleteOrderEvent(
+                          //                     orderId: orderHistory![mainIndex]
+                          //                         .sId!));
+                          //           },
+                          //           buttonYesText);
+                          //     },
+                          //     child: const Text(
+                          //       'Cancel',
+                          //       style: TextStyle(
+                          //           fontSize: 15,
+                          //           color: Colors.white,
+                          //           fontWeight: FontWeight.bold),
+                          //     ),
+                          //   ),
+                          // )),
                         ],
                       ),
                     ],
@@ -271,6 +266,18 @@ bool _isOrderNotAcepted(String status) {
   }
 }
 
+bool _isPreparingBtnVisiblity(String status) {
+  if (status.contains("Pending") ||
+      status.contains("pending") ||
+      status.contains("Preparing") ||
+      status.contains("preparing") ||
+      status.contains("Delivered")) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 MaterialColor _statusTextColor(String value) {
   if (value.contains("Preparing") ||
       value.contains("Packing") ||
@@ -280,24 +287,6 @@ MaterialColor _statusTextColor(String value) {
     return Colors.green;
   } else {
     return Colors.red;
-  }
-}
-
-bool _cancelButtonVisiblity(String value) {
-  if (value.contains("Preparing") ||
-      value.contains("Packing") ||
-      value.contains("preparing")) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-bool _deleteButtonVisibility(String value) {
-  if (value == "Cancelled" || value == "cancelled") {
-    return true;
-  } else {
-    return false;
   }
 }
 

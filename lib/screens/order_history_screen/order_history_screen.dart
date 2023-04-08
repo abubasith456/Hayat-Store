@@ -48,7 +48,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                   appBar: AppBar(
                     backgroundColor: Colors.white,
                     leading: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_ios_new,
                         color: Colors.black,
                       ),
@@ -56,7 +56,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         Navigator.pop(context);
                       },
                     ),
-                    title: Text(
+                    title: const Text(
                       'Order History',
                       style: TextStyle(color: Colors.black),
                     ),
@@ -124,7 +124,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         },
                       );
                     } else if (state is FetchOrderHistoryFailure) {
-                      return Center(
+                      return const Center(
                         child: Text("No data found"),
                       );
                     } else {

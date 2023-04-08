@@ -1,13 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:shop_app/api/api_provider.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
-import 'package:shop_app/services/locator.dart';
-import 'package:shop_app/services/shared_preferences/shared_pref.dart';
-
-import '../../../constants.dart';
-
 part 'orders_admin_event.dart';
 part 'orders_admin_state.dart';
 
@@ -63,6 +57,19 @@ class OrdersAdminBloc extends Bloc<OrdersAdminEvent, OrdersAdminState> {
           emit(CancellingError(error: response.error!));
         } else {
           emit(CancellingSuccess());
+        }
+      }
+
+      if (event is DeliveredOrderEvent) {
+        emit(DeliveringOrder());
+        var status = "Delivered";
+        var response =
+            await api.changeOrderStatus(event.orderId, event.userId, status);
+
+        if (response.error != null) {
+          emit(DeliveringError(error: response.error!));
+        } else {
+          emit(DeliveredOrderSuccess());
         }
       }
     });

@@ -66,6 +66,8 @@ const String cancellingOrderAdmin = "";
 const String cancelOrderAdminTitile = "Cancel Order!";
 const String cancelOrderAdminMessage = "Are you sure do you cancel this order?";
 
+const String pleaseWait = "Please wait...";
+
 //Common buttontext
 const String buttonOkText = 'Ok';
 const String buttonYesText = "Yes";

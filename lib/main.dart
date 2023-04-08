@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
 import 'package:shop_app/bloc/order_bloc/bloc/order_bloc.dart';
+import 'package:shop_app/bloc/orders_admin_bloc/bloc/orders_admin_bloc.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
@@ -107,10 +108,13 @@ void main() async {
         ),
         BlocProvider(
           create: ((context) => OrderBloc()),
+        ),
+        BlocProvider(
+          create: ((context) => OrdersAdminBloc()),
         )
       ],
       child: MyApp(
-        isLogged: user.length != 0 ? true : false,
+        isLogged: user.isNotEmpty ? true : false,
         isAdmin: isAdmin,
       ),
     ),

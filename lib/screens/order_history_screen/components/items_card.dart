@@ -14,6 +14,7 @@ class ItemsCard extends StatelessWidget {
   final Products products;
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Row(
       children: [
         SizedBox(

@@ -384,8 +384,6 @@ class ApiProvider {
 
       Response response = await _dio.get(orderUrl);
 
-      debugPrint("==> ${response.statusCode} ");
-
       if (response.statusCode == 200) {
         return response.data as List;
       } else {
