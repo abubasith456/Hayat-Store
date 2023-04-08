@@ -277,7 +277,7 @@ class ApiProvider {
 
   Future<OrdersNewModel> postOrders(dynamic list) async {
     try {
-      final orderUrl = APP_BASE_URL + "orders";
+      final orderUrl = "${APP_BASE_URL}orders";
 
       Response response = await _dio.post(orderUrl, data: list);
 
@@ -313,18 +313,20 @@ class ApiProvider {
     }
   }
 
-  Future<ResponseModel> cancelOrder(String orderId) async {
+  Future<ResponseModel> changeOrderStatus(
+      String orderId, String userId, String status) async {
     try {
-      final orderUrl = APP_BASE_URL + "orders/" + orderId;
+      final orderUrl = "${APP_BASE_URL}orders/$orderId";
 
       Map<dynamic, dynamic> request = {
-        "status": "Cancelled",
+        "unique_id": userId,
+        "status": status,
       };
 
       Response response = await _dio.put(orderUrl, data: request);
 
       if (response.statusCode == 200) {
-        return response.data;
+        return ResponseModel.fromJson(response.data);
       } else {
         return ResponseModel.error("Something went wrong...");
       }
@@ -335,7 +337,7 @@ class ApiProvider {
 
   Future<ResponseModel> deleteOrder(String orderId) async {
     try {
-      final orderUrl = APP_BASE_URL + "orders/" + orderId;
+      final orderUrl = "${APP_BASE_URL}orders/$orderId";
 
       Map<dynamic, dynamic> request = {
         "status": "Cancelled",
@@ -358,7 +360,7 @@ class ApiProvider {
   //fcm
   Future<ResponseModel> setPushToken(String id, String pushToken) async {
     try {
-      var tokenUrl = APP_BASE_URL + "fcm/pushToken";
+      var tokenUrl = "${APP_BASE_URL}fcm/pushToken";
 
       Map<String, String> req = {"unique_id": id, "pushToken": pushToken};
 
@@ -372,6 +374,26 @@ class ApiProvider {
     } catch (e) {
       print(e);
       return ResponseModel.error(e.toString());
+    }
+  }
+
+  //Get all orders
+  Future<List> getAllOrders() async {
+    try {
+      final orderUrl = "${APP_BASE_URL}orders";
+
+      Response response = await _dio.get(orderUrl);
+
+      debugPrint("==> ${response.statusCode} ");
+
+      if (response.statusCode == 200) {
+        return response.data as List;
+      } else {
+        return List<OrdersNewModel>.empty();
+      }
+    } catch (e) {
+      print("Ordder==> $e");
+      return List<OrdersNewModel>.empty();
     }
   }
 }

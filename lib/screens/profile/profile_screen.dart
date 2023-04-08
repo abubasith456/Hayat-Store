@@ -26,8 +26,10 @@ class ProfileScreen extends StatelessWidget {
               body: Body(),
               // bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.profile),
             );
-          } else {
+          } else if (state is ConnectionFailure) {
             return ConnectionLostScreen();
+          } else {
+            return Container();
           }
         }));
   }

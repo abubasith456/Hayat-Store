@@ -18,6 +18,7 @@ class ConnectionLostScreen extends StatelessWidget {
               ),
             ),
           ),
+          
           Positioned(
             bottom: MediaQuery.of(context).size.height * 0.12,
             right: MediaQuery.of(context).size.width * 0.065,

@@ -72,6 +72,7 @@ void main() async {
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, sound: true, badge: true);
   var user = await UserDb.instance.readAllUser();
+  var isAdmin = await UserDb.instance.isAdmin();
 
   //FIrebase token refresh listerner
   //refresh token listener
@@ -110,6 +111,7 @@ void main() async {
       ],
       child: MyApp(
         isLogged: user.length != 0 ? true : false,
+        isAdmin: isAdmin,
       ),
     ),
   );

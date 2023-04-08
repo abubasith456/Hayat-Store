@@ -1,12 +1,20 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/api/api_provider.dart';
+import 'package:shop_app/services/firebase_messaging/firebase_messaging.dart';
 
 import '../../constants.dart';
 import '../locator.dart';
 import '../shared_preferences/shared_pref.dart';
 
 var _provider = ApiProvider();
+
+storeLocallyPushToken() async {
+  String token = await FirebaseMessagingService.getToken();
+  sl<SharedPrefService>().setData(pushToken, token);
+  print("Push Token ===> " + token);
+}
+
 sePushtoken(BuildContext context) {
   var id = sl<SharedPrefService>().getData(userIdKey);
   var token = sl<SharedPrefService>().getData(pushToken);

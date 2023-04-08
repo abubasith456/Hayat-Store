@@ -56,8 +56,10 @@ class _HomeScreenInitState extends State<HomeScreenInit> {
               body: Body(),
             ),
           );
-        } else {
+        } else if (state is ConnectionFailure) {
           return ConnectionLostScreen();
+        } else {
+          return Container();
         }
       },
     );

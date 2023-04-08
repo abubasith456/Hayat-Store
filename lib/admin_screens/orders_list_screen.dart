@@ -1,114 +1,106 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:panara_dialogs/panara_dialogs.dart';
 import 'package:shop_app/bloc/oder_history_bloc/bloc/order_history_bloc.dart';
+import 'package:shop_app/bloc/orders_admin_bloc/bloc/orders_admin_bloc.dart';
 import 'package:shop_app/models/orderHistoryModel.dart';
-import 'package:shop_app/screens/order_history_screen/components/body.dart';
-import 'package:shop_app/screens/order_history_screen/components/items_card.dart';
+import 'package:shop_app/admin_screens/components/body.dart';
+import 'package:shop_app/services/firebase_push/firebase_push.dart';
 import 'package:shop_app/services/shared_preferences/shared_pref.dart';
 import 'package:shop_app/util/adaptive_dialog.dart';
 import 'package:shop_app/util/custom_dialog.dart';
 import 'package:shop_app/util/shimmer.dart';
 import 'package:stylish_dialog/stylish_dialog.dart';
-
 import '../../api/api_provider.dart';
 import '../../bloc/network_bloc/bloc/network_bloc.dart';
 import '../../constants.dart';
 import '../../services/locator.dart';
-import '../connection_lost.dart';
+import '../screens/connection_lost.dart';
 
-class OrderHistoryScreen extends StatefulWidget {
-  const OrderHistoryScreen({Key? key}) : super(key: key);
+class OrdersListAdminScreen extends StatefulWidget {
+  const OrdersListAdminScreen({Key? key}) : super(key: key);
 
-  static String routeName = "/orderHistory_screen";
+  static String routeName = "/orderListAdmin";
 
   @override
-  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
+  State<OrdersListAdminScreen> createState() => _OrdersListAdminScreenState();
 }
 
-class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
+class _OrdersListAdminScreenState extends State<OrdersListAdminScreen> {
   @override
   void initState() {
     super.initState();
+    storeLocallyPushToken();
+    //Set the push token after login
+    sePushtoken(context);
   }
 
   @override
   Widget build(BuildContext context) {
     CustomDialog customDialog = CustomDialog(context: context);
     return WillPopScope(
-        onWillPop: () async => true,
+        onWillPop: () async => false,
         child: BlocProvider(
-          create: (context) => OrderHistoryBloc()..add(FetchHistoryList()),
+          create: (context) => OrdersAdminBloc()..add(FetchOrdersList()),
           child:
               BlocBuilder<NetworkBloc, NetworkState>(builder: (context, state) {
             if (state is ConnectionSuccess) {
               return Scaffold(
                   backgroundColor: Colors.white,
                   appBar: AppBar(
+                    leading: Container(),
+                    centerTitle: true,
                     backgroundColor: Colors.white,
-                    leading: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    title: Text(
-                      'Order History',
+                    title: const Text(
+                      'Orders List',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
-                  body: BlocConsumer<OrderHistoryBloc, OrderHistoryState>(
+                  body: BlocConsumer<OrdersAdminBloc, OrdersAdminState>(
                       listener: (context, state) {
-                    if (state is OrderCanceling) {
-                      customDialog.showProgressDialog(
-                          cancelingOrderProgressText, "", false,
+                    if (state is AcceptingOrder) {
+                      customDialog.showProgressDialog(acceptingOrder, "", false,
                           alertType: StylishDialogType.PROGRESS);
-                    } else if (state is OrderDeleting) {
-                      customDialog.showProgressDialog(deletingOrder, "", false,
+                    } else if (state is PreparingOrder) {
+                      customDialog.showProgressDialog(perparingOrder, "", false,
+                          alertType: StylishDialogType.PROGRESS);
+                    } else if (state is CancellingOrder) {
+                      customDialog.showProgressDialog(perparingOrder, "", false,
                           alertType: StylishDialogType.PROGRESS);
                     }
 
-                    if (state is OrderCancelFailure) {
-                      print("OrderCancelFailure called =====> ");
+                    if (state is AcceptingSuccess ||
+                        state is CancellingSuccess ||
+                        state is PreparingSuccess) {
                       customDialog.dismissDialog();
-                      BlocProvider.of<OrderHistoryBloc>(context)
-                          .add(FetchHistoryList());
+                      BlocProvider.of<OrdersAdminBloc>(context)
+                          .add(FetchOrdersList());
+                    }
+
+                    if (state is AcceptingError ||
+                        state is CancellingError ||
+                        state is PreparingError) {
                       showAdaptiveAlertDialog(
                           context, exceptinTitle, exceptinMessage, () {
                         Navigator.of(context).pop();
+                        // Will add cancel order api
                       }, buttonOkText);
                     }
 
-                    if (state is OrderCancelSuccess) {
-                      customDialog.dismissDialog();
-                      BlocProvider.of<OrderHistoryBloc>(context)
-                          .add(FetchHistoryList());
-                    }
-
-                    if (state is OrderDeleteSuccess) {
-                      customDialog.dismissDialog();
-                      BlocProvider.of<OrderHistoryBloc>(context)
-                          .add(FetchHistoryList());
-                    }
-
-                    if (state is OrderDeleteFailure) {
-                      print("OrderDeleteFailure called =====> ");
-                      customDialog.dismissDialog();
-                      BlocProvider.of<OrderHistoryBloc>(context)
-                          .add(FetchHistoryList());
-                      showAdaptiveAlertDialog(
-                          context, exceptinTitle, exceptinMessage, () {
-                        Navigator.of(context).pop();
-                        BlocProvider.of<OrderHistoryBloc>(context)
-                            .add(FetchHistoryList());
-                      }, buttonOkText);
-                    }
+                    // if (state is OrderDeleteFailure) {
+                    //   print("OrderDeleteFailure called =====> ");
+                    //   customDialog.dismissDialog();
+                    //   BlocProvider.of<OrderHistoryBloc>(context)
+                    //       .add(FetchOrdersList());
+                    //   showAdaptiveAlertDialog(
+                    //       context, exceptinTitle, exceptinMessage, () {
+                    //     Navigator.of(context).pop();
+                    //     BlocProvider.of<OrderHistoryBloc>(context)
+                    //         .add(FetchHistoryList());
+                    //   }, buttonOkText);
+                    // }
                   }, builder: (context, state) {
-                    if (state is FetchOrderHistorySuccess) {
+                    if (state is FetchOrderForAdminSuccess) {
                       return StreamBuilder(
                         stream: productsStream(),
                         builder: (context,
@@ -124,7 +116,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                         },
                       );
                     } else if (state is FetchOrderHistoryFailure) {
-                      return Center(
+                      return const Center(
                         child: Text("No data found"),
                       );
                     } else {
@@ -208,10 +200,10 @@ _shimmeringWidget(BuildContext context) {
 
 Stream<List<OrderHistoryModel>> productsStream() async* {
   while (true) {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     String userId = sl<SharedPrefService>().getData(userIdKey).toString();
-    var api = new ApiProvider();
-    var response = await api.getOrders(userId);
+    var api = ApiProvider();
+    var response = await api.getAllOrders();
     List<OrderHistoryModel> responselist =
         response.map((e) => OrderHistoryModel.fromJson(e)).toList();
     yield responselist;

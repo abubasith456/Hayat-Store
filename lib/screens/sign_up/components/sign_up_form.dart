@@ -109,13 +109,16 @@ class _SignUpFormState extends State<SignUpForm> {
                 var user = User(
                     userId: state.registerModel.userData!.userId!.toString(),
                     password: passwordController.text,
-                    email: emailConroller.text,
-                    name: usernameController.text);
+                    email: state.registerModel.userData!.email!,
+                    name: state.registerModel.userData!.username!,
+                    role: state.registerModel.userData!.role!);
                 UserDb.instance.create(user);
                 sl<SharedPrefService>().setData(userIdKey,
                     state.registerModel.userData!.userId!.toString());
                 sl<SharedPrefService>().setData(
                     userNameKey, state.registerModel.userData!.username!);
+                sl<SharedPrefService>()
+                    .setData(userRole, state.registerModel.userData!.role!);
                 //Home naviogator
                 Navigator.pushNamed(context, HomeScreen.routeName);
               } else if (state.registerModel.status == 400) {

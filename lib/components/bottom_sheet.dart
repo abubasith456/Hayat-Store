@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:shop_app/util/size_config.dart';
 
 void showBottomSheetOrderDetails(
     {required BuildContext context,

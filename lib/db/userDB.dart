@@ -24,13 +24,10 @@ class UserDb {
   }
 
   Future _createDB(Database db, int version) async {
-    final idType = 'INTEGER PRIMARY KEY';
-    final textType = 'TEXT';
-    final boolType = 'BOOLEAN NOT NULL';
-    final integerType = 'INTEGER NOT NULL';
-
-    // await db.execute(
-    //     'CREATE TABLE $CartData (id INTEGER PRIMARY KEY, name TEXT, price TEXT, description REAL, categoryId TEXT, productImage TEXT, productId TEXT)');
+    const idType = 'INTEGER PRIMARY KEY';
+    const textType = 'TEXT';
+    const boolType = 'BOOLEAN NOT NULL';
+    const integerType = 'INTEGER NOT NULL';
 
     await db.execute('''
 CREATE TABLE $UserData (
@@ -38,7 +35,8 @@ CREATE TABLE $UserData (
   ${UserFields.name} $textType,
   ${UserFields.email} $textType,
   ${UserFields.password} $textType,
-  ${UserFields.userId} $textType
+  ${UserFields.userId} $textType,
+  ${UserFields.role} $textType
   )
 ''');
   }
@@ -46,15 +44,6 @@ CREATE TABLE $UserData (
 //insert
   Future<User> create(User user) async {
     final db = await instance.database;
-
-    // final json = note.toJson();
-    // final columns =
-    //     '${NoteFields.title}, ${NoteFields.description}, ${NoteFields.time}';
-    // final values =
-    //     '${json[NoteFields.title]}, ${json[NoteFields.description]}, ${json[NoteFields.time]}';
-    // final id = await db
-    //     .rawInsert('INSERT INTO table_name ($columns) VALUES ($values)');
-
     final id = await db.insert(UserData, user.toJson());
     print("User added into Db");
     return user.copy(id: id);
@@ -64,12 +53,32 @@ CREATE TABLE $UserData (
     final db = await instance.database;
 
     final name = '${UserFields.name} ASC';
-    // final result =
-    //     await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
 
     final result = await db.query(UserData, orderBy: name);
 
     return result.map((json) => User.fromJson(json)).toList();
+  }
+
+  Future<bool> isAdmin() async {
+    final db = await instance.database;
+
+    final name = '${UserFields.name} ASC';
+
+    final dbResult = await db.query(UserData, orderBy: name);
+
+    final result = dbResult.map((json) => User.fromJson(json)).toList();
+
+    if (result.isNotEmpty) {
+      var userRole = result[0].role;
+
+      if (userRole == "admin") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    return false;
   }
 
   Future<int> delete(int id) async {

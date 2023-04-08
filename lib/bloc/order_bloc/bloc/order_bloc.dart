@@ -37,7 +37,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
             userName: event.name,
             products: prodductList,
             amount: event.totalAmount,
-            status: "Preparing",
+            status: "Pending",
             address: "Chennai");
 
         var response = await api.postOrders(ordersNewModel.toJson());

@@ -87,8 +87,10 @@ class _VegetableScreenState extends State<VegetableScreen> {
                       }
                     },
                   )));
-        } else {
+        } else if (state is ConnectionFailure) {
           return ConnectionLostScreen();
+        } else {
+          return Container();
         }
       },
     );

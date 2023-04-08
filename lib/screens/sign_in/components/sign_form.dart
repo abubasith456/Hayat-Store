@@ -1,15 +1,12 @@
 import 'dart:async';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:loader_overlay/loader_overlay.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shop_app/admin_screens/orders_list_screen.dart';
 import 'package:shop_app/bloc/login_bloc/bloc/login_bloc.dart';
 import 'package:shop_app/components/custom_surfix_icon.dart';
-import 'package:shop_app/components/form_error.dart';
 import 'package:shop_app/db/userDB.dart';
 import 'package:shop_app/helper/keyboard.dart';
 import 'package:shop_app/models/user_db_model.dart';
@@ -20,10 +17,8 @@ import 'package:shop_app/util/custom_snackbar.dart';
 import 'package:shop_app/util/shared_pref.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
-import '../../../db/db_services.dart';
 import '../../../services/shared_preferences/shared_pref.dart';
 import '../../../util/size_config.dart';
-import '../../../db/userDB.dart';
 
 class SignForm extends StatefulWidget {
   @override
@@ -78,7 +73,14 @@ class _SignFormState extends State<SignForm> {
         } else if (state is LoadedState) {
           isLoading = false;
           if (state.loginModel.status == 200) {
-            Navigator.pushNamed(context, HomeScreen.routeName);
+            if (state.loginModel.userData?.role == admin) {
+              Navigator.pushNamed(context, OrdersListAdminScreen.routeName);
+              sl<SharedPrefService>().setData(
+                  userRole, state.loginModel.userData!.role!.toString());
+            } else {
+              Navigator.pushNamed(context, HomeScreen.routeName);
+            }
+
             sharedPref.setBoolValue(loggedKey, true);
             sharedPref.setStringValue(
                 emailKey, state.loginModel.userData!.email!);
@@ -94,7 +96,8 @@ class _SignFormState extends State<SignForm> {
                 userId: state.loginModel.userData!.userId!.toString(),
                 password: password!,
                 email: state.loginModel.userData!.email!,
-                name: state.loginModel.userData!.username!);
+                name: state.loginModel.userData!.username!,
+                role: state.loginModel.userData!.role!);
 
             UserDb.instance.create(user);
           } else if (state.loginModel.status == 500) {
@@ -128,21 +131,11 @@ class _SignFormState extends State<SignForm> {
               SizedBox(height: getProportionateScreenHeight(30)),
               Row(
                 children: [
-                  // Checkbox(
-                  //   value: remember,
-                  //   activeColor: kPrimaryColor,
-                  //   onChanged: (value) {
-                  //     setState(() {
-                  //       remember = value;
-                  //     });
-                  //   },
-                  // ),
-                  // Text("Remember me"),
-                  Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: () => Navigator.pushNamed(
                         context, ForgotPasswordScreen.routeName),
-                    child: Text(
+                    child: const Text(
                       "Forgot Password",
                       style: TextStyle(decoration: TextDecoration.underline),
                     ),
@@ -187,7 +180,7 @@ class _SignFormState extends State<SignForm> {
           ),
           Text(
             error,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
         ],
       ),

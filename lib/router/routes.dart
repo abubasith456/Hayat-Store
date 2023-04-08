@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:shop_app/admin_screens/orders_list_screen.dart';
 import 'package:shop_app/screens/aboutUs/aboutus_screen.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
 import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
@@ -42,5 +43,6 @@ final Map<String, WidgetBuilder> routes = {
   OrderHistoryScreen.routeName: (context) => OrderHistoryScreen(),
   SuccessScreen.routeName: (context) => SuccessScreen(),
   DetailsScreen.routeName: (context) => DetailsScreen(),
+  OrdersListAdminScreen.routeName: (context) => const OrdersListAdminScreen(),
   // ProductDetailsView.routeName: (context) => ProductDetailsView(),
 };

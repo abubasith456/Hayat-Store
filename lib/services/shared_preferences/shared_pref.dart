@@ -15,6 +15,14 @@ class SharedPrefService {
     await sharedPreferences?.setString(key, value);
   }
 
+  void setBool(String key, bool value) async {
+    await sharedPreferences?.setBool(key, value);
+  }
+
+  void getBool(String key) {
+    sharedPreferences!.getBool(key);
+  }
+
   void clearData() async {
     await sharedPreferences?.clear();
   }

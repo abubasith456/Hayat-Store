@@ -11,15 +11,16 @@ class FetchHistoryList extends OrderHistoryEvent {}
 
 class CancelOrderEvent extends OrderHistoryEvent {
   final String orderId;
-  CancelOrderEvent({required this.orderId});
+  const CancelOrderEvent({required this.orderId});
 
   List<Object> get props => [orderId];
 }
 
 class DeleteOrderEvent extends OrderHistoryEvent {
   final String orderId;
-  DeleteOrderEvent({required this.orderId});
+  const DeleteOrderEvent({required this.orderId});
 
+  @override
   List<Object> get props => [orderId];
 }
 

@@ -24,6 +24,10 @@ final headingStyle = TextStyle(
 
 const defaultDuration = Duration(milliseconds: 250);
 
+// IMPORTANT!
+const String customer = "customer";
+const String admin = "admin";
+
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -52,6 +56,15 @@ const String cancelPopupTitle = 'Cancel order';
 const String cancelPopupMessage =
     'Are you sure, do you want to cancel ypur order?';
 const String cancelingOrderProgressText = "Canceling order...";
+
+//Accepting order
+const String acceptingOrder = "Accepting Order...";
+const String perparingOrder = "Preparing Order...";
+
+// Cancel Order - Admin
+const String cancellingOrderAdmin = "";
+const String cancelOrderAdminTitile = "Cancel Order!";
+const String cancelOrderAdminMessage = "Are you sure do you cancel this order?";
 
 //Common buttontext
 const String buttonOkText = 'Ok';
@@ -97,6 +110,7 @@ const String userNameKey = 'userName';
 const String pushToken = 'pushToken';
 const String areaNameKey = 'areaName';
 const String pinCodeKey = 'pinCode';
+const String userRole = "userRole";
 
 //Permission related
 const String permisstionNeededTitle = "Premission";

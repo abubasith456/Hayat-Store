@@ -62,8 +62,10 @@ class _DairyScreenState extends State<DairyScreen> {
               ),
             ),
           );
-        } else {
+        } else if (state is ConnectionFailure) {
           return ConnectionLostScreen();
+        } else {
+          return Container();
         }
       },
     );

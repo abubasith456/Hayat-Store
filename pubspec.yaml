@@ -77,9 +77,8 @@ dependencies:
   ars_progress_dialog: ^0.0.1 
   stylish_dialog: ^1.0.1
   expansion_tile_card: ^2.0.0
-  modal_bottom_sheet: ^2.1.2
   firebase_remote_config: ^3.0.9
-  cloud_firestore: ^4.3.1
+  cloud_firestore: ^4.5.0
   panara_dialogs: ^0.1.4
   search_page: ^2.3.0
   location: ^4.4.0 

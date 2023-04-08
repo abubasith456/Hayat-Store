@@ -68,8 +68,10 @@ class _GroceryScreenState extends State<GroceryScreen> {
               ),
             ),
           );
-        } else {
+        } else if (state is ConnectionFailure) {
           return ConnectionLostScreen();
+        } else {
+          return Container();
         }
       },
     );

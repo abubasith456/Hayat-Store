@@ -64,8 +64,10 @@ class _DrinksScreenState extends State<DrinksScreen> {
               ),
             ),
           );
-        } else {
+        } else if (state is ConnectionFailure) {
           return ConnectionLostScreen();
+        } else {
+          return Container();
         }
       },
     );
