@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:shop_app/models/my_address_model.dart';
 import 'package:shop_app/models/user_db_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -30,7 +32,7 @@ class UserDb {
     const integerType = 'INTEGER NOT NULL';
 
     await db.execute('''
-CREATE TABLE $UserData (
+CREATE TABLE $userDataTable (
   ${UserFields.id} $idType,
   ${UserFields.name} $textType,
   ${UserFields.email} $textType,
@@ -39,12 +41,26 @@ CREATE TABLE $UserData (
   ${UserFields.role} $textType
   )
 ''');
+
+    await db.execute('''
+CREATE TABLE $MyAddress (
+  ${MyAddressFields.id} $idType,
+  ${MyAddressFields.name} $textType,
+  ${MyAddressFields.userId} $textType,
+  ${MyAddressFields.mobileNumber} $textType,
+  ${MyAddressFields.pinCode} $textType,
+  ${MyAddressFields.address} $textType,
+  ${MyAddressFields.area} $textType,
+  ${MyAddressFields.landmark} $textType,
+  ${MyAddressFields.alteMobNumber} $textType,
+  )
+''');
   }
 
 //insert
   Future<User> create(User user) async {
     final db = await instance.database;
-    final id = await db.insert(UserData, user.toJson());
+    final id = await db.insert(userDataTable, user.toJson());
     print("User added into Db");
     return user.copy(id: id);
   }
@@ -54,7 +70,7 @@ CREATE TABLE $UserData (
 
     final name = '${UserFields.name} ASC';
 
-    final result = await db.query(UserData, orderBy: name);
+    final result = await db.query(userDataTable, orderBy: name);
 
     return result.map((json) => User.fromJson(json)).toList();
   }
@@ -64,7 +80,7 @@ CREATE TABLE $UserData (
 
     final name = '${UserFields.name} ASC';
 
-    final dbResult = await db.query(UserData, orderBy: name);
+    final dbResult = await db.query(userDataTable, orderBy: name);
 
     final result = dbResult.map((json) => User.fromJson(json)).toList();
 
@@ -85,8 +101,49 @@ CREATE TABLE $UserData (
     final db = await instance.database;
 
     return await db.delete(
-      UserData,
+      userDataTable,
       where: '${UserFields.id} = ?',
+      whereArgs: [id],
+    );
+  }
+
+//insert my address
+  Future<MyAddress> insert(MyAddress myAddress,
+      {required String userId}) async {
+    final db = await instance.database;
+    final id = await db.insert(myAddressTableName + userId, myAddress.toJson());
+    if (kDebugMode) {
+      print("Address added into Db");
+    }
+    return myAddress.copy(id: id);
+  }
+
+// getUserAddress
+  Future<List<MyAddress>> getUserAddress(String userId) async {
+    final db = await instance.database;
+    final myAddress = await db.query(myAddressTableName + userId,
+        where: '${MyAddressFields.userId} = ?', whereArgs: [userId]);
+
+    return myAddress.map((json) => MyAddress.fromJson(json)).toList();
+  }
+
+  Future<List<MyAddress>> readAllAddress({required String userId}) async {
+    final db = await instance.database;
+
+    const name = '${MyAddressFields.name} ASC';
+
+    final result = await db.query(myAddressTableName + userId, orderBy: name);
+
+    return result.map((json) => MyAddress.fromJson(json)).toList();
+  }
+
+  // delete address
+  Future<int> deleteAddress(int id, {required String userId}) async {
+    final db = await instance.database;
+
+    return await db.delete(
+      myAddressTableName + userId,
+      where: '${MyAddressFields.id} = ?',
       whereArgs: [id],
     );
   }

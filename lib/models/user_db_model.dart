@@ -1,6 +1,5 @@
-import 'dart:math';
 
-final String UserData = 'userData';
+const String userDataTable = 'userData';
 
 class UserFields {
   static final List<String> values = [
@@ -8,12 +7,12 @@ class UserFields {
     id, name, email, password, userId
   ];
 
-  static final String id = '_id';
-  static final String userId = 'userId';
-  static final String name = 'name';
-  static final String email = 'email';
-  static final String password = 'password';
-  static final String role = 'role';
+  static const String id = '_id';
+  static const String userId = 'userId';
+  static const String name = 'name';
+  static const String email = 'email';
+  static const String password = 'password';
+  static const String role = 'role';
 }
 
 class User {

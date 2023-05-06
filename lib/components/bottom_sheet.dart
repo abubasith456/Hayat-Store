@@ -23,20 +23,20 @@ void showBottomSheetOrderDetails(
                         onTap: () {
                           Navigator.of(context).pop();
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.close,
                           color: Colors.black,
                         ) // the arrow back icon
                         ),
                   ),
-                  leading: InkWell(
+                  leading: const InkWell(
                       onTap: null,
                       child: Icon(
                         Icons.arrow_back,
                         color: Colors.white,
                       ) // the arrow back icon
                       ),
-                  title: Center(
+                  title: const Center(
                       child: Text(
                     "Details",
                     style: TextStyle(

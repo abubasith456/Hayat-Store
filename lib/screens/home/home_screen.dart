@@ -33,12 +33,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Color inActiveIconColor = Color(0xFFB6B6B6);
+  final Color inActiveIconColor = const Color(0xFFB6B6B6);
   int currentIndex = 0;
 
   var pages = [
-    HomeScreenInit(),
-    CategoryScreeen(),
+    const HomeScreenInit(),
+    const CategoryScreeen(),
     ProfileScreen(),
   ];
   onPress(int index) {
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocListener<FirebaseCubit, FirebaseState>(
       listener: (context, state) {
         if (state is PushTokenStoringState) {
-          SnackBar(
+          const SnackBar(
             content: Text(
               "Please wait....",
             ),
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             behavior: SnackBarBehavior.floating,
           );
         } else if (state is PushTokenStoredState) {
-          SnackBar(
+          const SnackBar(
             content: Text(
               "Done",
             ),
@@ -82,13 +82,13 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
       child: Scaffold(
-          body: IndexedStack(children: pages, index: currentIndex),
+          body: IndexedStack(index: currentIndex, children: pages),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
             unselectedItemColor: inActiveIconColor,
             selectedItemColor: kPrimaryColor,
             unselectedIconTheme: IconThemeData(color: inActiveIconColor),
-            selectedIconTheme: IconThemeData(color: kPrimaryColor),
+            selectedIconTheme: const IconThemeData(color: kPrimaryColor),
             showUnselectedLabels: false,
             showSelectedLabels: false,
             elevation: 0,

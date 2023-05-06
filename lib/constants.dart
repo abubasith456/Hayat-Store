@@ -28,6 +28,9 @@ const defaultDuration = Duration(milliseconds: 250);
 const String customer = "customer";
 const String admin = "admin";
 
+//Title
+const String title_my_address = "My Address";
+
 // Form Error
 final RegExp emailValidatorRegExp =
     RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -152,9 +155,9 @@ List<Map<String, dynamic>> categories = [
 ];
 
 List<Map<String, dynamic>> categoryListBottom = [
-  {"icon": "assets/icons/vegetablesIcon.svg", "text": "Vegetables"},
-  {"icon": "assets/icons/groceryIcon.svg", "text": "Grocery"},
-  {"icon": "assets/icons/drinksIcon.svg", "text": "Drinks"},
-  {"icon": "assets/icons/fruitsIcon.svg", "text": "Fruits"},
-  {"icon": "assets/icons/dairy.svg", "text": "Dairy"},
+  {"icon": "assets/images/vegetables_bg.jpg", "text": "Vegetables"},
+  {"icon": "assets/images/grocery_bg.jpg", "text": "Grocery"},
+  {"icon": "assets/images/drinks_bg.jpg", "text": "Drinks"},
+  {"icon": "assets/images/fruits_bg.jpg", "text": "Fruits"},
+  {"icon": "assets/images/dairy_bg.jpg", "text": "Dairy"},
 ];

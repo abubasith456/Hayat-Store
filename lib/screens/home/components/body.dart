@@ -127,7 +127,7 @@ class _BodyState extends State<Body> {
                       Align(
                         alignment: Alignment.topRight,
                         child: ListTile(
-                          title: Text(
+                          title: const Text(
                             "HAYAT",
                             style: TextStyle(
                                 fontSize: 25,
@@ -138,7 +138,7 @@ class _BodyState extends State<Body> {
                             _validateAddress(area, pinCode)
                                 ? '$area,$pinCode'
                                 : 'Smart Shoping',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                             ),
                           ),
@@ -159,7 +159,7 @@ class _BodyState extends State<Body> {
                                   );
                                 },
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               IconBtnWithCounter(
