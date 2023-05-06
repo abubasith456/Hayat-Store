@@ -2,15 +2,13 @@ import 'package:flutter/widgets.dart';
 import 'package:shop_app/admin_screens/orders_list_screen.dart';
 import 'package:shop_app/screens/aboutUs/aboutus_screen.dart';
 import 'package:shop_app/screens/cart/cart_screen.dart';
-import 'package:shop_app/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_app/screens/details/details_screen.dart';
-import 'package:shop_app/screens/details_screen/details_screen.dart';
 import 'package:shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_app/screens/grocery/grocery_screen.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/login_success/login_success_screen.dart';
+import 'package:shop_app/screens/my_address/my_address_screen.dart';
 import 'package:shop_app/screens/order_history_screen/order_history_screen.dart';
-import 'package:shop_app/screens/otp/otp_screen.dart';
 import 'package:shop_app/screens/profile/profile_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/screens/splash/splash_screen.dart';
@@ -45,4 +43,5 @@ final Map<String, WidgetBuilder> routes = {
   DetailsScreen.routeName: (context) => DetailsScreen(),
   OrdersListAdminScreen.routeName: (context) => const OrdersListAdminScreen(),
   // ProductDetailsView.routeName: (context) => ProductDetailsView(),
+  MyAddressScreen.routeName: (context) => MyAddressScreen()
 };

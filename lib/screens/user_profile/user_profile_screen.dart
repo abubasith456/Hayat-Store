@@ -26,17 +26,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Future<List<User>> getAllData() async {
     List<User> cartList = await UserDb.instance.readAllUser();
-    print("DB called....");
     return cartList;
   }
 
   @override
   void initState() {
-    // getUser().then((value) {
-    //   setState(() {
-    //     _userId = value;
-    //   });
-    // });
     super.initState();
   }
 
@@ -46,7 +40,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       create: (context) => _userProfileBloc,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("User Profile"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text("User Profile"),
         ),
         body: FutureBuilder<List<User>>(
           future: getAllData(),
@@ -55,7 +55,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ? Body(
                     userId: snapshot.data![0].userId,
                   )
-                : CircularProgressIndicator(
+                : const CircularProgressIndicator(
                     color: kPrimaryColor,
                   );
           },
