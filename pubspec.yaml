@@ -28,68 +28,67 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
   # if you are using latest flutter please update your flutter_svg package to ^0.18.*
-  flutter_svg: ^0.22.0 # help us to use SVG in our app
+  flutter_svg: ^2.0.7 # help us to use SVG in our app
   provider: ^6.0.0 # for State management
   flutter_bloc: ^8.0.1
   # flutter_cubit: ^0.1.1
   equatable: ^2.0.3
-  dio: ^4.0.4
+  dio: ^5.3.3
   loader_overlay: ^2.0.7
-  http: ^0.13.4
+  http: ^1.1.0
   adaptive_dialog: ^1.6.4
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
   shared_preferences: ^2.0.15
   sqflite: ^2.0.2+1
   path_provider: ^2.0.11
-  shimmer: ^2.0.0
-  logger: ^1.1.0
-  connectivity_plus: ^2.3.5
+  shimmer: ^3.0.0
+  logger: ^2.0.2+1
+  connectivity_plus: ^5.0.1
   fluttertoast: ^8.0.9
   animations: ^2.0.3
-  top_snackbar_flutter: ^2.0.0
-  internet_connection_checker: ^0.0.1+4
+  top_snackbar_flutter: ^3.1.0
+  internet_connection_checker: ^1.0.0+1
   # auto_route: ^3.2.0
   cached_network_image: ^3.2.1  
   carousel_slider: ^4.1.1
-  intl: ^0.17.0
-  flutter_secure_storage: ^5.0.2
+  intl: ^0.18.1
+  flutter_secure_storage: ^9.0.0
   get_storage: ^2.0.3
   auto_size_text: ^3.0.0
   google_maps_flutter: ^2.1.8
   maps_launcher: ^2.0.1
-  app_settings: ^4.1.8
+  app_settings: ^5.1.1
   contactus: ^1.2.0
-  pin_code_fields: ^7.4.0
+  pin_code_fields: ^8.0.1
   flutter_timer_countdown: ^1.0.3
-  responsive_framework: ^0.2.0
+  responsive_framework: ^1.1.1
   get_it: ^7.2.0
-  permission_handler: ^10.0.0
+  permission_handler: ^11.0.1
   custom_info_window: ^1.0.1
   url_launcher: ^6.1.5
   flutter_phone_direct_caller: ^2.1.1
-  flutter_email_sender: ^5.1.0
+  flutter_email_sender: ^6.0.2
   firebase_auth: ^4.1.4
   firebase_core: ^2.3.0
   firebase_messaging: ^14.1.2
-  flutter_local_notifications: ^9.9.1
+  flutter_local_notifications: ^16.1.0
   loading_animation_widget: ^1.2.0+3
   flutter_gif: ^0.0.4
-  ars_progress_dialog: ^0.0.1 
   stylish_dialog: ^1.0.1
-  expansion_tile_card: ^2.0.0
-  firebase_remote_config: ^3.0.9
+  expansion_tile_card: ^3.0.0
+  firebase_remote_config: ^4.3.1
   cloud_firestore: ^4.5.0
   panara_dialogs: ^0.1.4
   search_page: ^2.3.0
-  location: ^4.4.0 
-  geolocator: ^9.0.2
+  location: ^5.0.3 
+  geolocator: ^10.1.0
   geocoding: ^2.0.5
-  flutter_speed_dial: ^6.2.0
+  flutter_speed_dial: ^7.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  auto_route_generator: ^3.2.0              
+  auto_route_generator: ^7.3.2              
   build_runner:  
 
 flutter_icons:
