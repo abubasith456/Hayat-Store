@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/models/category_model.dart';
 import 'package:shop_app/models/drinks_model.dart';
+import 'package:shop_app/models/news_model.dart';
 import 'package:shop_app/models/response_model.dart';
 import 'package:shop_app/models/fruit_model.dart';
 import 'package:shop_app/models/grocery_model.dart';
@@ -392,6 +393,21 @@ class ApiProvider {
     } catch (e) {
       print("Ordder==> $e");
       return List<OrdersNewModel>.empty();
+    }
+  }
+
+  // Get news
+  Future<PostModel> getPost() async {
+    try {
+        print("getPost==> $APP_BASE_URL");
+      Response response = await _dio.get("${APP_BASE_URL}newPost");
+      if (response.statusCode == 200) {
+        return PostModel.fromJson(response.data);
+      } else {
+        return PostModel.error(response.statusMessage);
+      }
+    } catch (e) {
+      return PostModel.error(e.toString());
     }
   }
 }

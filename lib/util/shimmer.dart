@@ -257,7 +257,7 @@ Widget homeScreenShimmer(BuildContext context) {
                                                     BorderRadius.circular(15),
                                               ),
                                               child: CachedNetworkImage(
-                                                imageUrl: imageLoadUrl + "",
+                                                imageUrl: "",
                                                 placeholder: (context, url) =>
                                                     Center(
                                                   child: Container(

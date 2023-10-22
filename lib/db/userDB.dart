@@ -52,7 +52,7 @@ CREATE TABLE $MyAddress (
   ${MyAddressFields.address} $textType,
   ${MyAddressFields.area} $textType,
   ${MyAddressFields.landmark} $textType,
-  ${MyAddressFields.alteMobNumber} $textType,
+  ${MyAddressFields.alteMobNumber} $textType
   )
 ''');
   }

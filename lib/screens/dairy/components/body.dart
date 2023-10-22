@@ -53,8 +53,7 @@ class Body extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CachedNetworkImage(
-                          imageUrl: imageLoadUrl +
-                              dairyProduct.product![i].productImage!,
+                          imageUrl: dairyProduct.product![i].productImage!,
                           placeholder: (context, url) => Center(
                             child: Container(
                               alignment: Alignment.center,

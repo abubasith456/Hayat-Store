@@ -64,7 +64,7 @@ class ProductCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: CachedNetworkImage(
-                    imageUrl: imageLoadUrl + product!.productImage!,
+                    imageUrl: product!.productImage!,
                     placeholder: (context, url) => Center(
                       child: Container(
                         alignment: Alignment.center,

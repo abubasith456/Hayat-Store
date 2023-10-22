@@ -28,7 +28,7 @@ class ItemsCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: CachedNetworkImage(
-                imageUrl: imageLoadUrl + products.productImage!,
+                imageUrl: products.productImage!,
                 placeholder: (context, url) => Center(
                   child: Container(
                     alignment: Alignment.center,

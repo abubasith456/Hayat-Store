@@ -31,7 +31,9 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => ProductDetailsView(
-                          product: drinksItems.product![i],category: "drinks",)));
+                            product: drinksItems.product![i],
+                            category: "drinks",
+                          )));
             }),
             child: Container(
               height: 500,
@@ -51,8 +53,7 @@ class Body extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CachedNetworkImage(
-                          imageUrl: imageLoadUrl +
-                              drinksItems.product![i].productImage!,
+                          imageUrl: drinksItems.product![i].productImage!,
                           placeholder: (context, url) => Center(
                             child: Container(
                               alignment: Alignment.center,

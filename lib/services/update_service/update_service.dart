@@ -13,7 +13,8 @@ late String updateOptionalLink;
 String? maintenanceMessage;
 void listernUpdateAvailable(BuildContext context) {
   if (getRemoteConfig() != null) {
-    getRemoteConfig()!.addListener(() async {
+    getRemoteConfig()!.onConfigUpdated.listen((event) async {
+       await getRemoteConfig()?.activate();
       //Config boolean values
       bool isUodateAvailable =
           getRemoteConfig()!.getBool(remoteConfigUpdateKey);
@@ -45,7 +46,7 @@ void listernUpdateAvailable(BuildContext context) {
         CustomDialog.showConfirmDialog(
             context: context,
             title: updateDialogTitle,
-            message: message != null ? message : "",
+            message: message ?? "",
             negativeCallback: () {
               Navigator.of(context).pop();
             },

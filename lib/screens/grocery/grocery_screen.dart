@@ -13,7 +13,7 @@ import '../../util/custom_snackbar.dart';
 
 class GroceryScreen extends StatefulWidget {
   const GroceryScreen({Key? key}) : super(key: key);
-  static String routeName = "/vegetables";
+  static String routeName = "/Grocery";
 
   @override
   State<GroceryScreen> createState() => _GroceryScreenState();

@@ -10,7 +10,7 @@ void showSnackBar(
   switch (type) {
     case TopSnackBarType.success:
       return showTopSnackBar(
-        context,
+        Overlay.of(context),
         CustomSnackBar.success(
           icon: Icon(
             Icons.sentiment_satisfied_alt_outlined,
@@ -23,7 +23,7 @@ void showSnackBar(
 
     case TopSnackBarType.error:
       return showTopSnackBar(
-        context,
+        Overlay.of(context),
         CustomSnackBar.error(
           icon: Icon(
             Icons.sentiment_dissatisfied_outlined,
@@ -36,7 +36,7 @@ void showSnackBar(
 
     case TopSnackBarType.info:
       return showTopSnackBar(
-        context,
+        Overlay.of(context),
         CustomSnackBar.info(
           icon: Icon(
             Icons.sentiment_satisfied,

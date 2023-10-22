@@ -124,10 +124,8 @@ const String permisstionNeededMessage =
 const String permisionNeededbtNText = "Go to Settings";
 
 //Url
-String imageLoadUrl =
-    'http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/';
-String APP_BASE_URL =
-    "http://ec2-43-205-149-29.ap-south-1.compute.amazonaws.com:3000/";
+String imageLoadUrl = '';
+String APP_BASE_URL = "https://hayat-shop.onrender.com/";
 
 enum TopSnackBarType { success, error, info }
 
@@ -161,3 +159,9 @@ List<Map<String, dynamic>> categoryListBottom = [
   {"icon": "assets/images/fruits_bg.jpg", "text": "Fruits"},
   {"icon": "assets/images/dairy_bg.jpg", "text": "Dairy"},
 ];
+
+// News
+const String newsBaseUrl = "GET https://newsapi.org/v2/top-headlines";
+const String country = "?country=us";
+const String apiKey = "&apiKey=3e43f4be279140fc99450660e2a78ddb";
+const String source = "?sources=";

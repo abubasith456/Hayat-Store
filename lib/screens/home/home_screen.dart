@@ -10,6 +10,7 @@ import 'package:shop_app/bloc/vegetable_bloc/bloc/vegetable_screen_bloc.dart';
 import 'package:shop_app/components/coustom_bottom_nav_bar.dart';
 import 'package:shop_app/cubit/firebase/cubit/firebase_cubit.dart';
 import 'package:shop_app/cubit/your_cart/cubit/your_cart_screen_cubit.dart';
+import 'package:shop_app/screens/news/newsScreen.dart';
 import 'package:shop_app/services/firebase_messaging/firebase_messaging.dart';
 import 'package:shop_app/services/firebase_push/firebase_push.dart';
 import 'package:shop_app/services/locator.dart';
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var pages = [
     const HomeScreenInit(),
     const CategoryScreeen(),
+    NewsScreen(),
     ProfileScreen(),
   ];
   onPress(int index) {
@@ -114,11 +116,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // ),
               ),
-              // BottomNavigationBarItem(
-              //   label: 'IDK',
-              //   tooltip: '',
-              //   icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-              // ),
+              BottomNavigationBarItem(
+                label: 'News',
+                tooltip: '',
+                icon: SvgPicture.asset(
+                  "assets/icons/Bell.svg",
+                  color: currentIndex == 2 ? kPrimaryColor : inActiveIconColor,
+                ),
+              ),
               // BottomNavigationBarItem(
               //   label: 'Somehtimg',
               //   tooltip: 'Home',
@@ -131,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 tooltip: 'Home',
                 icon: SvgPicture.asset(
                   "assets/icons/User Icon.svg",
-                  color: currentIndex == 2 ? kPrimaryColor : inActiveIconColor,
+                  color: currentIndex == 3 ? kPrimaryColor : inActiveIconColor,
                 ),
               ),
             ],

@@ -5,47 +5,37 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../main.dart';
 
 class NotificationService {
-  static Future initializeNotification(
-      void Function(String? value) callBack) async {
-    //Android initialization
-    final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('logo');
-
-    //iOS initialization
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-            requestSoundPermission: false,
-            requestBadgePermission: false,
-            requestAlertPermission: false,
-            onDidReceiveLocalNotification: ((id, title, body, payload) {
-              print("IOS notificatiom" + body!);
-            }));
-
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: callBack);
-  }
 
   static void pushNotification({
     required dynamic id,
     required String title,
     required dynamic body,
   }) async {
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails("0", "hayat",
-            importance: Importance.max, priority: Priority.max);
-    IOSNotificationDetails iosNotificationDetails =
-        IOSNotificationDetails(threadIdentifier: "thread1");
 
-    NotificationDetails notificationDetails = NotificationDetails(
-        android: androidNotificationDetails, iOS: iosNotificationDetails);
 
-    await flutterLocalNotificationsPlugin.show(
-        id, title, body, notificationDetails);
+
+const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      '0',
+      'hayat',
+      channelDescription: 'Yummy',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const DarwinNotificationDetails darwinNotificationDetails =
+        DarwinNotificationDetails(
+      categoryIdentifier: darwinNotificationCategoryText,
+    );
+
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: darwinNotificationDetails,
+      macOS: darwinNotificationDetails,
+    );
+
+    await flutterLocalNotificationsPlugin.show(id++, title,
+        body, notificationDetails,
+        payload: 'item x');
   }
 }

@@ -29,10 +29,10 @@ class MyDatabase {
   }
 
   Future _createDB(Database db, int version) async {
-    final idType = 'INTEGER PRIMARY KEY';
-    final textType = 'TEXT';
-    final boolType = 'BOOLEAN NOT NULL';
-    final integerType = 'INTEGER NOT NULL';
+    const idType = 'INTEGER PRIMARY KEY';
+    const textType = 'TEXT';
+    const boolType = 'BOOLEAN NOT NULL';
+    const integerType = 'INTEGER NOT NULL';
 
     // await db.execute(
     //     'CREATE TABLE $CartData (id INTEGER PRIMARY KEY, name TEXT, price TEXT, description REAL, categoryId TEXT, productImage TEXT, productId TEXT)');

@@ -34,7 +34,7 @@ class ConnectionLostScreen extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    AppSettings.openDeviceSettings();
+                    AppSettings.openAppSettings();
                   },
                   child: Text('Go to settings -->'),
                 )),

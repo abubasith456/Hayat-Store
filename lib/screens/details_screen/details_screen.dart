@@ -75,7 +75,7 @@ class ProductDetailsView extends StatelessWidget {
                 color: kPrimaryColor,
                 width: double.infinity,
                 child: CachedNetworkImage(
-                  imageUrl: imageLoadUrl + product.productImage!,
+                  imageUrl: product.productImage!,
                   placeholder: (context, url) => Center(
                     child: Container(
                       alignment: Alignment.center,

@@ -41,7 +41,7 @@ class _DairyScreenState extends State<DairyScreen> {
                 listener: (context, state) {
                   if (state is DairyErrorState) {
                     showSnackBar(
-                        context: context,
+                        context: this.context,
                         text: "Something went wrong!...Please try again later",
                         type: TopSnackBarType.error);
                   }

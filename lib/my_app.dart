@@ -1,27 +1,14 @@
-import 'package:auto_route/auto_route.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:shop_app/router/auto_routes.gr.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_app/admin_screens/orders_list_screen.dart';
-import 'package:shop_app/bloc/my_app_bloc/bloc/my_app_bloc.dart';
-import 'package:shop_app/bloc/network_bloc/bloc/network_bloc.dart';
-// import 'package:shop_app/router/auto_routes.gr.dart';
 import 'package:shop_app/router/routes.dart';
 import 'package:shop_app/screens/home/home_screen.dart';
 import 'package:shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:shop_app/screens/splash/splash_screen.dart';
-import 'package:shop_app/services/firebase_push/firebase_push.dart';
-import 'package:shop_app/util/secure_storage.dart';
-
 import 'package:shop_app/util/theme.dart';
-import 'constants.dart';
-import 'util/init_check.dart';
-// import './screens/home/home_screen.dart';
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key, required this.isLogged, required this.isAdmin})
@@ -52,19 +39,14 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Hayat Shop',
       theme: theme(),
-      builder: (context, child) => ResponsiveWrapper.builder(
-        child,
-        // maxWidth: 1200,
-        // minWidth: 480,
-        defaultScale: true,
+      builder: (context, child) => ResponsiveBreakpoints.builder(
+         child: child!,
         breakpoints: [
-          ResponsiveBreakpoint.autoScale(480, name: MOBILE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+          const Breakpoint(start: 0, end: 450, name: MOBILE),
+          const Breakpoint(start: 451, end: 800, name: TABLET),
+          const Breakpoint(start: 801, end: 1920, name: DESKTOP),
+          const Breakpoint(start: 1921, end: double.infinity, name: '4K'),
         ],
-        background: Container(
-          color: Color(0xFFF5F5F5),
-        ),
       ),
       initialRoute: widget.isLogged
           ? widget.isAdmin

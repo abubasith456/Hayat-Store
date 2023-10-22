@@ -50,7 +50,7 @@ class DetailsScreen extends StatelessWidget {
               color: kPrimaryColor,
               width: double.infinity,
               child: CachedNetworkImage(
-                imageUrl: imageLoadUrl + agrs.product.productImage!,
+                imageUrl: agrs.product.productImage!,
                 placeholder: (context, url) => Center(
                   child: Container(
                     alignment: Alignment.center,
